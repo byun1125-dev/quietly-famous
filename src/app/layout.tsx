@@ -5,7 +5,7 @@ import AuthButton from "@/components/AuthButton";
 
 export const metadata: Metadata = {
   title: "QUIETLY FAMOUS",
-  description: "The Manager's Desk",
+  description: "Creative Practice for Influencer",
 };
 
 export default function RootLayout({
@@ -15,22 +15,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="antialiased selection:bg-[#FF5C00] selection:text-white">
+      <body className="antialiased selection:bg-[#8A9A8A] selection:text-white">
         <div className="flex flex-col md:flex-row min-h-screen">
-          {/* Minimal Sidebar */}
-          <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-black md:relative md:w-20 md:h-screen md:border-t-0 md:border-r-2 flex md:flex-col justify-around md:justify-center items-center gap-8 py-4 md:py-0">
-            <NavLink href="/" icon="D" label="Desk" />
-            <NavLink href="/archive" icon="C" label="Closet" />
-            <NavLink href="/benchmarking" icon="M" label="Model" />
-            <NavLink href="/templates" icon="T" label="Templates" />
-            <NavLink href="/preview" icon="P" label="Preview" />
+          {/* Side Navigation */}
+          <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#F5F5F2]/80 backdrop-blur-md border-t border-[var(--border)] md:relative md:w-48 md:h-screen md:border-t-0 md:border-r flex md:flex-col justify-around md:justify-start gap-8 p-6">
+            <div className="hidden md:block mb-12">
+              <h1 className="text-xl font-serif italic tracking-tight">Quietly Famous.</h1>
+              <p className="mono mt-2">v. 2025</p>
+            </div>
+            
+            <NavLink href="/" label="The Desk" />
+            <NavLink href="/calendar" label="Calendar" />
+            <NavLink href="/archive" label="Archive" />
+            <NavLink href="/benchmarking" label="Model" />
+            <NavLink href="/templates" label="Cheat Key" />
+            <NavLink href="/preview" label="Preview" />
+
+            <div className="hidden md:block mt-auto">
+              <AuthButton />
+            </div>
           </nav>
 
-          <main className="flex-1 p-6 md:p-20 mb-20 md:mb-0 max-w-5xl mx-auto w-full">
-            <header className="flex justify-between items-start mb-20">
-              <h1 className="text-4xl font-black italic tracking-tighter">QUIETLY FAMOUS.</h1>
-              <AuthButton />
-            </header>
+          <main className="flex-1 p-6 md:p-16 max-w-4xl mx-auto w-full">
             {children}
           </main>
         </div>
@@ -40,13 +46,11 @@ export default function RootLayout({
   );
 }
 
-function NavLink({ href, icon, label }: { href: string; icon: string; label: string }) {
+function NavLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className="group relative flex flex-col items-center">
-      <span className="text-xl font-black transition-colors group-hover:text-[#FF5C00]">{icon}</span>
-      <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] px-2 py-1 hidden group-hover:block whitespace-nowrap">
-        {label}
-      </span>
+    <a href={href} className="group flex flex-col items-start gap-1">
+      <span className="text-sm font-serif transition-colors group-hover:text-[#8A9A8A]">{label}</span>
+      <div className="h-[1px] w-0 group-hover:w-full bg-[#8A9A8A] transition-all duration-300"></div>
     </a>
   );
 }

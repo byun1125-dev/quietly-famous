@@ -1,89 +1,86 @@
 "use client";
 
+import { useSyncData } from "@/hooks/useSyncData";
 import { useState } from "react";
 
-const TEMPLATES = {
-  story: [
-    { title: "월요일", content: "주말 순삭... 다시 출근(등교). #월요병 #OOTD" },
-    { title: "날씨 (춥다)", content: "오늘 진짜 춥네요. 다들 패딩 챙기세요. 🥶" },
-    { title: "날씨 (덥다)", content: "벌써 여름인가요? 오늘 너무 덥다.. ☀️" },
-    { title: "지각/바쁨", content: "뛰어야 해서 운동화 신음. 오늘 룩은 생존룩." },
-  ],
-  reels: [
-    { 
-      title: "출근룩.zip", 
-      content: `[이번 주 출근룩.zip]\n\n10월 2주차 출근 기록 📂\n날씨가 갑자기 쌀쌀해져서 옷 입기 애매했던 한 주.\n다들 감기 조심하세요 🤧\n\n#직장인코디 #출근룩 #데일리룩 #가을코디` 
-    },
-    { 
-      title: "주말 일상", 
-      content: `주말 기록 ☕️\n특별할 건 없지만 소중한 시간들.\n충전 완료! 다시 달려보자 ⚡️\n\n#카페투어 #주말일상 #데일리기록` 
-    }
-  ]
-};
+type Template = { id: string; title: string; body: string };
+
+const RECOMMENDATIONS = [
+  "이번 주 출근룩.zip - 무심한 세로 그리드용",
+  "지각 위기 생존 코디 - 스토리 감성",
+  "무채색 룩에 포인트 주는 법 - 정보성 릴스",
+  "내 가방 속 '조용히 유명한' 아이템들"
+];
 
 export default function TemplatesPage() {
-  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [templates, setTemplates] = useSyncData<Template[]>("user_templates", []);
+  const [newTitle, setNewTitle] = useState("");
+  const [newBody, setNewBody] = useState("");
 
-  const copyToClipboard = (text: string, id: string) => {
+  const addTemplate = () => {
+    if (!newTitle || !newBody) return;
+    setTemplates(prev => [{ id: Math.random().toString(36).substring(7), title: newTitle, body: newBody }, ...prev]);
+    setNewTitle("");
+    setNewBody("");
+  };
+
+  const copy = (text: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
+    alert("복사되었습니다.");
   };
 
   return (
-    <div className="space-y-8 pb-10">
-      <header className="py-4">
-        <h2 className="text-2xl font-bold text-gray-900 text-center uppercase tracking-tighter">The Templates 📝</h2>
-        <p className="text-gray-500 text-sm text-center">"아, 뭐라고 쓰지?" 고민하는 시간을 제로로 만듭니다.</p>
+    <div className="space-y-12 pb-20">
+      <header className="card-minimal">
+        <p className="mono mb-2">Toolbox</p>
+        <h2 className="text-4xl font-serif italic">Cheat Key.</h2>
       </header>
 
-      <section>
-        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <span>📸</span> 스토리 캡션 (현실 고증 ver)
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {TEMPLATES.story.map((t, idx) => (
-            <div key={idx} className="bg-white p-4 rounded-2xl border-2 border-gray-100 hover:border-black transition-all group">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-bold text-gray-400 uppercase">{t.title}</span>
-                <button 
-                  onClick={() => copyToClipboard(t.content, `story-${idx}`)}
-                  className={`text-[10px] px-2 py-1 rounded-lg font-bold transition-all ${copiedId === `story-${idx}` ? "bg-green-500 text-white" : "bg-gray-100 group-hover:bg-black group-hover:text-white"}`}
-                >
-                  {copiedId === `story-${idx}` ? "COPIED!" : "COPY"}
-                </button>
+      <section className="grid md:grid-cols-2 gap-12">
+        {/* Recommendation Section */}
+        <div className="space-y-8">
+          <p className="mono text-[#8A9A8A]">Today's Topic Ideas</p>
+          <div className="space-y-4">
+            {RECOMMENDATIONS.map((rec, i) => (
+              <div key={i} className="p-4 border border-[var(--border)] font-serif italic text-sm hover:bg-white transition-colors cursor-pointer">
+                "{rec}"
               </div>
-              <p className="text-sm text-gray-800 leading-relaxed">
-                {t.content}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+
+        {/* My Templates Section */}
+        <div className="space-y-8">
+          <p className="mono text-[#8A9A8A]">My Reusable Templates</p>
+          <div className="space-y-4">
+            <input 
+              placeholder="제목 (예: 월요일 출근룩)" 
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="w-full bg-transparent border-b border-[var(--border)] font-serif p-2 outline-none text-sm"
+            />
+            <textarea 
+              placeholder="자주 쓰는 본문이나 해시태그를 저장하세요..."
+              value={newBody}
+              onChange={(e) => setNewBody(e.target.value)}
+              className="w-full h-24 bg-transparent border border-[var(--border)] p-4 font-serif text-sm outline-none resize-none"
+            />
+            <button onClick={addTemplate} className="w-full py-3 bg-[#8A9A8A] text-white mono">Save Template</button>
+          </div>
         </div>
       </section>
 
-      <section>
-        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-          <span>🎬</span> 릴스 업로드 포맷
-        </h3>
-        <div className="space-y-4">
-          {TEMPLATES.reels.map((t, idx) => (
-            <div key={idx} className="bg-white p-5 rounded-2xl border-2 border-gray-100 hover:border-black transition-all group">
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-bold text-black">{t.title}</span>
-                <button 
-                  onClick={() => copyToClipboard(t.content, `reels-${idx}`)}
-                  className={`text-xs px-3 py-1.5 rounded-lg font-bold transition-all ${copiedId === `reels-${idx}` ? "bg-green-500 text-white" : "bg-gray-100 group-hover:bg-black group-hover:text-white"}`}
-                >
-                  {copiedId === `reels-${idx}` ? "본문 복사 완료" : "본문 복사하기"}
-                </button>
-              </div>
-              <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans bg-gray-50 p-4 rounded-xl border border-gray-100">
-                {t.content}
-              </pre>
+      <div className="grid gap-6">
+        {templates.map(t => (
+          <div key={t.id} className="p-6 bg-white border border-[var(--border)] flex justify-between items-center group">
+            <div>
+              <p className="mono text-[10px] mb-1">{t.title}</p>
+              <p className="font-serif italic text-sm text-gray-500 truncate max-w-md">{t.body}</p>
             </div>
-          ))}
-        </div>
-      </section>
+            <button onClick={() => copy(t.body)} className="mono text-[#8A9A8A] underline">Copy</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

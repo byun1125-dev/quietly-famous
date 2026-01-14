@@ -1,75 +1,51 @@
 "use client";
 
 import { useSyncData } from "@/hooks/useSyncData";
-import { useState } from "react";
 
-const STEPS = [
-  {
-    title: "IDENTIFY",
-    questions: ["Target Account ID", "Core Aesthetic Type", "Color Palette Mood"]
-  },
-  {
-    title: "ANALYZE",
-    questions: ["Pattern in High-Response Posts", "Hashtag Strategy", "Story Communication Style"]
-  },
-  {
-    title: "APPLY",
-    questions: ["Next Action Item: Angle", "Unique Value Point", "Draft: First Caption"]
-  }
+const FRAMEWORK = [
+  { key: "hook", label: "Hook (도입부)", placeholder: "시청자를 1초 만에 멈추게 한 포인트는?" },
+  { key: "body", label: "Body (본문)", placeholder: "정보나 재미를 전달하는 방식은? (자막, 리듬 등)" },
+  { key: "cta", label: "CTA (마무리)", placeholder: "팔로우나 저장을 어떻게 유도했나요?" },
+  { key: "apply", label: "Apply (적용)", placeholder: "이 구조를 내 콘텐츠에 어떻게 적용할까요?" },
 ];
 
 export default function BenchmarkingPage() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [answers, setAnswers] = useSyncData<Record<string, string>>("benchmarking_data", {});
-
-  const handleInputChange = (q: string, val: string) => {
-    setAnswers(prev => ({ ...prev, [q]: val }));
-  };
+  const [data, setData] = useSyncData<Record<string, string>>("model_analysis", {});
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 pb-20">
       <header className="card-minimal">
-        <h3 className="text-xs font-bold uppercase tracking-[0.3em] mb-4">Research</h3>
-        <h2 className="text-6xl font-black italic tracking-tighter uppercase">Role Model.</h2>
+        <p className="mono mb-2">Research</p>
+        <h2 className="text-4xl font-serif italic">Content Deconstructor.</h2>
       </header>
 
-      <div className="flex gap-4 mb-20">
-        {STEPS.map((step, idx) => (
-          <div key={idx} className={`h-1 flex-1 transition-colors ${idx <= activeStep ? "bg-[#FF5C00]" : "bg-gray-100"}`} />
-        ))}
-      </div>
+      <section className="bg-white border border-[var(--border)] p-8 space-y-12">
+        <div className="space-y-2 border-b border-[var(--border)] pb-4">
+          <p className="mono">Target Link</p>
+          <input 
+            placeholder="벤치마킹할 계정이나 영상 링크를 입력하세요..."
+            className="w-full bg-transparent font-serif italic text-xl outline-none"
+          />
+        </div>
 
-      <div className="space-y-16">
-        <h4 className="text-[5rem] font-black tracking-tighter text-gray-100 leading-none">0{activeStep + 1}</h4>
-        <div className="space-y-12">
-          {STEPS[activeStep].questions.map((q, i) => (
-            <div key={i} className="group border-b border-black pb-4">
-              <p className="text-xs font-bold uppercase mb-4 text-[#FF5C00] tracking-widest">{q}</p>
-              <input 
-                value={answers[q] || ""}
-                onChange={(e) => handleInputChange(q, e.target.value)}
-                placeholder="TYPE YOUR OBSERVATION..."
-                className="w-full bg-transparent text-2xl font-bold uppercase tracking-tighter outline-none placeholder:text-gray-200"
+        <div className="grid gap-12">
+          {FRAMEWORK.map((item) => (
+            <div key={item.key} className="space-y-4">
+              <h4 className="mono text-[#8A9A8A]">{item.label}</h4>
+              <textarea 
+                value={data[item.key] || ""}
+                onChange={(e) => setData(prev => ({ ...prev, [item.key]: e.target.value }))}
+                placeholder={item.placeholder}
+                className="w-full h-24 bg-transparent font-serif italic leading-relaxed border-none outline-none resize-none"
               />
+              <div className="h-[1px] bg-gray-100"></div>
             </div>
           ))}
         </div>
+      </section>
 
-        <div className="flex justify-between pt-10">
-          <button 
-            disabled={activeStep === 0}
-            onClick={() => setActiveStep(prev => prev - 1)}
-            className={`text-xs font-black uppercase tracking-widest ${activeStep === 0 ? "opacity-0" : "hover:text-[#FF5C00]"}`}
-          >
-            Previous
-          </button>
-          <button 
-            onClick={() => activeStep < STEPS.length - 1 ? setActiveStep(prev => prev + 1) : alert("Analysis Sync Complete.")}
-            className="text-xs font-black uppercase tracking-widest bg-black text-white px-8 py-4 hover:bg-[#FF5C00] transition-colors"
-          >
-            {activeStep === STEPS.length - 1 ? "Finish Sync" : "Next Step"}
-          </button>
-        </div>
+      <div className="p-8 bg-[#EBEBE6] border border-[var(--border)] italic font-serif text-sm leading-relaxed text-gray-600">
+        "구조를 따라 하는 것은 카피가 아니라 학습입니다. 뼈대를 가져오고 살(내용)은 내 것으로 채우세요."
       </div>
     </div>
   );
