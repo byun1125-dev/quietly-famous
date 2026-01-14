@@ -15,9 +15,23 @@ export async function POST(request: NextRequest) {
     // 환경변수에서 API 키 가져오기
     const apiKey = process.env.GEMINI_API_KEY;
     
+    // 디버깅을 위한 로그
+    console.log('Environment check:', {
+      hasKey: !!apiKey,
+      keyLength: apiKey?.length,
+      allEnvKeys: Object.keys(process.env).filter(k => k.includes('GEMINI'))
+    });
+    
     if (!apiKey) {
+      console.error('GEMINI_API_KEY not found in environment variables');
       return NextResponse.json(
-        { error: 'Gemini API 키가 설정되지 않았습니다.' },
+        { 
+          error: 'Gemini API 키가 설정되지 않았습니다.',
+          debug: {
+            hasKey: false,
+            availableEnvKeys: Object.keys(process.env).filter(k => k.includes('GEMINI'))
+          }
+        },
         { status: 500 }
       );
     }
