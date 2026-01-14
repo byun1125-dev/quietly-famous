@@ -2,8 +2,8 @@
 
 import { useSyncData } from "@/hooks/useSyncData";
 import { useState } from "react";
-import { auth } from "@/lib/firebase";
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { auth, storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 type ArchiveItem = {
   id: string;
@@ -23,7 +23,6 @@ export default function ArchivePage() {
     if (!file || !auth.currentUser) return;
     setUploading(true);
     try {
-      const storage = getStorage();
       const storageRef = ref(storage, `users/${auth.currentUser.uid}/archive/${Date.now()}_${file.name}`);
       const snapshot = await uploadBytes(storageRef, file);
       const url = await getDownloadURL(snapshot.ref);

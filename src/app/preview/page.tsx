@@ -2,8 +2,8 @@
 
 import { useState, useRef } from "react";
 import { useSyncData } from "@/hooks/useSyncData";
-import { auth } from "@/lib/firebase";
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { auth, storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 type Highlight = { id: string; title: string; image: string };
 type Post = { id: string; image: string };
@@ -31,7 +31,6 @@ export default function PreviewPage() {
     setUploading(type);
     
     try {
-      const storage = getStorage();
       const storageRef = ref(storage, `users/${auth.currentUser.uid}/preview/${type}/${Date.now()}_${file.name}`);
       const snapshot = await uploadBytes(storageRef, file);
       const url = await getDownloadURL(snapshot.ref);
