@@ -1,44 +1,76 @@
 "use client";
 
-// Mock data for the gallery
-const ITEMS = [
-  { id: 1, title: "자연스러운 거울 셀카", type: "Photo", height: "h-64", color: "bg-gray-200" },
-  { id: 2, title: "무심한듯한 캡션", type: "Style", height: "h-40", color: "bg-indigo-100" },
-  { id: 3, title: "파리 브이로그 감성", type: "Video", height: "h-80", color: "bg-blue-100" },
-  { id: 4, title: "톤 다운된 데일리룩", type: "Mood", height: "h-52", color: "bg-stone-200" },
-  { id: 5, title: "음식 사진 구도", type: "Photo", height: "h-72", color: "bg-yellow-50" },
-  { id: 6, title: "릴스 챌린지 연출", type: "Video", height: "h-60", color: "bg-pink-100" },
-];
+import { useState } from "react";
+import { useSyncData } from "@/hooks/useSyncData";
+import { auth, db } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { v4 as uuidv4 } from 'uuid'; // uuid 설치가 필요할 수 있으나 일단 로직 구현
+
+type ClosetItem = {
+  id: string;
+  url: string;
+  title: string;
+  type: string;
+  createdAt: number;
+};
 
 export default function MasonryGallery() {
+  const [items, setItems] = useSyncData<ClosetItem[]>("closet_items", []);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !auth.currentUser) return;
+
+    setUploading(true);
+    try {
+      const storage = getStorage();
+      const storageRef = ref(storage, `users/${auth.currentUser.uid}/closet/${Date.now()}_${file.name}`);
+      
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+
+      const newItem: ClosetItem = {
+        id: Math.random().toString(36).substring(7),
+        url: downloadURL,
+        title: "새로운 레퍼런스",
+        type: "Photo",
+        createdAt: Date.now()
+      };
+
+      setItems(prev => [newItem, ...prev]);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("사진 업로드에 실패했습니다. Storage 설정을 확인해주세요.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
-    <div className="columns-2 md:columns-3 gap-4 space-y-4">
-      {ITEMS.map((item) => (
-        <div 
-          key={item.id} 
-          className={`relative break-inside-avoid rounded-2xl overflow-hidden group cursor-pointer border border-gray-100 shadow-sm hover:shadow-md transition-shadow ${item.color} ${item.height}`}
-        >
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-end p-4">
-            <div className="translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-              <span className="text-[10px] font-bold bg-white text-black px-2 py-1 rounded-full uppercase mb-1 inline-block">
-                {item.type}
-              </span>
-              <p className="text-white font-bold text-sm leading-tight drop-shadow-md">
-                {item.title}
-              </p>
+    <div className="space-y-8">
+      <div className="columns-2 md:columns-3 gap-4 space-y-4">
+        {/* Upload Button */}
+        <label className="break-inside-avoid border-2 border-dashed border-black aspect-[3/4] flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
+          <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" disabled={uploading} />
+          <span className="text-4xl font-light">{uploading ? "..." : "+"}</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">
+            {uploading ? "Uploading" : "Add Reference"}
+          </span>
+        </label>
+
+        {items.map((item) => (
+          <div 
+            key={item.id} 
+            className="relative break-inside-avoid border-2 border-black overflow-hidden group"
+          >
+            <img src={item.url} alt={item.title} className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500" />
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+              <span className="text-[10px] font-bold text-[#FF5C00] uppercase tracking-widest mb-1">{item.type}</span>
+              <p className="text-white font-black text-sm uppercase tracking-tighter">{item.title}</p>
             </div>
           </div>
-          {/* Placeholder for image */}
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            <span className="text-2xl opacity-20">📸</span>
-          </div>
-        </div>
-      ))}
-      
-      {/* Add Button */}
-      <div className="break-inside-avoid h-40 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center gap-2 text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-all cursor-pointer">
-        <span className="text-3xl">+</span>
-        <span className="text-xs font-bold">Add Reference</span>
+        ))}
       </div>
     </div>
   );
