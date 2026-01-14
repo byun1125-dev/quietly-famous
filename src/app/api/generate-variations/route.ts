@@ -1,8 +1,24 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
+    // 패키지 import 확인
+    let GoogleGenerativeAI;
+    try {
+      const genAIModule = await import('@google/generative-ai');
+      GoogleGenerativeAI = genAIModule.GoogleGenerativeAI;
+    } catch (importError: any) {
+      console.error('Failed to import @google/generative-ai:', importError);
+      return NextResponse.json(
+        { 
+          error: 'AI 패키지를 불러올 수 없습니다.',
+          details: importError.message,
+          hint: '패키지가 설치되었는지 확인해주세요.'
+        },
+        { status: 500 }
+      );
+    }
+
     const { originalText } = await request.json();
 
     if (!originalText || typeof originalText !== 'string') {
@@ -36,6 +52,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log('Initializing Gemini AI...');
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
@@ -51,9 +68,11 @@ export async function POST(request: NextRequest) {
 
 각 변형은 한 줄로 작성하고, 번호 없이 텍스트만 반환해주세요. 변형 사이는 줄바꿈으로 구분해주세요.`;
 
+    console.log('Calling Gemini API...');
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
+    console.log('Gemini API response received, length:', text.length);
 
     // 응답을 3개로 분리
     const variations = text
@@ -69,11 +88,24 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ variations });
   } catch (error: any) {
-    console.error('Gemini API Error:', error);
+    console.error('Gemini API Error:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+      cause: error.cause
+    });
+    
+    // 더 자세한 에러 정보 반환
     return NextResponse.json(
       { 
         error: 'AI 변형 생성 중 오류가 발생했습니다.',
-        details: error.message 
+        details: error.message,
+        type: error.name,
+        hint: error.message?.includes('API key') 
+          ? 'API 키가 유효하지 않거나 만료되었을 수 있습니다.'
+          : error.message?.includes('import')
+          ? '패키지 설치가 필요합니다.'
+          : 'Netlify Functions 로그를 확인해주세요.'
       },
       { status: 500 }
     );
