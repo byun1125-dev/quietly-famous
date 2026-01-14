@@ -48,20 +48,15 @@ export default function TemplatesPage() {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'AI 변형 생성 실패');
+        const errorData = await response.json();
+        throw new Error(errorData.details || errorData.error || 'AI 변형 생성 실패');
       }
 
       const data = await response.json();
       return data.variations || [];
     } catch (error: any) {
       console.error('AI 변형 생성 오류:', error);
-      // 에러 발생 시 폴백: 간단한 패턴 기반 변형
-      return [
-        `✨ ${original} ✨`,
-        `혹시 ${original}? 💬`,
-        `진짜 ${original} 💪`
-      ];
+      throw error; // 상위에서 처리하도록 던짐
     }
   };
 
@@ -72,8 +67,8 @@ export default function TemplatesPage() {
     try {
       const newVariations = await generateVariations(template.body);
       setVariations(newVariations);
-    } catch (error) {
-      alert('AI 변형 생성 중 오류가 발생했습니다. 다시 시도해주세요.');
+    } catch (error: any) {
+      alert(`AI 변형 실패: ${error.message}`);
       setShowVariations(null);
     } finally {
       setIsGenerating(false);
