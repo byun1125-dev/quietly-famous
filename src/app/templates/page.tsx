@@ -18,7 +18,6 @@ export default function TemplatesPage() {
   const [newBody, setNewBody] = useState("");
   const [showVariations, setShowVariations] = useState<string | null>(null);
   const [variations, setVariations] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const addTemplate = () => {
     if (!newTitle || !newBody) return;
@@ -36,43 +35,42 @@ export default function TemplatesPage() {
     setTemplates(prev => prev.filter(t => t.id !== id));
   };
 
-  // 실제 AI API 호출
-  const generateVariations = async (original: string): Promise<string[]> => {
-    try {
-      const response = await fetch('/api/generate-variations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ originalText: original }),
-      });
+  // 패턴 기반 변형 생성
+  const generateVariations = (original: string) => {
+    const variations: string[] = [];
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.details || errorData.error || 'AI 변형 생성 실패');
-      }
+    // 변형 1: 이모지 추가/변경
+    const emojis = ['✨', '💫', '🌟', '💝', '💕', '🔥', '💯', '👀', '🎯', '✅'];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    variations.push(`${randomEmoji} ${original} ${randomEmoji}`);
 
-      const data = await response.json();
-      return data.variations || [];
-    } catch (error: any) {
-      console.error('AI 변형 생성 오류:', error);
-      throw error; // 상위에서 처리하도록 던짐
+    // 변형 2: 질문형으로 전환
+    if (!original.includes('?')) {
+      const questionStarters = ['혹시', '여러분도', '이거', '지금'];
+      const randomStarter = questionStarters[Math.floor(Math.random() * questionStarters.length)];
+      variations.push(`${randomStarter} ${original}? 💬`);
+    } else {
+      variations.push(original.replace(/\?/g, '!! 🎉'));
     }
+
+    // 변형 3: 강조 추가
+    const emphasisWords = ['진짜', '정말', '완전', '너무'];
+    const randomEmphasis = emphasisWords[Math.floor(Math.random() * emphasisWords.length)];
+    const words = original.split(' ');
+    if (words.length > 2) {
+      words.splice(1, 0, randomEmphasis);
+      variations.push(words.join(' ') + ' 💪');
+    } else {
+      variations.push(`${randomEmphasis} ${original} 💪`);
+    }
+
+    return variations;
   };
 
-  const showAIVariations = async (template: Template) => {
-    setIsGenerating(true);
+  const showAIVariations = (template: Template) => {
+    const newVariations = generateVariations(template.body);
+    setVariations(newVariations);
     setShowVariations(template.id);
-    
-    try {
-      const newVariations = await generateVariations(template.body);
-      setVariations(newVariations);
-    } catch (error: any) {
-      alert(`AI 변형 실패: ${error.message}`);
-      setShowVariations(null);
-    } finally {
-      setIsGenerating(false);
-    }
   };
 
   return (
@@ -150,10 +148,9 @@ export default function TemplatesPage() {
                     </button>
                     <button 
                       onClick={() => showAIVariations(t)} 
-                      disabled={isGenerating && showVariations === t.id}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded hover:from-purple-600 hover:to-pink-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded hover:from-purple-600 hover:to-pink-600 transition-colors"
                     >
-                      {isGenerating && showVariations === t.id ? '생성 중...' : '✨ AI 변형'}
+                      ✨ 템플릿 변형
                     </button>
                     <button 
                       onClick={() => deleteTemplate(t.id)} 
@@ -164,48 +161,36 @@ export default function TemplatesPage() {
                   </div>
                 </div>
 
-                {/* AI Variations */}
+                {/* Template Variations */}
                 {showVariations === t.id && (
                   <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-t border-purple-100 p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h5 className="font-semibold text-sm text-purple-800">
-                        {isGenerating ? '🤖 AI가 변형을 생성하고 있어요...' : '✨ AI가 제안한 변형'}
-                      </h5>
+                      <h5 className="font-semibold text-sm text-purple-800">✨ 템플릿 변형</h5>
                       <button
-                        onClick={() => {
-                          setShowVariations(null);
-                          setIsGenerating(false);
-                        }}
+                        onClick={() => setShowVariations(null)}
                         className="text-purple-400 hover:text-purple-600"
                       >
                         ✕
                       </button>
                     </div>
-                    {isGenerating ? (
-                      <div className="text-center py-8">
-                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mb-3"></div>
-                        <p className="text-sm text-purple-600">잠시만 기다려주세요...</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {variations.map((variation, index) => (
-                          <div key={index} className="bg-white p-4 rounded-lg border border-purple-200">
-                            <div className="flex justify-between items-start gap-3">
-                              <div className="flex-1">
-                                <span className="text-xs font-semibold text-purple-600 mb-2 block">변형 {index + 1}</span>
-                                <p className="text-sm text-gray-700">{variation}</p>
-                              </div>
-                              <button
-                                onClick={() => copy(variation)}
-                                className="px-3 py-1 bg-purple-500 text-white text-xs font-semibold rounded hover:bg-purple-600 transition-colors shrink-0"
-                              >
-                                복사
-                              </button>
+                    <div className="space-y-3">
+                      {variations.map((variation, index) => (
+                        <div key={index} className="bg-white p-4 rounded-lg border border-purple-200">
+                          <div className="flex justify-between items-start gap-3">
+                            <div className="flex-1">
+                              <span className="text-xs font-semibold text-purple-600 mb-2 block">변형 {index + 1}</span>
+                              <p className="text-sm text-gray-700">{variation}</p>
                             </div>
+                            <button
+                              onClick={() => copy(variation)}
+                              className="px-3 py-1 bg-purple-500 text-white text-xs font-semibold rounded hover:bg-purple-600 transition-colors shrink-0"
+                            >
+                              복사
+                            </button>
                           </div>
-                        ))}
-                      </div>
-                    )}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
