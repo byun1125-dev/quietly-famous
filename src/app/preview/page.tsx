@@ -152,16 +152,16 @@ export default function PreviewPage() {
         </div>
       </div>
 
-      {/* Posts Grid */}
+      {/* Posts Grid (4:5 Ratio) */}
       <div className="grid grid-cols-3 gap-[1px] bg-gray-100">
         {/* Upload Post Button */}
-        <label className="aspect-square bg-gray-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
+        <label className="aspect-[4/5] bg-gray-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
           <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'post')} />
           <span className="text-4xl text-gray-300">+</span>
         </label>
         
         {posts.map((post) => (
-          <div key={post.id} className="aspect-square relative group overflow-hidden bg-white">
+          <div key={post.id} className="aspect-[4/5] relative group overflow-hidden bg-white">
             <img src={post.image} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                <button 

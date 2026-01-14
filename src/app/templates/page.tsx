@@ -16,6 +16,8 @@ export default function TemplatesPage() {
   const [templates, setTemplates] = useSyncData<Template[]>("user_templates", []);
   const [newTitle, setNewTitle] = useState("");
   const [newBody, setNewBody] = useState("");
+  const [showVariations, setShowVariations] = useState<string | null>(null);
+  const [variations, setVariations] = useState<string[]>([]);
 
   const addTemplate = () => {
     if (!newTitle || !newBody) return;
@@ -31,6 +33,44 @@ export default function TemplatesPage() {
 
   const deleteTemplate = (id: string) => {
     setTemplates(prev => prev.filter(t => t.id !== id));
+  };
+
+  // AI 변형 시뮬레이션 (실제 AI 없이 패턴 기반 변형)
+  const generateVariations = (original: string) => {
+    const variations: string[] = [];
+
+    // 변형 1: 이모지 추가/변경
+    const emojis = ['✨', '💫', '🌟', '💝', '💕', '🔥', '💯', '👀', '🎯', '✅'];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    variations.push(`${randomEmoji} ${original} ${randomEmoji}`);
+
+    // 변형 2: 질문형으로 전환
+    if (!original.includes('?')) {
+      const questionStarters = ['혹시', '여러분도', '이거', '지금'];
+      const randomStarter = questionStarters[Math.floor(Math.random() * questionStarters.length)];
+      variations.push(`${randomStarter} ${original}? 💬`);
+    } else {
+      variations.push(original.replace(/\?/g, '!! 🎉'));
+    }
+
+    // 변형 3: 강조 추가
+    const emphasisWords = ['진짜', '정말', '완전', '너무'];
+    const randomEmphasis = emphasisWords[Math.floor(Math.random() * emphasisWords.length)];
+    const words = original.split(' ');
+    if (words.length > 2) {
+      words.splice(1, 0, randomEmphasis);
+      variations.push(words.join(' ') + ' 💪');
+    } else {
+      variations.push(`${randomEmphasis} ${original} 💪`);
+    }
+
+    return variations;
+  };
+
+  const showAIVariations = (template: Template) => {
+    const newVariations = generateVariations(template.body);
+    setVariations(newVariations);
+    setShowVariations(template.id);
   };
 
   return (
@@ -91,18 +131,26 @@ export default function TemplatesPage() {
           <h3 className="font-semibold text-lg text-gray-800">저장된 템플릿</h3>
           <div className="grid gap-4">
             {templates.map(t => (
-              <div key={t.id} className="p-6 bg-white border border-[var(--border)] rounded-lg shadow-sm hover:shadow-md transition-shadow group">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-base mb-2 text-gray-800">{t.title}</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{t.body}</p>
+              <div key={t.id} className="bg-white border border-[var(--border)] rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                <div className="p-6">
+                  <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-base mb-2 text-gray-800">{t.title}</h4>
+                      <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{t.body}</p>
+                    </div>
                   </div>
                   <div className="flex gap-2">
                     <button 
                       onClick={() => copy(t.body)} 
-                      className="px-4 py-2 bg-[#8A9A8A] text-white text-xs font-semibold rounded hover:bg-[#7a8a7a] transition-colors"
+                      className="flex-1 px-4 py-2 bg-[#8A9A8A] text-white text-xs font-semibold rounded hover:bg-[#7a8a7a] transition-colors"
                     >
                       복사
+                    </button>
+                    <button 
+                      onClick={() => showAIVariations(t)} 
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded hover:from-purple-600 hover:to-pink-600 transition-colors"
+                    >
+                      ✨ AI 변형
                     </button>
                     <button 
                       onClick={() => deleteTemplate(t.id)} 
@@ -112,6 +160,39 @@ export default function TemplatesPage() {
                     </button>
                   </div>
                 </div>
+
+                {/* AI Variations */}
+                {showVariations === t.id && (
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-t border-purple-100 p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h5 className="font-semibold text-sm text-purple-800">AI가 제안한 변형</h5>
+                      <button
+                        onClick={() => setShowVariations(null)}
+                        className="text-purple-400 hover:text-purple-600"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {variations.map((variation, index) => (
+                        <div key={index} className="bg-white p-4 rounded-lg border border-purple-200">
+                          <div className="flex justify-between items-start gap-3">
+                            <div className="flex-1">
+                              <span className="text-xs font-semibold text-purple-600 mb-2 block">변형 {index + 1}</span>
+                              <p className="text-sm text-gray-700">{variation}</p>
+                            </div>
+                            <button
+                              onClick={() => copy(variation)}
+                              className="px-3 py-1 bg-purple-500 text-white text-xs font-semibold rounded hover:bg-purple-600 transition-colors shrink-0"
+                            >
+                              복사
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
