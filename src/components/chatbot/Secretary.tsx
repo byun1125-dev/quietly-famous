@@ -44,31 +44,37 @@ export default function Secretary() {
   return (
     <div className="fixed bottom-24 right-6 z-[100] md:bottom-10">
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-72 bg-white rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-2 border-black p-5 animate-in slide-in-from-bottom-4 duration-300">
-          <div className="flex items-center gap-3 mb-6 border-b-2 border-black pb-4">
-            <span className="text-2xl">👩‍💼</span>
+        <div className="absolute bottom-20 right-0 w-80 bg-white rounded-lg shadow-2xl border border-[var(--border)] p-6 animate-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--border)]">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8A9A8A] to-[#7a8a7a] flex items-center justify-center text-xl">
+              👩‍💼
+            </div>
             <div>
-              <h4 className="font-black text-xs uppercase tracking-widest">The Alarm</h4>
-              <p className="text-[8px] font-bold text-[#FF5C00] uppercase tracking-[0.2em]">Live Secretary</p>
+              <h4 className="font-semibold text-sm">The Alarm</h4>
+              <p className="text-xs text-gray-500">Live Secretary</p>
             </div>
           </div>
-          <div className="mb-6">
-            <p className="text-sm font-black italic leading-tight uppercase tracking-tighter">
-              "{message}"
+          <div className="mb-5">
+            <p className="text-sm leading-relaxed text-gray-700">
+              {message}
             </p>
           </div>
           <button 
             onClick={() => setIsOpen(false)}
-            className="w-full py-3 bg-black text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#FF5C00] transition-colors"
+            className="w-full py-3 bg-[#8A9A8A] text-white text-sm font-semibold rounded-lg hover:bg-[#7a8a7a] transition-colors"
           >
-            Confirmed.
+            확인했습니다
           </button>
         </div>
       )}
       
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 flex items-center justify-center text-2xl transition-all border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] ${isOpen ? "bg-[#FF5C00] text-white" : "bg-white text-black"}`}
+        className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-all shadow-lg hover:shadow-xl ${
+          isOpen 
+            ? "bg-[#8A9A8A] text-white scale-95" 
+            : "bg-white text-gray-700 hover:scale-105"
+        }`}
       >
         {isOpen ? "✕" : "💬"}
       </button>

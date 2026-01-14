@@ -15,12 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="stylesheet" as="style" crossOrigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+      </head>
       <body className="antialiased selection:bg-[#8A9A8A] selection:text-white">
         <div className="flex flex-col md:flex-row min-h-screen">
           {/* Side Navigation */}
           <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#F5F5F2]/80 backdrop-blur-md border-t border-[var(--border)] md:relative md:w-48 md:h-screen md:border-t-0 md:border-r flex md:flex-col justify-around md:justify-start gap-8 p-6">
             <div className="hidden md:block mb-12">
-              <h1 className="text-xl font-serif italic tracking-tight">Quietly Famous.</h1>
+              <h1 className="text-xl font-bold tracking-tight">Quietly Famous.</h1>
               <p className="mono mt-2">v. 2025</p>
             </div>
             
@@ -49,7 +52,7 @@ export default function RootLayout({
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <a href={href} className="group flex flex-col items-start gap-1">
-      <span className="text-sm font-serif transition-colors group-hover:text-[#8A9A8A]">{label}</span>
+      <span className="text-sm font-medium transition-colors group-hover:text-[#8A9A8A]">{label}</span>
       <div className="h-[1px] w-0 group-hover:w-full bg-[#8A9A8A] transition-all duration-300"></div>
     </a>
   );

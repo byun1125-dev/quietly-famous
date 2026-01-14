@@ -14,38 +14,50 @@ export default function BenchmarkingPage() {
 
   return (
     <div className="space-y-12 pb-20">
-      <header className="card-minimal">
-        <p className="mono mb-2">Research</p>
-        <h2 className="text-4xl font-serif italic">Content Deconstructor.</h2>
+      <header className="border-b border-[var(--border)] pt-8 pb-12">
+        <p className="mono mb-3 text-gray-500">Research</p>
+        <h2 className="text-5xl font-bold mb-6">Content Deconstructor.</h2>
+        <p className="mt-4 text-gray-600 max-w-lg text-base leading-relaxed">
+          성공한 콘텐츠를 분석하고 구조를 학습하세요.
+        </p>
       </header>
 
-      <section className="bg-white border border-[var(--border)] p-8 space-y-12">
-        <div className="space-y-2 border-b border-[var(--border)] pb-4">
-          <p className="mono">Target Link</p>
+      <section className="bg-white border border-[var(--border)] p-8 rounded-lg shadow-sm space-y-10">
+        <div className="space-y-3">
+          <label className="block text-sm font-semibold text-gray-700">타겟 링크</label>
           <input 
             placeholder="벤치마킹할 계정이나 영상 링크를 입력하세요..."
-            className="w-full bg-transparent font-serif italic text-xl outline-none"
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
           />
         </div>
 
-        <div className="grid gap-12">
-          {FRAMEWORK.map((item) => (
-            <div key={item.key} className="space-y-4">
-              <h4 className="mono text-[#8A9A8A]">{item.label}</h4>
+        <div className="grid gap-8">
+          {FRAMEWORK.map((item, index) => (
+            <div key={item.key} className="space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#8A9A8A] text-white flex items-center justify-center font-semibold text-sm">
+                  {index + 1}
+                </div>
+                <h4 className="font-semibold text-gray-800">{item.label}</h4>
+              </div>
               <textarea 
                 value={data[item.key] || ""}
                 onChange={(e) => setData(prev => ({ ...prev, [item.key]: e.target.value }))}
                 placeholder={item.placeholder}
-                className="w-full h-24 bg-transparent font-serif italic leading-relaxed border-none outline-none resize-none"
+                className="w-full h-32 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg leading-relaxed outline-none focus:border-[#8A9A8A] transition-colors resize-none"
               />
-              <div className="h-[1px] bg-gray-100"></div>
             </div>
           ))}
         </div>
       </section>
 
-      <div className="p-8 bg-[#EBEBE6] border border-[var(--border)] italic font-serif text-sm leading-relaxed text-gray-600">
-        "구조를 따라 하는 것은 카피가 아니라 학습입니다. 뼈대를 가져오고 살(내용)은 내 것으로 채우세요."
+      <div className="p-8 bg-gradient-to-br from-[#8A9A8A]/10 to-transparent border border-[var(--border)] rounded-lg">
+        <div className="flex gap-4">
+          <div className="text-3xl">💡</div>
+          <p className="text-sm leading-relaxed text-gray-700">
+            <strong>Tip:</strong> 구조를 따라 하는 것은 카피가 아니라 학습입니다. 뼈대를 가져오고 살(내용)은 내 것으로 채우세요.
+          </p>
+        </div>
       </div>
     </div>
   );
