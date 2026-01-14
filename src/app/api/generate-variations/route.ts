@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Initializing Gemini AI...');
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `다음 인스타그램 캡션 텍스트를 기반으로 3가지 다른 스타일의 변형을 만들어주세요. 각 변형은 원본의 의미를 유지하면서도 톤, 스타일, 접근 방식이 달라야 합니다.
 
