@@ -78,7 +78,7 @@ export default function TemplatesPage() {
       {/* Header Info Section */}
       <section className="p-8 md:p-12 border-b border-black">
         <p className="mono font-bold text-[#8A9A8A] mb-4">Content Toolbox</p>
-        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
           Cheat<br/>Key.
         </h2>
       </section>

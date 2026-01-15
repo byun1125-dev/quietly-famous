@@ -71,7 +71,7 @@ export default function DailyTip() {
         <span className="mono font-bold px-2 py-1 bg-black text-white">Daily Tip</span>
         <span className="text-[10px] mono font-bold text-[#8A9A8A]">[{currentTip.category}]</span>
       </div>
-      <p className="text-2xl md:text-3xl font-black leading-tight tracking-tighter italic">
+      <p className="text-lg md:text-xl font-black leading-tight tracking-tighter italic">
         "{currentTip.text}"
       </p>
       <div className="mt-8 text-5xl opacity-20">{currentTip.icon}</div>

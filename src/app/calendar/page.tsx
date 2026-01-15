@@ -129,7 +129,7 @@ export default function CalendarPage() {
       {/* Header Info Section */}
       <section className="p-8 md:p-12 border-b border-black">
         <p className="mono font-bold text-[#8A9A8A] mb-4">Mission Tracking</p>
-        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase">
           Mission<br/>Calendar.
         </h2>
       </section>
@@ -162,7 +162,7 @@ export default function CalendarPage() {
 
           <div className="p-8 bg-black text-white">
             <p className="mono mb-2 opacity-50">Selected Date</p>
-            <h3 className="text-3xl font-black tracking-tighter">
+            <h3 className="text-xl font-black tracking-tighter">
               {new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', weekday: 'short' }).toUpperCase()}
             </h3>
           </div>
@@ -181,7 +181,7 @@ export default function CalendarPage() {
         <div className="divide-y divide-black">
           {/* Month Navigation */}
           <div className="p-8 flex items-center justify-between">
-            <h3 className="text-4xl font-black uppercase tracking-tighter">
+            <h3 className="text-2xl font-black uppercase tracking-tighter">
               {currentMonth.getFullYear()} / {String(currentMonth.getMonth() + 1).padStart(2, '0')}
             </h3>
             <div className="flex border border-black">
@@ -274,7 +274,7 @@ export default function CalendarPage() {
                           {task.isCompleted && <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
                         </button>
                         <span className="mono font-black text-xl opacity-20">{task.time}</span>
-                        <span className={`text-3xl font-black tracking-tighter uppercase ${task.isCompleted ? 'line-through opacity-30' : ''}`}>
+                        <span className={`text-lg font-black tracking-tighter uppercase ${task.isCompleted ? 'line-through opacity-30' : ''}`}>
                           {task.title}
                         </span>
                       </div>

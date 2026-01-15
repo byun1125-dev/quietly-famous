@@ -11,7 +11,7 @@ export default function Home() {
       <section className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black">
         <div className="p-8 md:p-12 space-y-6">
           <p className="mono font-bold text-black opacity-100">Project: Quietly Famous</p>
-          <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9]">
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9]">
             THE<br/>DESK
           </h2>
           <div className="max-w-md pt-8">

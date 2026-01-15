@@ -182,7 +182,7 @@ export default function BenchmarkingPage() {
       {/* Header Info Section */}
       <section className="p-8 md:p-12 border-b border-black bg-white">
         <p className="mono font-bold text-[#8A9A8A] mb-4">Content Research</p>
-        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
           Content<br/>Deconstructor.
         </h2>
       </section>

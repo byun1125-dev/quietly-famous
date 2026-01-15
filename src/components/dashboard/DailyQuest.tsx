@@ -30,7 +30,7 @@ export default function DailyQuest() {
       <div className="flex justify-between items-end">
         <div>
           <p className="mono mb-2 font-bold uppercase text-[#8A9A8A]">Active Tasks</p>
-          <h2 className="text-4xl font-black uppercase tracking-tighter">Practice List.</h2>
+          <h2 className="text-2xl font-black uppercase tracking-tighter">Practice List.</h2>
         </div>
         <div className="text-right">
           <p className="mono font-bold uppercase">Status</p>
@@ -55,7 +55,7 @@ export default function DailyQuest() {
             >
               <div className="flex items-center gap-8">
                 <span className="mono font-bold text-lg opacity-20 group-hover:opacity-100 transition-opacity">{task.time}</span>
-                <span className={`text-2xl font-bold tracking-tight ${task.isCompleted ? "line-through opacity-30" : ""}`}>
+                <span className={`text-lg font-bold tracking-tight ${task.isCompleted ? "line-through opacity-30" : ""}`}>
                   {task.title}
                 </span>
               </div>

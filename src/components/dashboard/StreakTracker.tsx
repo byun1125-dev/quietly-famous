@@ -33,11 +33,11 @@ export default function StreakTracker() {
     <div className="flex flex-col h-full justify-between">
       <p className="mono mb-4 font-bold">Continuity Tracker</p>
       <div className="flex items-baseline gap-4">
-        <span className="text-8xl md:text-[10rem] font-black leading-none tracking-tighter">
+        <span className="text-6xl md:text-7xl font-black leading-none tracking-tighter">
           {streak}
         </span>
         <div className="space-y-0">
-          <p className="text-3xl font-black uppercase italic">Days.</p>
+          <p className="text-2xl font-black uppercase italic">Days.</p>
           <p className="mono font-bold text-[#8A9A8A]">In Practice</p>
         </div>
       </div>
