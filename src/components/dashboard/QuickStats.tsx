@@ -3,15 +3,19 @@
 import { useSyncData } from "@/hooks/useSyncData";
 import { useMemo } from "react";
 
-type UserTask = {
+type ContentPlan = {
   id: string;
-  title: string;
-  time: string;
-  isCompleted: boolean;
+  type: 'reels' | 'feed' | 'story';
+  topic: string;
+  details: string;
+  hashtags: string;
+  status: 'planning' | 'creating' | 'completed';
+  checklist: { id: string; text: string; isCompleted: boolean }[];
+  createdAt: number;
 };
 
 export default function QuickStats() {
-  const [tasks] = useSyncData<Record<string, UserTask[]>>("user_calendar_tasks", {});
+  const [contentPlans] = useSyncData<Record<string, ContentPlan>>("content_plans_v2", {});
   
   // 이번 주 통계 계산
   const weekStats = useMemo(() => {
@@ -23,46 +27,45 @@ export default function QuickStats() {
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 7);
     
-    let totalTasks = 0;
-    let completedTasks = 0;
+    let totalContent = 0;
+    let completedContent = 0;
     
-    Object.entries(tasks).forEach(([dateStr, dayTasks]) => {
-      const taskDate = new Date(dateStr);
-      if (taskDate >= startOfWeek && taskDate < endOfWeek) {
-        totalTasks += dayTasks.length;
-        completedTasks += dayTasks.filter(t => t.isCompleted).length;
+    Object.entries(contentPlans).forEach(([dateStr, plan]) => {
+      const planDate = new Date(dateStr);
+      if (planDate >= startOfWeek && planDate < endOfWeek) {
+        totalContent++;
+        if (plan.status === 'completed') {
+          completedContent++;
+        }
       }
     });
     
-    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+    const completionRate = totalContent > 0 ? Math.round((completedContent / totalContent) * 100) : 0;
     
     return {
-      totalTasks,
-      completedTasks,
+      totalContent,
+      completedContent,
       completionRate
     };
-  }, [tasks]);
+  }, [contentPlans]);
 
   const stats = [
     {
-      label: "이번 주 완료",
-      value: weekStats.completedTasks,
-      total: weekStats.totalTasks,
-      icon: "✓",
-      color: "from-green-50 to-green-100 border-green-200"
+      label: "이번 주 콘텐츠",
+      value: weekStats.completedContent,
+      total: weekStats.totalContent,
+      icon: "✓"
     },
     {
       label: "완료율",
       value: `${weekStats.completionRate}%`,
-      icon: "📊",
-      color: "from-blue-50 to-blue-100 border-blue-200"
+      icon: "📊"
     },
     {
-      label: "이번 주 게시물",
-      value: weekStats.completedTasks,
-      subtitle: "개 완료",
-      icon: "📸",
-      color: "from-purple-50 to-purple-100 border-purple-200"
+      label: "계획 대비",
+      value: weekStats.completedContent,
+      subtitle: `/ ${weekStats.totalContent}`,
+      icon: "📸"
     }
   ];
 
