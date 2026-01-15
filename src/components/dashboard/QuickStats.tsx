@@ -67,22 +67,22 @@ export default function QuickStats() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 divide-x divide-black border-b border-black">
+    <div className="grid grid-cols-1 md:grid-cols-3 divide-x divide-black">
       {stats.map((stat, index) => (
         <div
           key={index}
-          className={`p-8 flex flex-col justify-between group hover:bg-black hover:text-white transition-colors`}
+          className="px-6 py-4 flex flex-col justify-between group hover:bg-black hover:text-white transition-colors"
         >
-          <div className="flex items-start justify-between mb-8">
-            <span className="text-sm font-bold mono">{stat.label}</span>
-            <span className="text-2xl group-hover:invert transition-all">{stat.icon}</span>
+          <div className="flex items-start justify-between mb-4">
+            <span className="text-xs opacity-40">{stat.label}</span>
+            <span className="text-sm">{stat.icon}</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <div className="text-5xl font-black">{stat.value}</div>
+            <div className="text-2xl font-medium">{stat.value}</div>
             {stat.total !== undefined && (
-              <span className="text-sm font-bold opacity-40">/ {stat.total}</span>
+              <span className="text-xs opacity-40">/ {stat.total}</span>
             )}
-            {stat.subtitle && <span className="text-sm font-bold opacity-40 uppercase">{stat.subtitle}</span>}
+            {stat.subtitle && <span className="text-xs opacity-40">{stat.subtitle}</span>}
           </div>
         </div>
       ))}

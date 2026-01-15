@@ -127,51 +127,51 @@ export default function CalendarPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-8 md:p-12 border-b border-black">
-        <p className="mono font-bold text-[#8A9A8A] mb-4">Mission Tracking</p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase">
-          Mission<br/>Calendar.
+      <section className="p-6 border-b border-black">
+        <p className="text-xs mb-2 opacity-40">Calendar</p>
+        <h2 className="text-xl font-normal">
+          Mission Tracker
         </h2>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] divide-x divide-black">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] divide-x divide-black">
         {/* Left: Weekly Themes & Date Info */}
         <aside className="divide-y divide-black flex flex-col bg-[#F5F5F2]">
-          <div className="p-8 space-y-6">
+          <div className="p-6 space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="font-black uppercase text-xl">Weekly Themes</h3>
-              <button onClick={() => setShowThemeModal(true)} className="mono font-bold hover:underline">Edit &gt;</button>
+              <h3 className="text-sm font-normal">Weekly Themes</h3>
+              <button onClick={() => setShowThemeModal(true)} className="text-xs hover:underline">Edit</button>
             </div>
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-1 gap-1">
               {['일', '월', '화', '수', '목', '금', '토'].map((dayName, dayIndex) => {
                 const theme = weeklyThemes.find(t => t.day === dayIndex);
                 return (
-                  <div key={dayIndex} className="flex items-center gap-4 p-3 border border-black/10 bg-white">
-                    <span className="mono font-bold w-6 opacity-30">{dayName}</span>
+                  <div key={dayIndex} className="flex items-center gap-3 p-2 border border-black/5 bg-white">
+                    <span className="text-xs w-4 opacity-30">{dayName}</span>
                     {theme ? (
                       <div className="flex items-center gap-2 flex-1">
-                        <span className="text-xl">{theme.icon}</span>
-                        <span className="text-xs font-bold truncate uppercase">{theme.theme}</span>
+                        <span className="text-sm">{theme.icon}</span>
+                        <span className="text-xs truncate">{theme.theme}</span>
                       </div>
-                    ) : <span className="text-xs mono opacity-20">-</span>}
+                    ) : <span className="text-xs opacity-20">-</span>}
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="p-8 bg-black text-white">
-            <p className="mono mb-2 opacity-50">Selected Date</p>
-            <h3 className="text-xl font-black tracking-tighter">
-              {new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', weekday: 'short' }).toUpperCase()}
+          <div className="p-6 bg-black text-white">
+            <p className="text-xs mb-1 opacity-50">Selected</p>
+            <h3 className="text-sm">
+              {new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </h3>
           </div>
 
-          <div className="flex-1 p-8">
-            <div className="p-6 border border-black bg-white">
-              <p className="mono font-bold mb-4">Quick Tip</p>
-              <p className="text-sm font-medium leading-relaxed italic">
-                "하루에 너무 많은 미션은 독이 돼. 3가지만 제대로 해도 인플루언서가 될 수 있어."
+          <div className="flex-1 p-6">
+            <div className="p-4 border border-black bg-white">
+              <p className="text-xs mb-2 opacity-40">Tip</p>
+              <p className="text-xs leading-relaxed">
+                하루 3가지만 집중하세요.
               </p>
             </div>
           </div>
@@ -180,20 +180,20 @@ export default function CalendarPage() {
         {/* Right: Calendar Grid & Task Manager */}
         <div className="divide-y divide-black">
           {/* Month Navigation */}
-          <div className="p-8 flex items-center justify-between">
-            <h3 className="text-2xl font-black uppercase tracking-tighter">
-              {currentMonth.getFullYear()} / {String(currentMonth.getMonth() + 1).padStart(2, '0')}
+          <div className="px-6 py-4 flex items-center justify-between">
+            <h3 className="text-lg font-normal">
+              {currentMonth.getFullYear()}.{String(currentMonth.getMonth() + 1).padStart(2, '0')}
             </h3>
-            <div className="flex border border-black">
-              <button onClick={goToPrevMonth} className="p-4 hover:bg-black hover:text-white transition-colors border-r border-black font-bold mono">&lt; Prev</button>
-              <button onClick={goToNextMonth} className="p-4 hover:bg-black hover:text-white transition-colors font-bold mono">Next &gt;</button>
+            <div className="flex border border-black text-xs">
+              <button onClick={goToPrevMonth} className="px-4 py-2 hover:bg-black hover:text-white transition-colors border-r border-black">Prev</button>
+              <button onClick={goToNextMonth} className="px-4 py-2 hover:bg-black hover:text-white transition-colors">Next</button>
             </div>
           </div>
 
           {/* Main Calendar Grid */}
           <div className="grid grid-cols-7 border-t border-black bg-black gap-[1px]">
-            {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day, i) => (
-              <div key={day} className={`bg-[#F5F5F2] p-4 text-center text-[10px] font-black tracking-widest ${i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''}`}>
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => (
+              <div key={day} className={`bg-[#F5F5F2] p-2 text-center text-xs ${i === 0 ? 'opacity-40' : i === 6 ? 'opacity-40' : ''}`}>
                 {day}
               </div>
             ))}
@@ -207,11 +207,11 @@ export default function CalendarPage() {
                 <div 
                   key={index}
                   onClick={() => selectDay(day)}
-                  className={`bg-white aspect-square p-2 md:p-4 border-black group cursor-pointer transition-all hover:bg-black hover:text-white flex flex-col justify-between ${!day ? 'bg-[#EBEBE6] pointer-events-none' : ''} ${isSelected ? 'bg-[#8A9A8A] text-white ring-2 ring-inset ring-black' : ''}`}
+                  className={`bg-white aspect-square p-2 border-black group cursor-pointer transition-all hover:bg-black hover:text-white flex flex-col justify-between ${!day ? 'bg-[#EBEBE6] pointer-events-none' : ''} ${isSelected ? 'bg-black text-white' : ''}`}
                 >
                   <div className="flex justify-between items-start">
-                    <span className={`text-lg font-black tracking-tighter ${isTodayDate && !isSelected ? 'text-[#8A9A8A]' : ''}`}>{day}</span>
-                    {theme && <span className="text-lg">{theme.icon}</span>}
+                    <span className={`text-sm ${isTodayDate && !isSelected ? 'font-bold' : ''}`}>{day}</span>
+                    {theme && <span className="text-xs">{theme.icon}</span>}
                   </div>
                   {day && hasTasksOnDate(day) && (
                     <div className="flex flex-wrap gap-1">

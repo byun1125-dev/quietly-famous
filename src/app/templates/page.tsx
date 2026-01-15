@@ -76,23 +76,23 @@ export default function TemplatesPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-8 md:p-12 border-b border-black">
-        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Toolbox</p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
-          Cheat<br/>Key.
+      <section className="px-6 py-4 border-b border-black">
+        <p className="text-xs opacity-40 mb-2">Cheat Key</p>
+        <h2 className="text-2xl font-normal tracking-tight">
+          Content Templates
         </h2>
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-2 divide-x divide-black">
         {/* Recommendation Section */}
-        <div className="p-8 md:p-12 space-y-8 bg-[#F5F5F2]">
-          <h3 className="font-black uppercase text-2xl tracking-tight">Today's Ideas ✨</h3>
-          <div className="grid grid-cols-1 gap-4">
+        <div className="px-6 py-4 space-y-4 bg-[#F5F5F2]">
+          <h3 className="text-sm font-medium">Ideas</h3>
+          <div className="grid grid-cols-1 gap-2">
             {RECOMMENDATIONS.map((rec, i) => (
-              <div key={i} className="p-6 bg-white border-2 border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group">
-                <div className="flex items-start gap-4">
-                  <span className="text-2xl opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
-                  <p className="font-bold uppercase leading-tight text-lg">{rec}</p>
+              <div key={i} className="p-3 bg-white border border-black hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group">
+                <div className="flex items-start gap-3">
+                  <span className="text-sm opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
+                  <p className="text-sm leading-tight">{rec}</p>
                 </div>
               </div>
             ))}
@@ -100,32 +100,32 @@ export default function TemplatesPage() {
         </div>
 
         {/* My Templates Section */}
-        <div className="p-8 md:p-12 space-y-8 bg-white">
-          <h3 className="font-black uppercase text-2xl tracking-tight">Create Template 📝</h3>
-          <div className="space-y-6">
+        <div className="px-6 py-4 space-y-4 bg-white">
+          <h3 className="text-sm font-medium">Create Template</h3>
+          <div className="space-y-4">
             <div className="space-y-2">
-              <p className="mono font-black">Template Title</p>
+              <p className="text-xs opacity-40">Title</p>
               <input 
-                placeholder="ENTER TITLE (E.G. MONDAY OOTD)..." 
+                placeholder="Enter title..." 
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
-                className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white text-lg placeholder:opacity-10"
+                className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
               />
             </div>
             <div className="space-y-2">
-              <p className="mono font-black">Content Body</p>
+              <p className="text-xs opacity-40">Content</p>
               <textarea 
-                placeholder="ENTER CAPTION OR HASHTAGS..."
+                placeholder="Enter caption or hashtags..."
                 value={newBody}
                 onChange={(e) => setNewBody(e.target.value)}
-                className="w-full h-48 p-4 border-2 border-black font-bold uppercase text-sm outline-none bg-white resize-none placeholder:opacity-10"
+                className="w-full h-32 px-3 py-2 border border-black text-sm outline-none bg-white resize-none placeholder:opacity-20"
               />
             </div>
             <button 
               onClick={addTemplate} 
-              className="w-full py-6 bg-black text-white font-black uppercase text-xl hover:bg-[#8A9A8A] transition-colors"
+              className="w-full py-3 bg-black text-white text-sm hover:bg-opacity-80 transition-colors"
             >
-              Save Template.
+              Save Template
             </button>
           </div>
         </div>
@@ -133,32 +133,32 @@ export default function TemplatesPage() {
 
       {/* Saved Templates Grid */}
       {templates.length > 0 && (
-        <section className="p-8 md:p-12 bg-[#EBEBE6]">
-          <h3 className="font-black uppercase text-2xl tracking-tight mb-8 text-black">Saved Collection</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section className="px-6 py-6 bg-[#F5F5F2]">
+          <h3 className="text-sm font-medium mb-4">Saved Templates</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {templates.map(t => (
-              <div key={t.id} className="border-2 border-black bg-white overflow-hidden flex flex-col hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all">
-                <div className="p-6 border-b-2 border-black flex-1">
-                  <h4 className="font-black uppercase text-xl mb-4 tracking-tight leading-none">{t.title}</h4>
-                  <p className="text-sm font-bold uppercase text-gray-500 leading-relaxed line-clamp-6">{t.body}</p>
+              <div key={t.id} className="border border-black bg-white overflow-hidden flex flex-col hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
+                <div className="p-4 border-b border-black flex-1">
+                  <h4 className="text-sm font-medium mb-2 leading-tight">{t.title}</h4>
+                  <p className="text-xs opacity-60 leading-relaxed line-clamp-4">{t.body}</p>
                 </div>
                 
-                <div className="p-0 flex divide-x divide-black border-t border-black">
+                <div className="p-0 flex divide-x divide-black border-t border-black text-xs">
                   <button 
                     onClick={() => copy(t.body)} 
-                    className="flex-1 py-4 bg-white font-black uppercase text-xs hover:bg-[#8A9A8A] transition-colors"
+                    className="flex-1 py-2 bg-white hover:bg-black hover:text-white transition-colors"
                   >
-                    Copy.
+                    Copy
                   </button>
                   <button 
                     onClick={() => showTemplateVariations(t)} 
-                    className="flex-1 py-4 bg-black text-white font-black uppercase text-xs hover:bg-[#8A9A8A] hover:text-black transition-colors"
+                    className="flex-1 py-2 bg-white hover:bg-black hover:text-white transition-colors"
                   >
-                    Variations.
+                    Variations
                   </button>
                   <button 
                     onClick={() => deleteTemplate(t.id)} 
-                    className="p-4 bg-white text-red-500 font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-colors"
+                    className="px-3 py-2 bg-white hover:bg-black hover:text-white transition-colors"
                   >
                     ✕
                   </button>

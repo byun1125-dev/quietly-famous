@@ -67,14 +67,14 @@ export default function DailyTip() {
 
   return (
     <div className="flex flex-col h-full justify-center">
-      <div className="flex items-center gap-3 mb-6">
-        <span className="mono font-bold px-2 py-1 bg-black text-white">Daily Tip</span>
-        <span className="text-[10px] mono font-bold text-[#8A9A8A]">[{currentTip.category}]</span>
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-xs px-2 py-1 bg-black text-white">Tip</span>
+        <span className="text-xs opacity-40">{currentTip.category}</span>
       </div>
-      <p className="text-lg md:text-xl font-black leading-tight tracking-tighter italic">
-        "{currentTip.text}"
+      <p className="text-sm leading-relaxed">
+        {currentTip.text}
       </p>
-      <div className="mt-8 text-5xl opacity-20">{currentTip.icon}</div>
+      <div className="mt-4 text-2xl opacity-20">{currentTip.icon}</div>
     </div>
   );
 }

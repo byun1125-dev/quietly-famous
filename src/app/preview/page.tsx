@@ -53,57 +53,57 @@ export default function PreviewPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-8 md:p-12 border-b border-black">
-        <p className="mono font-bold text-[#8A9A8A] mb-4">Visual Simulation</p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
-          Feed<br/>Preview.
+      <section className="px-6 py-4 border-b border-black">
+        <p className="text-xs opacity-40 mb-2">Preview</p>
+        <h2 className="text-2xl font-normal tracking-tight">
+          Instagram Feed Preview
         </h2>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_450px] divide-x divide-black bg-white flex-1 min-h-[800px]">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] divide-x divide-black bg-white flex-1 min-h-[800px]">
         {/* Left: Controls & Info */}
-        <div className="p-8 md:p-12 space-y-12">
-          <div className="space-y-8">
-            <h3 className="font-black uppercase text-2xl tracking-tight">Profile Settings</h3>
-            <div className="grid gap-8">
-              <div className="space-y-3">
-                <p className="mono font-black">Username</p>
+        <div className="px-6 py-4 space-y-6">
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium">Profile Settings</h3>
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <p className="text-xs opacity-40">Username</p>
                 <input 
                   value={profile.username}
                   onChange={(e) => setProfile(prev => ({ ...prev, username: e.target.value }))}
-                  className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white text-xl focus:bg-[#F5F5F2]"
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white focus:bg-[#F5F5F2]"
                 />
               </div>
-              <div className="space-y-3">
-                <p className="mono font-black">Display Name</p>
+              <div className="space-y-2">
+                <p className="text-xs opacity-40">Display Name</p>
                 <input 
                   value={profile.name}
                   onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
-                  className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white focus:bg-[#F5F5F2]"
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white focus:bg-[#F5F5F2]"
                 />
               </div>
-              <div className="space-y-3">
-                <p className="mono font-black">Biography</p>
+              <div className="space-y-2">
+                <p className="text-xs opacity-40">Biography</p>
                 <textarea 
                   value={profile.bio}
                   onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
-                  className="w-full h-32 p-4 border-2 border-black font-bold uppercase text-sm outline-none bg-white resize-none focus:bg-[#F5F5F2]"
+                  className="w-full h-24 px-3 py-2 border border-black text-sm outline-none bg-white resize-none focus:bg-[#F5F5F2]"
                 />
               </div>
             </div>
           </div>
 
-          <div className="p-8 border-2 border-black bg-[#F5F5F2] space-y-4">
-            <p className="mono font-black">Usage Tip</p>
-            <p className="text-sm font-bold leading-relaxed uppercase">
-              실제 게시 전에 피드의 색감과 조화를 확인하세요. 4:5 비율의 최신 인스타그램 레이아웃이 적용되어 있습니다. 우측 시뮬레이션 화면에서 직접 요소를 클릭하여 이미지를 업로드할 수 있습니다.
+          <div className="p-4 border border-black bg-[#F5F5F2] space-y-2">
+            <p className="text-xs opacity-40">Tip</p>
+            <p className="text-xs leading-relaxed">
+              실제 게시 전에 피드의 색감과 조화를 확인하세요. 우측 화면에서 요소를 클릭하여 이미지를 업로드할 수 있습니다.
             </p>
           </div>
         </div>
 
         {/* Right: Phone Simulation Area */}
-        <div className="bg-[#EBEBE6] p-8 flex justify-center items-start overflow-y-auto no-scrollbar">
-          <div className="w-full max-w-[380px] bg-white border-[6px] border-black rounded-[48px] shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] overflow-hidden sticky top-8">
+        <div className="bg-[#F5F5F2] p-6 flex justify-center items-start overflow-y-auto no-scrollbar">
+          <div className="w-full max-w-[360px] bg-white border-4 border-black rounded-[40px] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden sticky top-6">
             <div className="w-full min-h-[700px] font-sans text-black pb-20">
               {/* Header */}
               <header className="px-4 py-4 flex items-center justify-between sticky top-0 bg-white z-10 border-b border-gray-100">

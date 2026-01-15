@@ -123,59 +123,59 @@ export default function ArchivePage() {
     <>
       <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-8 md:p-12 border-b border-black">
-        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Storage</p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
-          The<br/>Archive.
+      <section className="px-6 py-4 border-b border-black">
+        <p className="text-xs opacity-40 mb-2">Archive</p>
+        <h2 className="text-2xl font-normal tracking-tight">
+          Content Archive
         </h2>
       </section>
 
       {/* Control Bar */}
-      <section className="grid grid-cols-1 md:grid-cols-[1fr_300px] divide-x divide-black border-b border-black">
-        <div className="p-6 bg-white flex flex-col md:flex-row gap-4 items-center">
+      <section className="grid grid-cols-1 md:grid-cols-[1fr_200px] divide-x divide-black border-b border-black">
+        <div className="px-6 py-4 bg-white flex flex-col md:flex-row gap-3 items-center">
           <input
             type="text"
-            placeholder="SEARCH ARCHIVE..."
+            placeholder="Search archive..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="flex-1 px-6 py-4 border-2 border-black font-bold uppercase outline-none focus:bg-black focus:text-white transition-all placeholder:opacity-20"
+            className="flex-1 px-4 py-2 border border-black text-sm outline-none focus:bg-black focus:text-white transition-all placeholder:opacity-20"
           />
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as any)}
-            className="w-full md:w-48 px-6 py-4 border-2 border-black font-black uppercase outline-none bg-white cursor-pointer"
+            className="w-full md:w-32 px-3 py-2 border border-black text-xs outline-none bg-white cursor-pointer"
           >
-            <option value="all">ALL TYPES</option>
-            <option value="note">NOTES ONLY</option>
-            <option value="image">IMAGES ONLY</option>
-            <option value="video">VIDEOS ONLY</option>
+            <option value="all">All</option>
+            <option value="note">Notes</option>
+            <option value="image">Images</option>
+            <option value="video">Videos</option>
           </select>
         </div>
         <button
           onClick={openModal}
-          className="p-6 bg-black text-white font-black uppercase text-xl hover:bg-[#8A9A8A] transition-colors"
+          className="px-6 py-4 bg-black text-white text-sm hover:bg-opacity-80 transition-colors"
         >
-          + ADD NEW ITEM
+          + New
         </button>
       </section>
 
       {/* Tags Bar */}
       {allTags.length > 0 && (
-        <section className="p-6 bg-[#F5F5F2] border-b border-black overflow-x-auto no-scrollbar">
+        <section className="px-6 py-3 bg-[#F5F5F2] border-b border-black overflow-x-auto no-scrollbar">
           <div className="flex gap-2">
             <button
               onClick={() => setSelectedTag(null)}
-              className={`px-6 py-2 border-2 border-black font-black uppercase text-[10px] transition-all ${
+              className={`px-4 py-1 border border-black text-xs transition-all ${
                 !selectedTag ? 'bg-black text-white' : 'bg-white text-black hover:bg-black/5'
               }`}
             >
-              ALL TAGS
+              All
             </button>
             {allTags.map(tag => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-                className={`px-6 py-2 border-2 border-black font-black uppercase text-[10px] transition-all ${
+                className={`px-4 py-1 border border-black text-xs transition-all ${
                   selectedTag === tag ? 'bg-black text-white' : 'bg-white text-black hover:bg-black/5'
                 }`}
               >
@@ -187,29 +187,29 @@ export default function ArchivePage() {
       )}
 
       {/* Grid Content */}
-      <section className="p-8 md:p-12 bg-white">
+      <section className="px-6 py-6 bg-white">
         {filteredItems.length === 0 ? (
-          <div className="py-40 text-center border-4 border-dashed border-black/5">
-            <p className="mono font-black text-4xl opacity-10 uppercase tracking-tighter">Empty Space.</p>
+          <div className="py-20 text-center border border-dashed border-black/10">
+            <p className="text-xs opacity-10">Empty</p>
           </div>
         ) : (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
             {filteredItems.map((item) => (
-              <div key={item.id} className="break-inside-avoid border-2 border-black bg-white overflow-hidden group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all">
+              <div key={item.id} className="break-inside-avoid border border-black bg-white overflow-hidden group hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all">
                 {/* Image */}
                 {item.imageUrl && (
-                  <div className="border-b-2 border-black overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                  <div className="border-b border-black overflow-hidden">
                     <img
                       src={item.imageUrl}
                       alt={item.title}
-                      className="w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-auto"
                     />
                   </div>
                 )}
 
                 {/* Video */}
                 {item.videoUrl && (
-                  <div className="aspect-video bg-black border-b-2 border-black">
+                  <div className="aspect-video bg-black border-b border-black">
                     {item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be') ? (
                       <iframe
                         src={item.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
@@ -226,28 +226,28 @@ export default function ArchivePage() {
 
                 {/* Note */}
                 {item.note && (
-                  <div className="p-8 bg-[#FFFFE0] border-b-2 border-black">
-                    <p className="text-xl font-bold leading-tight tracking-tight text-black">{item.note}</p>
+                  <div className="p-4 bg-[#F5F5F2] border-b border-black">
+                    <p className="text-sm leading-relaxed">{item.note}</p>
                   </div>
                 )}
 
                 {/* Footer */}
-                <div className="p-6 space-y-4">
-                  <div className="flex justify-between items-start gap-4">
-                    <h4 className="font-black uppercase text-lg leading-none tracking-tighter">{item.title}</h4>
+                <div className="p-4 space-y-2">
+                  <div className="flex justify-between items-start gap-3">
+                    <h4 className="text-sm font-medium leading-tight">{item.title}</h4>
                     <button
                       onClick={() => deleteItem(item.id)}
-                      className="text-[10px] font-black uppercase text-red-500 hover:underline"
+                      className="text-xs opacity-40 hover:opacity-100"
                     >
-                      Delete
+                      ✕
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1">
                     {item.tags?.map(tag => (
-                      <span key={tag} className="px-3 py-1 bg-black text-white text-[9px] font-black uppercase">#{tag}</span>
+                      <span key={tag} className="px-2 py-0.5 bg-black text-white text-xs">#{tag}</span>
                     ))}
                   </div>
-                  <p className="mono font-bold opacity-30 text-[9px]">{new Date(item.createdAt).toLocaleDateString()}</p>
+                  <p className="text-xs opacity-30">{new Date(item.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
             ))}

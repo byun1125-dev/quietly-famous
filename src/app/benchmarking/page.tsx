@@ -180,54 +180,54 @@ export default function BenchmarkingPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-8 md:p-12 border-b border-black bg-white">
-        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Research</p>
-        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] uppercase text-black">
-          Content<br/>Deconstructor.
+      <section className="px-6 py-4 border-b border-black bg-white">
+        <p className="text-xs opacity-40 mb-2">Model</p>
+        <h2 className="text-2xl font-normal tracking-tight">
+          Content Deconstructor
         </h2>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] divide-x divide-black">
+      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] divide-x divide-black">
         {/* Sidebar - Analysis List */}
         <aside className="divide-y divide-black flex flex-col bg-[#F5F5F2]">
-          <div className="p-8">
+          <div className="px-6 py-4">
             <button
               onClick={startNew}
-              className="w-full p-6 bg-black text-white rounded-none font-black uppercase text-lg hover:bg-[#8A9A8A] transition-colors shadow-[4px_4px_0px_0px_rgba(138,154,138,1)]"
+              className="w-full px-4 py-3 bg-black text-white text-sm hover:bg-opacity-80 transition-colors"
             >
-              + NEW ANALYSIS
+              + New Analysis
             </button>
           </div>
 
           <div className="flex-1 overflow-y-auto divide-y divide-black/10">
             {analyses.length === 0 ? (
-              <p className="text-sm font-bold uppercase opacity-20 text-center py-20">No Analysis Found.</p>
+              <p className="text-xs opacity-20 text-center py-12">No analysis found</p>
             ) : (
               analyses.map(analysis => (
                 <div
                   key={analysis.id}
-                  className={`p-6 cursor-pointer transition-all ${
+                  className={`p-4 cursor-pointer transition-all ${
                     selectedId === analysis.id ? 'bg-black text-white' : 'bg-white hover:bg-black/5'
                   }`}
                   onClick={() => loadAnalysis(analysis)}
                 >
-                  <div className="flex justify-between items-start mb-4">
-                    <h4 className="font-black uppercase text-sm leading-tight tracking-tight">{analysis.title}</h4>
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="text-sm font-medium leading-tight">{analysis.title}</h4>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAnalysis(analysis.id);
                       }}
-                      className={`text-[10px] font-black uppercase ${selectedId === analysis.id ? 'text-[#8A9A8A]' : 'text-red-500'}`}
+                      className="text-xs opacity-40 hover:opacity-100"
                     >
                       ✕
                     </button>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className={`text-[9px] px-2 py-1 font-black uppercase ${selectedId === analysis.id ? 'bg-[#8A9A8A] text-black' : 'bg-black text-white'}`}>
+                    <span className={`text-xs px-2 py-0.5 ${selectedId === analysis.id ? 'bg-white text-black' : 'bg-black text-white'}`}>
                       {analysis.category}
                     </span>
-                    <p className={`text-[9px] mono font-bold ${selectedId === analysis.id ? 'opacity-50' : 'opacity-20'}`}>
+                    <p className="text-xs opacity-30">
                       {new Date(analysis.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -240,59 +240,59 @@ export default function BenchmarkingPage() {
         {/* Main - Analysis Form */}
         <main className="divide-y divide-black">
           {!isCreating && !selectedId ? (
-            <div className="py-40 text-center">
-              <p className="mono font-black text-4xl opacity-10 uppercase tracking-tighter">Selection Required.</p>
+            <div className="py-20 text-center">
+              <p className="text-xs opacity-10">Select or create new</p>
             </div>
           ) : (
             <>
               {/* Target Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black bg-white">
-                <div className="p-8 md:p-12 space-y-8">
-                  <div className="space-y-4">
-                    <p className="mono font-black">Title & Category</p>
-                    <div className="flex border-2 border-black">
+                <div className="px-6 py-4 space-y-4">
+                  <div className="space-y-2">
+                    <p className="text-xs opacity-40">Title & Category</p>
+                    <div className="flex border border-black">
                       <input
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        placeholder="ENTER TITLE..."
-                        className="flex-1 p-4 font-black uppercase outline-none bg-white text-xl placeholder:opacity-20"
+                        placeholder="Enter title..."
+                        className="flex-1 px-3 py-2 text-sm outline-none bg-white placeholder:opacity-20"
                       />
                       <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value as any)}
-                        className="p-4 border-l-2 border-black font-black uppercase outline-none bg-[#F5F5F2] cursor-pointer"
+                        className="px-3 py-2 border-l border-black text-xs outline-none bg-[#F5F5F2] cursor-pointer"
                       >
-                        <option value="reels">REELS</option>
-                        <option value="feed">FEED</option>
-                        <option value="story">STORY</option>
+                        <option value="reels">Reels</option>
+                        <option value="feed">Feed</option>
+                        <option value="story">Story</option>
                       </select>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <p className="mono font-black">Target Reference Link</p>
+                  <div className="space-y-2">
+                    <p className="text-xs opacity-40">Reference Link</p>
                     <input
                       type="url"
                       value={targetLink}
                       onChange={(e) => setTargetLink(e.target.value)}
-                      placeholder="HTTPS://INSTAGRAM.COM/..."
-                      className="w-full p-4 border-2 border-black font-bold uppercase outline-none bg-white placeholder:opacity-20"
+                      placeholder="https://instagram.com/..."
+                      className="w-full px-3 py-2 border border-black text-xs outline-none bg-white placeholder:opacity-20"
                     />
                   </div>
                 </div>
-                <div className="p-8 md:p-12 bg-[#F5F5F2] flex flex-col justify-center items-center relative overflow-hidden group">
-                  <p className="mono font-black mb-4">Screenshot Reference</p>
+                <div className="px-6 py-4 bg-[#F5F5F2] flex flex-col justify-center items-center">
+                  <p className="text-xs opacity-40 mb-3">Screenshot</p>
                   <input
                     type="url"
                     value={screenshot}
                     onChange={(e) => setScreenshot(e.target.value)}
-                    placeholder="IMAGE URL..."
-                    className="w-full p-4 border-2 border-black font-bold uppercase outline-none bg-white mb-4 z-10"
+                    placeholder="Image URL..."
+                    className="w-full px-3 py-2 border border-black text-xs outline-none bg-white mb-3"
                   />
                   {screenshot ? (
-                    <img src={screenshot} alt="Ref" className="max-h-[200px] border-2 border-black grayscale group-hover:grayscale-0 transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+                    <img src={screenshot} alt="Ref" className="max-h-40 border border-black" />
                   ) : (
-                    <div className="w-full h-40 border-2 border-black border-dashed flex items-center justify-center mono opacity-20">No Image</div>
+                    <div className="w-full h-32 border border-dashed border-black/20 flex items-center justify-center text-xs opacity-20">No image</div>
                   )}
                 </div>
               </div>
@@ -304,17 +304,17 @@ export default function BenchmarkingPage() {
                   const setValue = item.key === 'hook' ? setHook : item.key === 'body' ? setBody : item.key === 'cta' ? setCta : setApply;
                   
                   return (
-                    <div key={item.key} className="bg-white p-8 md:p-12 space-y-6">
+                    <div key={item.key} className="bg-white px-6 py-4 space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <span className="w-10 h-10 bg-black text-white flex items-center justify-center font-black text-lg">{index + 1}</span>
-                          <h4 className="font-black uppercase text-xl tracking-tight">{item.label}</h4>
+                        <div className="flex items-center gap-2">
+                          <span className="w-6 h-6 bg-black text-white flex items-center justify-center text-xs">{index + 1}</span>
+                          <h4 className="text-sm font-medium">{item.label}</h4>
                         </div>
                         <details className="group">
-                          <summary className="list-none cursor-pointer mono font-black hover:underline group-open:text-[#8A9A8A]">Examples &gt;</summary>
-                          <ul className="mt-4 p-4 bg-[#F5F5F2] border-2 border-black space-y-2">
+                          <summary className="list-none cursor-pointer text-xs hover:underline">Examples</summary>
+                          <ul className="mt-2 p-3 bg-[#F5F5F2] border border-black space-y-1 absolute right-6 min-w-[200px] z-10">
                             {item.examples.map((example, i) => (
-                              <li key={i} className="text-[10px] font-bold uppercase text-gray-600 border-b border-black/5 pb-1">- {example}</li>
+                              <li key={i} className="text-xs opacity-60 pb-1">- {example}</li>
                             ))}
                           </ul>
                         </details>
@@ -323,8 +323,8 @@ export default function BenchmarkingPage() {
                       <textarea
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        placeholder={item.placeholder.toUpperCase()}
-                        className="w-full h-40 p-0 border-none font-bold text-lg leading-tight outline-none bg-transparent resize-none placeholder:opacity-10"
+                        placeholder={item.placeholder}
+                        className="w-full h-32 p-0 border-none text-sm leading-relaxed outline-none bg-transparent resize-none placeholder:opacity-20"
                       />
                     </div>
                   );
@@ -335,16 +335,16 @@ export default function BenchmarkingPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black border-t border-black bg-white">
                 <button
                   onClick={saveAnalysis}
-                  className="p-8 bg-[#8A9A8A] text-black font-black uppercase text-2xl hover:bg-black hover:text-white transition-all"
+                  className="px-6 py-4 bg-black text-white text-sm hover:bg-opacity-80 transition-all"
                 >
-                  Save Analysis.
+                  Save Analysis
                 </button>
                 <button
                   onClick={exportToTemplate}
-                  className="p-8 bg-white text-black font-black uppercase text-2xl hover:bg-black hover:text-white transition-all disabled:opacity-10"
+                  className="px-6 py-4 bg-white text-black text-sm hover:bg-black hover:text-white transition-all disabled:opacity-10"
                   disabled={!apply.trim()}
                 >
-                  Export to Cheat Key.
+                  Export to Cheat Key
                 </button>
               </div>
             </>

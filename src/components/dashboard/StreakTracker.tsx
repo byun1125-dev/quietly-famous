@@ -31,22 +31,22 @@ export default function StreakTracker() {
 
   return (
     <div className="flex flex-col h-full justify-between">
-      <p className="mono mb-4 font-bold">Continuity Tracker</p>
-      <div className="flex items-baseline gap-4">
-        <span className="text-6xl md:text-7xl font-black leading-none tracking-tighter">
+      <p className="text-xs opacity-40 mb-2">Streak</p>
+      <div className="flex items-baseline gap-3">
+        <span className="text-4xl font-medium leading-none">
           {streak}
         </span>
         <div className="space-y-0">
-          <p className="text-2xl font-black uppercase italic">Days.</p>
-          <p className="mono font-bold text-[#8A9A8A]">In Practice</p>
+          <p className="text-lg font-normal">Days</p>
+          <p className="text-xs opacity-40">In practice</p>
         </div>
       </div>
       
-      <div className="mt-8">
-        <p className="text-sm font-medium leading-relaxed text-gray-500 italic max-w-[200px]">
+      <div className="mt-4">
+        <p className="text-xs leading-relaxed opacity-60 max-w-[200px]">
           {streak > 0 
-            ? "당신의 꾸준함은 조용한 파동이 되어 멀리 퍼져나갑니다." 
-            : "새로운 시작은 항상 가장 아름다운 법입니다."}
+            ? "꾸준함이 만드는 변화" 
+            : "새로운 시작"}
         </p>
       </div>
     </div>
