@@ -18,26 +18,23 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" as="style" crossOrigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
       </head>
-      <body className="antialiased selection:bg-black selection:text-white min-h-screen p-4 md:p-10 bg-[#EBEBE6]">
-        {/* Main Grid Frame */}
-        <div className="grid-container bg-[#F5F5F2] max-w-[1400px] mx-auto overflow-hidden">
-          {/* Top Bar */}
-          <header className="grid grid-cols-1 md:grid-cols-[1fr_200px_80px] border-b border-black">
-            <div className="p-4 md:px-8 md:py-6 flex items-center justify-between border-r border-black">
-              <h1 className="text-xl font-bold tracking-tighter uppercase">Quietly Famous.</h1>
-              <p className="mono hidden md:block text-[#8A9A8A]">Influencer Management Tool</p>
+      <body className="antialiased selection:bg-black selection:text-white bg-[#F5F5F2]">
+        {/* Main Grid Container - 이미지와 동일한 구조 */}
+        <div className="min-h-screen border-l border-t border-black">
+          {/* Top Bar - 매우 얇은 상단 바 */}
+          <header className="grid grid-cols-[1fr_auto] border-b border-black">
+            <div className="px-6 py-3 flex items-center justify-between border-r border-black">
+              <h1 className="text-sm font-normal">Quietly Famous <span className="opacity-40">&gt;</span> Influencer Management Tool</h1>
             </div>
-            <div className="p-4 flex items-center justify-center border-r border-black">
+            <div className="px-6 py-3 flex items-center gap-4">
               <AuthButton />
-            </div>
-            <div className="p-4 flex items-center justify-center mono font-bold">
-              v.25
+              <span className="text-xs opacity-40">v.25</span>
             </div>
           </header>
 
-          <div className="flex flex-col md:flex-row">
-            {/* Side Navigation */}
-            <nav className="w-full md:w-48 border-r border-black flex md:flex-col shrink-0 overflow-x-auto md:overflow-x-visible no-scrollbar">
+          <div className="flex">
+            {/* Left Sidebar - 이미지처럼 매우 좁은 세로 메뉴 */}
+            <nav className="w-48 border-r border-black flex flex-col bg-white">
               <NavLink href="/" label="The Desk" />
               <NavLink href="/calendar" label="Calendar" />
               <NavLink href="/archive" label="Archive" />
@@ -46,8 +43,8 @@ export default function RootLayout({
               <NavLink href="/preview" label="Preview" />
             </nav>
 
-            {/* Main Content Area */}
-            <main className="flex-1 min-h-[80vh] bg-white">
+            {/* Main Content - 우측 넓은 영역 */}
+            <main className="flex-1 min-h-[calc(100vh-50px)] bg-white">
               {children}
             </main>
           </div>
@@ -62,12 +59,9 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <a 
       href={href} 
-      className="flex-1 md:flex-none p-4 md:px-8 md:py-6 border-b border-black text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors flex items-center justify-center md:justify-start group"
+      className="px-6 py-4 border-b border-black text-sm hover:bg-black hover:text-white transition-colors"
     >
-      <span className="relative">
-        {label}
-        <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8A9A8A] transition-all duration-300 group-hover:w-full"></div>
-      </span>
+      {label}
     </a>
   );
 }
