@@ -42,7 +42,7 @@ export default function TemplatesPage() {
       // Gemini API 키 (클라이언트에서 직접 사용)
       const API_KEY = 'AIzaSyA96BP2u3jPeOpTkY3_8v9c9Z8N2jBVa_o';
       const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
       const prompt = `다음 인스타그램 캡션을 3가지 다른 스타일로 변형해주세요. 원본의 의미는 유지하되, 톤과 표현을 다르게 해주세요.
 
