@@ -254,8 +254,9 @@ export default function ArchivePage() {
           </div>
         )}
       </section>
+    </div>
 
-      {/* Unified Modal */}
+    {/* Unified Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
           <div className="bg-white rounded-lg max-w-3xl w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
