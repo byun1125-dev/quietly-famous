@@ -105,17 +105,40 @@ export default function PreviewPage() {
     }
   };
 
+  const resetPreview = () => {
+    if (confirm("프리뷰를 초기화하시겠습니까? 모든 데이터가 삭제됩니다.")) {
+      setProfile({
+        name: "Quietly Famous",
+        username: "gen.gentle",
+        bio: "조용하지만 확실한 존재감 🌑",
+        profilePic: ""
+      });
+      setHighlights([]);
+      setPosts([]);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header */}
       <section className="px-6 py-4">
-        <p className="text-xs opacity-40">Preview</p>
-        <h2 className="text-xl font-normal mt-2">
-          Instagram Feed Preview
-        </h2>
-        <p className="text-sm leading-relaxed opacity-60 mt-3">
-          요소를 클릭해 직접 수정하고 피드의 조화를 확인하세요.
-        </p>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-xs opacity-40">Preview</p>
+            <h2 className="text-xl font-normal mt-2">
+              Instagram Feed Preview
+            </h2>
+            <p className="text-sm leading-relaxed opacity-60 mt-3">
+              요소를 클릭해 직접 수정하고 피드의 조화를 확인하세요.
+            </p>
+          </div>
+          <button
+            onClick={resetPreview}
+            className="px-3 py-2 border border-black text-xs hover:bg-black hover:text-white transition-colors"
+          >
+            초기화
+          </button>
+        </div>
       </section>
 
       {/* Main Preview Area */}
