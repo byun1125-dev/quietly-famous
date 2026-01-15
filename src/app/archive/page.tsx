@@ -307,11 +307,9 @@ export default function ArchivePage() {
                   type="text"
                   value={modalImageUrl}
                   onChange={(e) => setModalImageUrl(e.target.value)}
-                  onPaste={(e) => {
-                    e.stopPropagation();
-                    const pastedText = e.clipboardData.getData('text');
-                    setModalImageUrl(pastedText);
-                  }}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck="false"
                   placeholder="https://example.com/image.jpg"
                   className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
                 />
@@ -336,11 +334,9 @@ export default function ArchivePage() {
                   type="text"
                   value={modalVideoUrl}
                   onChange={(e) => setModalVideoUrl(e.target.value)}
-                  onPaste={(e) => {
-                    e.stopPropagation();
-                    const pastedText = e.clipboardData.getData('text');
-                    setModalVideoUrl(pastedText);
-                  }}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  spellCheck="false"
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
                 />
