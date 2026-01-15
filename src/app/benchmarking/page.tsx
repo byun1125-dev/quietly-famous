@@ -1,7 +1,9 @@
 "use client";
 
 import { useSyncData } from "@/hooks/useSyncData";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import { auth, storage } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 type Analysis = {
   id: string;
@@ -64,6 +66,8 @@ export default function BenchmarkingPage() {
   const [analyses, setAnalyses] = useSyncData<Analysis[]>("analyses_v2", []);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form states
   const [title, setTitle] = useState("");
@@ -177,6 +181,73 @@ export default function BenchmarkingPage() {
     alert("Cheat Key에 템플릿으로 저장되었습니다!");
   };
 
+  // 이미지 압축 및 업로드
+  const handleImageUpload = async (file: File) => {
+    if (!auth.currentUser) {
+      alert("이미지를 업로드하려면 로그인이 필요합니다.");
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // 이미지 압축
+      const compressedFile = await compressImage(file, 800, 0.8);
+      
+      // Firebase Storage에 업로드
+      const storageRef = ref(storage, `users/${auth.currentUser.uid}/benchmarking/${Date.now()}_${file.name}`);
+      const snapshot = await uploadBytes(storageRef, compressedFile);
+      const url = await getDownloadURL(snapshot.ref);
+      
+      setScreenshot(url);
+    } catch (e) {
+      console.error("업로드 에러:", e);
+      alert(`업로드 실패: ${e instanceof Error ? e.message : '알 수 없는 오류'}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // 이미지 압축 함수
+  const compressImage = (file: File, maxWidth: number, quality: number): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+              } else {
+                reject(new Error('압축 실패'));
+              }
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+      };
+      reader.onerror = reject;
+    });
+  };
+
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
@@ -209,9 +280,9 @@ export default function BenchmarkingPage() {
               analyses.map(analysis => (
                 <div
                   key={analysis.id}
-                  className={`p-4 cursor-pointer transition-all relative ${
+                  className={`p-4 cursor-pointer transition-all ${
                     selectedId === analysis.id 
-                      ? 'bg-white border-2 border-black -m-[1px] z-10' 
+                      ? 'bg-white shadow-[inset_0_0_0_2px_rgba(0,0,0,1)]' 
                       : 'bg-white hover:bg-black/5 border-b border-black/10 last:border-b-0'
                   }`}
                   onClick={() => loadAnalysis(analysis)}
@@ -254,30 +325,46 @@ export default function BenchmarkingPage() {
             </div>
           ) : (
             <>
-              {/* Target Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black bg-white">
-                <div className="px-6 py-4 space-y-4">
+              {/* Reference Section */}
+              <div className="px-6 py-4 bg-white space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-medium">Reference</h3>
+                  <span className="text-xs px-2 py-1 border border-black bg-white">{category.toUpperCase()}</span>
+                </div>
+
+                <div className="space-y-3">
                   <div className="space-y-2">
-                    <p className="text-xs opacity-40">Title & Category</p>
-                    <div className="flex border border-black">
-                      <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Enter title..."
-                        className="flex-1 px-3 py-2 text-sm outline-none bg-white placeholder:opacity-20"
-                      />
-                      <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value as any)}
-                        className="px-3 py-2 border-l border-black text-xs outline-none bg-[#F5F5F2] cursor-pointer"
-                      >
-                        <option value="reels">Reels</option>
-                        <option value="feed">Feed</option>
-                        <option value="story">Story</option>
-                      </select>
-                    </div>
+                    <p className="text-xs opacity-40">Title</p>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      placeholder="Enter title..."
+                      className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
+                    />
                   </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      onClick={() => setCategory('reels')}
+                      className={`px-3 py-2 text-xs border border-black transition-colors ${category === 'reels' ? 'bg-black text-white' : 'bg-white hover:bg-black/5'}`}
+                    >
+                      Reels
+                    </button>
+                    <button
+                      onClick={() => setCategory('feed')}
+                      className={`px-3 py-2 text-xs border border-black transition-colors ${category === 'feed' ? 'bg-black text-white' : 'bg-white hover:bg-black/5'}`}
+                    >
+                      Feed
+                    </button>
+                    <button
+                      onClick={() => setCategory('story')}
+                      className={`px-3 py-2 text-xs border border-black transition-colors ${category === 'story' ? 'bg-black text-white' : 'bg-white hover:bg-black/5'}`}
+                    >
+                      Story
+                    </button>
+                  </div>
+
                   <div className="space-y-2">
                     <p className="text-xs opacity-40">Reference Link</p>
                     <input
@@ -291,63 +378,86 @@ export default function BenchmarkingPage() {
                       className="w-full px-3 py-2 border border-black text-xs outline-none bg-white placeholder:opacity-20"
                     />
                   </div>
-                </div>
-                <div className="px-6 py-4 bg-[#F5F5F2] flex flex-col justify-center items-center">
-                  <p className="text-xs opacity-40 mb-3">Screenshot</p>
-                  <input
-                    type="text"
-                    value={screenshot}
-                    onChange={(e) => setScreenshot(e.target.value)}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    spellCheck="false"
-                    placeholder="Image URL..."
-                    className="w-full px-3 py-2 border border-black text-xs outline-none bg-white mb-3 placeholder:opacity-20"
-                  />
-                  {screenshot ? (
-                    <img src={screenshot} alt="Ref" className="max-h-40 border border-black" />
-                  ) : (
-                    <div className="w-full h-32 border border-dashed border-black/20 flex items-center justify-center text-xs opacity-20">No image</div>
-                  )}
+
+                  <div className="space-y-2">
+                    <p className="text-xs opacity-40">Screenshot</p>
+                    <div className="flex gap-2">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(file);
+                        }}
+                        className="hidden"
+                      />
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="px-4 py-2 border border-black text-xs hover:bg-black hover:text-white transition-colors disabled:opacity-50"
+                      >
+                        {uploading ? '업로드 중...' : '이미지 업로드'}
+                      </button>
+                      {screenshot && (
+                        <button
+                          onClick={() => setScreenshot("")}
+                          className="px-3 py-2 text-xs opacity-40 hover:opacity-100"
+                        >
+                          제거
+                        </button>
+                      )}
+                    </div>
+                    {screenshot && (
+                      <img src={screenshot} alt="Ref" className="w-full max-h-60 object-contain border border-black mt-2" />
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Framework Analysis Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 bg-black gap-[1px]">
-                {FRAMEWORK.map((item, index) => {
-                  const value = item.key === 'hook' ? hook : item.key === 'body' ? body : item.key === 'cta' ? cta : apply;
-                  const setValue = item.key === 'hook' ? setHook : item.key === 'body' ? setBody : item.key === 'cta' ? setCta : setApply;
-                  
-                  return (
-                    <div key={item.key} className="bg-white px-6 py-4 space-y-3">
-                      <div className="flex items-center justify-between">
+              {/* Deconstruct Section */}
+              <div className="px-6 py-4 bg-white">
+                <h3 className="text-sm font-medium mb-4">Deconstruct</h3>
+                <div className="space-y-4">
+                  {FRAMEWORK.slice(0, 3).map((item, index) => {
+                    const value = item.key === 'hook' ? hook : item.key === 'body' ? body : cta;
+                    const setValue = item.key === 'hook' ? setHook : item.key === 'body' ? setBody : setCta;
+                    
+                    return (
+                      <div key={item.key} className="space-y-2">
                         <div className="flex items-center gap-2">
-                          <span className="w-6 h-6 bg-black text-white flex items-center justify-center text-xs">{index + 1}</span>
-                          <h4 className="text-sm font-medium">{item.label}</h4>
+                          <span className="w-5 h-5 bg-black text-white flex items-center justify-center text-xs">{index + 1}</span>
+                          <p className="text-xs font-medium">{item.label}</p>
+                          <span className="text-xs opacity-20">→</span>
                         </div>
-                        <details className="group">
-                          <summary className="list-none cursor-pointer text-xs hover:underline">Examples</summary>
-                          <ul className="mt-2 p-3 bg-[#F5F5F2] border border-black space-y-1 absolute right-6 min-w-[200px] z-10">
-                            {item.examples.map((example, i) => (
-                              <li key={i} className="text-xs opacity-60 pb-1">- {example}</li>
-                            ))}
-                          </ul>
-                        </details>
+                        <textarea
+                          value={value}
+                          onChange={(e) => setValue(e.target.value)}
+                          placeholder={item.placeholder}
+                          className="w-full h-24 px-3 py-2 border border-black text-sm leading-relaxed outline-none bg-white resize-none placeholder:opacity-20"
+                        />
                       </div>
-                      
-                      <textarea
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        placeholder={item.placeholder}
-                        className="w-full h-32 p-0 border-none text-sm leading-relaxed outline-none bg-transparent resize-none placeholder:opacity-20"
-                      />
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Apply Section */}
+              <div className="px-6 py-4 bg-[#F5F5F2]">
+                <h3 className="text-sm font-medium mb-4">Apply to My Content</h3>
+                <div className="space-y-2">
+                  <p className="text-xs opacity-40">이 구조를 내 콘텐츠에 어떻게 적용할까요?</p>
+                  <textarea
+                    value={apply}
+                    onChange={(e) => setApply(e.target.value)}
+                    placeholder="나만의 스타일로 변형하기, 타겟 독자에 맞게 조정..."
+                    className="w-full h-32 px-3 py-2 border border-black text-sm leading-relaxed outline-none bg-white resize-none placeholder:opacity-20"
+                  />
+                </div>
               </div>
 
               {/* Action Bar */}
-              <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black border-t border-black bg-white">
+              <div className="grid grid-cols-2 divide-x divide-black bg-white">
                 <button
                   onClick={saveAnalysis}
                   className="px-6 py-4 bg-black text-white text-sm hover:bg-opacity-80 transition-all"
