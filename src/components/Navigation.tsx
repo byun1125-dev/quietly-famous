@@ -67,7 +67,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <NavLink href="/" label="The Desk" onClick={() => setMenuOpen(false)} />
           <NavLink href="/calendar" label="Calendar" onClick={() => setMenuOpen(false)} />
           <NavLink href="/archive" label="Archive" onClick={() => setMenuOpen(false)} />
-          <NavLink href="/benchmarking" label="Model" onClick={() => setMenuOpen(false)} />
+          <NavLink href="/benchmarking" label="Reference" onClick={() => setMenuOpen(false)} />
           <NavLink href="/templates" label="Cheat Key" onClick={() => setMenuOpen(false)} />
           <NavLink href="/preview" label="Preview" onClick={() => setMenuOpen(false)} />
           
