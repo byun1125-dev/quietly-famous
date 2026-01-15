@@ -15,8 +15,7 @@
     "firebase": "^11.1.0",
     "lucide-react": "^0.471.0",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.6.0",
-    "@google/generative-ai": "^0.21.0"
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "typescript": "^5",

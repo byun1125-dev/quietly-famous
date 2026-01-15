@@ -2,7 +2,6 @@
 
 import { useSyncData } from "@/hooks/useSyncData";
 import { useState } from "react";
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 type Template = { id: string; title: string; body: string };
 
@@ -36,57 +35,42 @@ export default function TemplatesPage() {
     setTemplates(prev => prev.filter(t => t.id !== id));
   };
 
-  // AI 변형 생성 (클라이언트 사이드)
-  const generateVariations = async (original: string) => {
-    try {
-      // Gemini API 키 (클라이언트에서 직접 사용)
-      const API_KEY = 'AIzaSyA96BP2u3jPeOpTkY3_8v9c9Z8N2jBVa_o';
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  // 패턴 기반 변형 생성
+  const generateVariations = (original: string) => {
+    const variations: string[] = [];
 
-      const prompt = `다음 인스타그램 캡션을 3가지 다른 스타일로 변형해주세요. 원본의 의미는 유지하되, 톤과 표현을 다르게 해주세요.
+    // 변형 1: 이모지 추가/변경
+    const emojis = ['✨', '💫', '🌟', '💝', '💕', '🔥', '💯', '👀', '🎯', '✅'];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    variations.push(`${randomEmoji} ${original} ${randomEmoji}`);
 
-원본: "${original}"
-
-조건:
-1. 각 변형은 원본과 비슷한 길이
-2. 인스타그램에 적합한 캐주얼한 톤
-3. 이모지는 적절히 사용
-
-변형 1, 변형 2, 변형 3을 각각 새 줄로 구분해서 제공해주세요.`;
-
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-      
-      // 응답을 라인별로 분리
-      const lines = text.split('\n').filter(line => line.trim().length > 0);
-      
-      // 상위 3개만 반환 (변형 1, 2, 3)
-      return lines.slice(0, 3).map(line => 
-        line.replace(/^변형\s*\d+[:：]\s*/i, '').trim()
-      );
-    } catch (error) {
-      console.error('AI 생성 실패:', error);
-      // 실패 시 간단한 패턴 기반 폴백
-      return [
-        `✨ ${original} ✨`,
-        `${original}! 어때요? 💬`,
-        `완전 ${original} 💪`
-      ];
+    // 변형 2: 질문형으로 전환
+    if (!original.includes('?')) {
+      const questionStarters = ['혹시', '여러분도', '이거', '지금'];
+      const randomStarter = questionStarters[Math.floor(Math.random() * questionStarters.length)];
+      variations.push(`${randomStarter} ${original}? 💬`);
+    } else {
+      variations.push(original.replace(/\?/g, '!! 🎉'));
     }
+
+    // 변형 3: 강조 추가
+    const emphasisWords = ['진짜', '정말', '완전', '너무'];
+    const randomEmphasis = emphasisWords[Math.floor(Math.random() * emphasisWords.length)];
+    const words = original.split(' ');
+    if (words.length > 2) {
+      words.splice(1, 0, randomEmphasis);
+      variations.push(words.join(' ') + ' 💪');
+    } else {
+      variations.push(`${randomEmphasis} ${original} 💪`);
+    }
+
+    return variations;
   };
 
-  const showTemplateVariations = async (template: Template) => {
+  const showTemplateVariations = (template: Template) => {
+    const newVariations = generateVariations(template.body);
+    setVariations(newVariations);
     setShowVariations(template.id);
-    setVariations(['생성 중...', '', '']);
-    
-    try {
-      const newVariations = await generateVariations(template.body);
-      setVariations(newVariations);
-    } catch (error) {
-      setVariations(['AI 생성 실패', '다시 시도해주세요', '']);
-    }
   };
 
   return (
