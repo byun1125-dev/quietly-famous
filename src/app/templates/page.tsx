@@ -78,9 +78,12 @@ export default function TemplatesPage() {
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
         <p className="text-xs opacity-40 mb-2">Cheat Key</p>
-        <h2 className="text-2xl font-normal tracking-tight">
+        <h2 className="text-xl font-normal mb-2">
           Content Templates
         </h2>
+        <p className="text-xs leading-relaxed opacity-60">
+          자주 쓰는 캡션이나 해시태그를 저장하고 AI로 변형해 빠르게 활용하세요.
+        </p>
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-2 divide-x divide-black">

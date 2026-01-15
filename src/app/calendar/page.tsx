@@ -30,6 +30,7 @@ export default function CalendarPage() {
   const [newTime, setNewTime] = useState("09:00");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showTaskModal, setShowTaskModal] = useState(false);
 
   const calendarDays = useMemo(() => {
     const year = currentMonth.getFullYear();
@@ -63,6 +64,13 @@ export default function CalendarPage() {
       [selectedDate]: [...(prev[selectedDate] || []), task]
     }));
     setNewTask("");
+    setNewTime("09:00");
+  };
+
+  const closeTaskModal = () => {
+    setShowTaskModal(false);
+    setNewTask("");
+    setNewTime("09:00");
   };
 
   const deleteTask = (id: string) => {
@@ -103,6 +111,7 @@ export default function CalendarPage() {
     if (!day) return;
     const dateStr = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).toLocaleDateString('en-CA');
     setSelectedDate(dateStr);
+    setShowTaskModal(true); // 날짜 클릭하면 모달 열기
   };
 
   const goToPrevMonth = () => {
@@ -129,9 +138,12 @@ export default function CalendarPage() {
       {/* Header Info Section */}
       <section className="p-6 border-b border-black">
         <p className="text-xs mb-2 opacity-40">Calendar</p>
-        <h2 className="text-xl font-normal">
+        <h2 className="text-xl font-normal mb-2">
           Mission Tracker
         </h2>
+        <p className="text-xs leading-relaxed opacity-60">
+          날짜를 클릭해서 콘텐츠를 계획하고, 요일별 주제를 관리하세요.
+        </p>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] divide-x divide-black">
@@ -227,34 +239,12 @@ export default function CalendarPage() {
             })}
           </div>
 
-          {/* Task Manager Section */}
-          <div className="p-8 md:p-12 space-y-12">
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="flex-1 space-y-2">
-                <p className="mono font-bold">New Mission</p>
-                <div className="flex border-2 border-black">
-                  <input 
-                    type="time" 
-                    value={newTime}
-                    onChange={(e) => setNewTime(e.target.value)}
-                    className="p-4 border-r-2 border-black font-black uppercase text-sm outline-none bg-white"
-                  />
-                  <input 
-                    placeholder="ENTER NEW MISSION..."
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && addTask()}
-                    className="flex-1 p-4 font-bold uppercase text-lg outline-none bg-white placeholder:opacity-20"
-                  />
-                  <button onClick={addTask} className="px-8 py-4 bg-black text-white font-black uppercase hover:bg-[#8A9A8A] transition-colors">Add</button>
-                </div>
-              </div>
-            </div>
-
-            <div className="divide-y-2 divide-black border-y-2 border-black">
+          {/* Task List Section */}
+          <div className="px-6 py-4">
+            <div className="divide-y divide-black border-y border-black">
               {(tasks[selectedDate] || []).length === 0 ? (
-                <div className="py-20 text-center">
-                  <p className="mono font-bold opacity-20 text-2xl">No Missions Planned.</p>
+                <div className="py-12 text-center">
+                  <p className="text-xs opacity-20">날짜를 클릭해서 콘텐츠를 추가하세요</p>
                 </div>
               ) : (
                 tasks[selectedDate]
@@ -262,23 +252,23 @@ export default function CalendarPage() {
                   .map((task) => (
                     <div 
                       key={task.id} 
-                      className="group py-8 flex items-center justify-between hover:bg-black/5 transition-all"
+                      className="group py-4 flex items-center justify-between hover:bg-black/5 transition-all"
                     >
-                      <div className="flex items-center gap-8 flex-1">
+                      <div className="flex items-center gap-4 flex-1">
                         <button 
                           onClick={() => toggleTask(task.id)}
-                          className={`w-10 h-10 border-2 border-black flex items-center justify-center transition-all ${
-                            task.isCompleted ? 'bg-black text-white' : 'bg-white hover:bg-[#8A9A8A]/20'
+                          className={`w-5 h-5 border border-black flex items-center justify-center transition-all ${
+                            task.isCompleted ? 'bg-black text-white' : 'bg-white'
                           }`}
                         >
-                          {task.isCompleted && <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
+                          {task.isCompleted && <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
                         </button>
-                        <span className="mono font-black text-xl opacity-20">{task.time}</span>
-                        <span className={`text-lg font-black tracking-tighter uppercase ${task.isCompleted ? 'line-through opacity-30' : ''}`}>
+                        <span className="text-xs opacity-40">{task.time}</span>
+                        <span className={`text-sm ${task.isCompleted ? 'line-through opacity-30' : ''}`}>
                           {task.title}
                         </span>
                       </div>
-                      <button onClick={() => deleteTask(task.id)} className="opacity-0 group-hover:opacity-100 px-6 py-2 border border-red-500 text-red-500 font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-all">Delete</button>
+                      <button onClick={() => deleteTask(task.id)} className="opacity-0 group-hover:opacity-100 px-3 py-1 text-xs hover:underline">Delete</button>
                     </div>
                   ))
               )}
@@ -286,6 +276,70 @@ export default function CalendarPage() {
           </div>
         </div>
       </div>
+
+      {/* Task Creation Modal */}
+      {showTaskModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeTaskModal}>
+          <div className="bg-white border-2 border-black max-w-md w-full p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-lg font-medium mb-1">콘텐츠 추가</h3>
+                <p className="text-xs opacity-40">{new Date(selectedDate).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' })}</p>
+              </div>
+              <button onClick={closeTaskModal} className="text-2xl hover:opacity-60">&times;</button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs opacity-40">시간</label>
+                <input
+                  type="time"
+                  value={newTime}
+                  onChange={(e) => setNewTime(e.target.value)}
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-xs opacity-40">콘텐츠 내용</label>
+                <input
+                  type="text"
+                  placeholder="예: 월요일 OOTD 촬영 및 편집"
+                  value={newTask}
+                  onChange={(e) => setNewTask(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      addTask();
+                      closeTaskModal();
+                    }
+                  }}
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
+                  autoFocus
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => {
+                    addTask();
+                    closeTaskModal();
+                  }}
+                  className="flex-1 bg-black text-white py-3 text-sm hover:bg-opacity-80 transition-colors"
+                  disabled={!newTask.trim()}
+                >
+                  추가
+                </button>
+                <button
+                  onClick={closeTaskModal}
+                  className="flex-1 bg-white border border-black text-black py-3 text-sm hover:bg-black hover:text-white transition-colors"
+                >
+                  취소
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Theme Setting Modal */}
       {showThemeModal && (

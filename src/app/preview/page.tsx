@@ -27,7 +27,11 @@ export default function PreviewPage() {
   const [uploading, setUploading] = useState<string | null>(null);
 
   const handleUpload = async (file: File, type: 'profile' | 'post' | 'highlight') => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser) {
+      alert("이미지를 업로드하려면 로그인이 필요합니다.");
+      return;
+    }
+    
     setUploading(type);
     
     try {
@@ -42,9 +46,11 @@ export default function PreviewPage() {
       } else if (type === 'highlight') {
         setHighlights(prev => [...prev, { id: Math.random().toString(36).substring(7), title: "Highlight", image: url }]);
       }
+      
+      console.log(`✅ ${type} 이미지 업로드 성공:`, url);
     } catch (e) {
-      console.error(e);
-      alert("업로드 실패");
+      console.error("업로드 에러:", e);
+      alert(`업로드 실패: ${e instanceof Error ? e.message : '알 수 없는 오류'}`);
     } finally {
       setUploading(null);
     }
@@ -55,9 +61,12 @@ export default function PreviewPage() {
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
         <p className="text-xs opacity-40 mb-2">Preview</p>
-        <h2 className="text-2xl font-normal tracking-tight">
+        <h2 className="text-xl font-normal mb-2">
           Instagram Feed Preview
         </h2>
+        <p className="text-xs leading-relaxed opacity-60">
+          실제 게시 전에 피드의 색감과 조화를 시뮬레이션하고 확인하세요.
+        </p>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] divide-x divide-black bg-white flex-1 min-h-[800px]">
@@ -117,11 +126,18 @@ export default function PreviewPage() {
               {/* Profile Info */}
               <section className="p-4 flex gap-6 items-center">
                 <label className="relative cursor-pointer group shrink-0">
-                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'profile')} />
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'profile')} 
+                  />
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
                     <div className="w-full h-full rounded-full bg-white p-[2px]">
                         <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-                          {profile.profilePic ? (
+                          {uploading === 'profile' ? (
+                            <span className="text-xs">...</span>
+                          ) : profile.profilePic ? (
                             <img src={profile.profilePic} className="w-full h-full object-cover" alt="profile" />
                           ) : (
                             <span className="text-2xl">👤</span>
@@ -129,7 +145,9 @@ export default function PreviewPage() {
                         </div>
                     </div>
                   </div>
-                  <div className="absolute bottom-0 right-0 bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white text-xs font-bold">+</div>
+                  <div className="absolute bottom-0 right-0 bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white text-xs font-bold">
+                    {uploading === 'profile' ? '...' : '+'}
+                  </div>
                 </label>
                 
                 <div className="flex-1 flex justify-around text-center">
@@ -164,8 +182,15 @@ export default function PreviewPage() {
                   </div>
                 ))}
                 <label className="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
-                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'highlight')} />
-                  <div className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center text-2xl text-gray-300 hover:bg-gray-50">+</div>
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'highlight')} 
+                  />
+                  <div className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center text-2xl text-gray-300 hover:bg-gray-50">
+                    {uploading === 'highlight' ? '...' : '+'}
+                  </div>
                   <span className="text-[10px] text-gray-400">NEW</span>
                 </label>
               </section>
@@ -187,8 +212,13 @@ export default function PreviewPage() {
               <div className="grid grid-cols-3 gap-[1px] bg-gray-100">
                 {/* Upload Post Button */}
                 <label className="aspect-[4/5] bg-gray-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
-                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'post')} />
-                  <span className="text-4xl text-gray-300 font-light">+</span>
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'post')} 
+                  />
+                  <span className="text-4xl text-gray-300 font-light">{uploading === 'post' ? '...' : '+'}</span>
                 </label>
                 
                 {posts.map((post) => (

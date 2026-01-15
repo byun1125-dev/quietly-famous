@@ -182,9 +182,12 @@ export default function BenchmarkingPage() {
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black bg-white">
         <p className="text-xs opacity-40 mb-2">Model</p>
-        <h2 className="text-2xl font-normal tracking-tight">
+        <h2 className="text-xl font-normal mb-2">
           Content Deconstructor
         </h2>
+        <p className="text-xs leading-relaxed opacity-60">
+          성공한 콘텐츠를 분석하고 Hook-Body-CTA 구조로 분해해 나만의 템플릿을 만드세요.
+        </p>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] divide-x divide-black">

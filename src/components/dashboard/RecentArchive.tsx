@@ -20,21 +20,21 @@ export default function RecentArchive() {
 
   if (recentItems.length === 0) {
     return (
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-lg text-gray-800">최근 아카이브</h3>
-          <a href="/archive" className="text-sm text-[#8A9A8A] hover:underline">
-            전체 보기 →
-          </a>
+      <div className="flex flex-col h-full divide-y divide-black">
+        <div className="px-6 py-4 flex justify-between items-center border-b border-black">
+          <h3 className="text-sm font-medium">Recent Archive</h3>
+          <a href="/archive" className="text-xs hover:underline">View All</a>
         </div>
-        <div className="p-12 border border-dashed border-[var(--border)] rounded-lg text-center bg-gray-50">
-          <p className="text-gray-400 text-sm mb-3">아직 저장된 아카이브가 없습니다</p>
-          <a
-            href="/archive"
-            className="inline-block px-4 py-2 bg-[#8A9A8A] text-white text-sm font-medium rounded-lg hover:bg-[#7a8a7a] transition-colors"
-          >
-            첫 아이템 추가하기
-          </a>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-xs opacity-20 mb-3">Empty</p>
+            <a
+              href="/archive"
+              className="inline-block px-4 py-2 bg-black text-white text-xs hover:bg-opacity-80 transition-colors"
+            >
+              Add First Item
+            </a>
+          </div>
         </div>
       </div>
     );

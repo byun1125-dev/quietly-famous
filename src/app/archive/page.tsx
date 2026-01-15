@@ -125,9 +125,12 @@ export default function ArchivePage() {
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
         <p className="text-xs opacity-40 mb-2">Archive</p>
-        <h2 className="text-2xl font-normal tracking-tight">
+        <h2 className="text-xl font-normal mb-2">
           Content Archive
         </h2>
+        <p className="text-xs leading-relaxed opacity-60">
+          영감, 아이디어, 참고 자료를 태그와 함께 저장하고 검색하세요.
+        </p>
       </section>
 
       {/* Control Bar */}

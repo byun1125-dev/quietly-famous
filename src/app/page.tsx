@@ -16,7 +16,7 @@ export default function Home() {
           </h2>
           <div className="max-w-md pt-2">
             <p className="text-sm leading-relaxed opacity-60">
-              조용하지만 확실하게.
+              오늘의 작업과 통계를 한눈에 확인하고, 꾸준한 성장을 추적하세요.
             </p>
           </div>
         </div>
