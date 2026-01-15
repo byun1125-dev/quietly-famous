@@ -74,25 +74,25 @@ export default function TemplatesPage() {
   };
 
   return (
-    <div className="space-y-12 pb-20">
-      <header className="border-b border-[var(--border)] pt-8 pb-12">
-        <p className="mono mb-3 text-gray-500">Toolbox</p>
-        <h2 className="text-5xl font-bold mb-6">Cheat Key.</h2>
-        <p className="mt-4 text-gray-600 max-w-lg text-base leading-relaxed">
-          자주 사용하는 템플릿과 아이디어를 저장하고 빠르게 활용하세요.
-        </p>
-      </header>
+    <div className="flex flex-col h-full divide-y divide-black bg-white">
+      {/* Header Info Section */}
+      <section className="p-8 md:p-12 border-b border-black">
+        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Toolbox</p>
+        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+          Cheat<br/>Key.
+        </h2>
+      </section>
 
-      <section className="grid md:grid-cols-2 gap-8">
+      <section className="grid grid-cols-1 lg:grid-cols-2 divide-x divide-black">
         {/* Recommendation Section */}
-        <div className="space-y-6">
-          <h3 className="font-semibold text-lg text-gray-800">오늘의 토픽 아이디어 💡</h3>
-          <div className="space-y-3">
+        <div className="p-8 md:p-12 space-y-8 bg-[#F5F5F2]">
+          <h3 className="font-black uppercase text-2xl tracking-tight">Today's Ideas ✨</h3>
+          <div className="grid grid-cols-1 gap-4">
             {RECOMMENDATIONS.map((rec, i) => (
-              <div key={i} className="p-5 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-lg text-sm hover:shadow-md transition-all cursor-pointer group">
-                <div className="flex items-start gap-3">
-                  <span className="text-lg">✨</span>
-                  <p className="flex-1 leading-relaxed">{rec}</p>
+              <div key={i} className="p-6 bg-white border-2 border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer group">
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl opacity-20 group-hover:opacity-100 transition-opacity">0{i+1}</span>
+                  <p className="font-bold uppercase leading-tight text-lg">{rec}</p>
                 </div>
               </div>
             ))}
@@ -100,94 +100,87 @@ export default function TemplatesPage() {
         </div>
 
         {/* My Templates Section */}
-        <div className="space-y-6">
-          <h3 className="font-semibold text-lg text-gray-800">나만의 템플릿 만들기 📝</h3>
-          <div className="bg-white border border-[var(--border)] rounded-lg p-6 shadow-sm space-y-4">
-            <input 
-              placeholder="제목 (예: 월요일 출근룩)" 
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors text-sm"
-            />
-            <textarea 
-              placeholder="자주 쓰는 본문이나 해시태그를 저장하세요..."
-              value={newBody}
-              onChange={(e) => setNewBody(e.target.value)}
-              className="w-full h-32 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none focus:border-[#8A9A8A] transition-colors resize-none"
-            />
+        <div className="p-8 md:p-12 space-y-8 bg-white">
+          <h3 className="font-black uppercase text-2xl tracking-tight">Create Template 📝</h3>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <p className="mono font-black">Template Title</p>
+              <input 
+                placeholder="ENTER TITLE (E.G. MONDAY OOTD)..." 
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white text-lg placeholder:opacity-10"
+              />
+            </div>
+            <div className="space-y-2">
+              <p className="mono font-black">Content Body</p>
+              <textarea 
+                placeholder="ENTER CAPTION OR HASHTAGS..."
+                value={newBody}
+                onChange={(e) => setNewBody(e.target.value)}
+                className="w-full h-48 p-4 border-2 border-black font-bold uppercase text-sm outline-none bg-white resize-none placeholder:opacity-10"
+              />
+            </div>
             <button 
               onClick={addTemplate} 
-              className="w-full py-3 bg-[#8A9A8A] text-white font-semibold rounded-lg hover:bg-[#7a8a7a] transition-colors"
+              className="w-full py-6 bg-black text-white font-black uppercase text-xl hover:bg-[#8A9A8A] transition-colors"
             >
-              템플릿 저장
+              Save Template.
             </button>
           </div>
         </div>
       </section>
 
-      {/* Saved Templates */}
+      {/* Saved Templates Grid */}
       {templates.length > 0 && (
-        <div className="space-y-6">
-          <h3 className="font-semibold text-lg text-gray-800">저장된 템플릿</h3>
-          <div className="grid gap-4">
+        <section className="p-8 md:p-12 bg-[#EBEBE6]">
+          <h3 className="font-black uppercase text-2xl tracking-tight mb-8 text-black">Saved Collection</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {templates.map(t => (
-              <div key={t.id} className="bg-white border border-[var(--border)] rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                <div className="p-6">
-                  <div className="flex justify-between items-start gap-4 mb-4">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-base mb-2 text-gray-800">{t.title}</h4>
-                      <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">{t.body}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => copy(t.body)} 
-                      className="flex-1 px-4 py-2 bg-[#8A9A8A] text-white text-xs font-semibold rounded hover:bg-[#7a8a7a] transition-colors"
-                    >
-                      복사
-                    </button>
-                    <button 
-                      onClick={() => showTemplateVariations(t)} 
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-[#8A9A8A] to-[#7a8a7a] text-white text-xs font-semibold rounded hover:shadow-md transition-colors"
-                    >
-                      ✨ 자동 변형
-                    </button>
-                    <button 
-                      onClick={() => deleteTemplate(t.id)} 
-                      className="px-4 py-2 bg-gray-100 text-gray-600 text-xs font-semibold rounded hover:bg-red-100 hover:text-red-600 transition-colors"
-                    >
-                      삭제
-                    </button>
-                  </div>
+              <div key={t.id} className="border-2 border-black bg-white overflow-hidden flex flex-col hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all">
+                <div className="p-6 border-b-2 border-black flex-1">
+                  <h4 className="font-black uppercase text-xl mb-4 tracking-tight leading-none">{t.title}</h4>
+                  <p className="text-sm font-bold uppercase text-gray-500 leading-relaxed line-clamp-6">{t.body}</p>
+                </div>
+                
+                <div className="p-0 flex divide-x divide-black border-t border-black">
+                  <button 
+                    onClick={() => copy(t.body)} 
+                    className="flex-1 py-4 bg-white font-black uppercase text-xs hover:bg-[#8A9A8A] transition-colors"
+                  >
+                    Copy.
+                  </button>
+                  <button 
+                    onClick={() => showTemplateVariations(t)} 
+                    className="flex-1 py-4 bg-black text-white font-black uppercase text-xs hover:bg-[#8A9A8A] hover:text-black transition-colors"
+                  >
+                    Variations.
+                  </button>
+                  <button 
+                    onClick={() => deleteTemplate(t.id)} 
+                    className="p-4 bg-white text-red-500 font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-colors"
+                  >
+                    ✕
+                  </button>
                 </div>
 
                 {/* Template Variations */}
                 {showVariations === t.id && (
-                  <div className="bg-gradient-to-br from-[#8A9A8A]/5 to-transparent border-t border-[var(--border)] p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <h5 className="font-semibold text-sm text-[#8A9A8A]">✨ 추천 변형 문구</h5>
-                      <button
-                        onClick={() => setShowVariations(null)}
-                        className="text-gray-400 hover:text-gray-600"
-                      >
-                        ✕
-                      </button>
+                  <div className="bg-[#FFFFE0] border-t-2 border-black p-6 space-y-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <h5 className="font-black uppercase text-[10px] tracking-widest">Recommended Options</h5>
+                      <button onClick={() => setShowVariations(null)} className="font-black text-lg">&times;</button>
                     </div>
                     <div className="space-y-3">
                       {variations.map((variation, index) => (
-                        <div key={index} className="bg-white p-4 rounded-lg border border-[var(--border)]">
-                          <div className="flex justify-between items-start gap-3">
-                            <div className="flex-1">
-                              <span className="text-xs font-semibold text-[#8A9A8A] mb-2 block">옵션 {index + 1}</span>
-                              <p className="text-sm text-gray-700">{variation}</p>
-                            </div>
-                            <button
-                              onClick={() => copy(variation)}
-                              className="px-3 py-1 bg-[#8A9A8A] text-white text-xs font-semibold rounded hover:bg-[#7a8a7a] transition-colors shrink-0"
-                            >
-                              복사
-                            </button>
-                          </div>
+                        <div key={index} className="p-4 border-2 border-black bg-white flex items-start gap-3">
+                          <p className="text-xs font-bold uppercase flex-1">{variation}</p>
+                          <button
+                            onClick={() => copy(variation)}
+                            className="px-3 py-1 bg-black text-white text-[9px] font-black uppercase hover:bg-[#8A9A8A] transition-colors"
+                          >
+                            Copy
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -196,7 +189,7 @@ export default function TemplatesPage() {
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
     </div>
   );

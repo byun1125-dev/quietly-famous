@@ -41,52 +41,43 @@ export default function RecentArchive() {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-lg text-gray-800">최근 아카이브</h3>
-        <a href="/archive" className="text-sm text-[#8A9A8A] hover:underline font-medium">
-          전체 보기 →
-        </a>
+    <div className="flex flex-col h-full divide-y divide-black border-b border-black md:border-b-0">
+      <div className="p-8 flex justify-between items-center">
+        <h3 className="font-black uppercase tracking-tighter text-xl">Recent Collection</h3>
+        <a href="/archive" className="mono font-bold hover:underline">View All &gt;</a>
       </div>
-      <div className="grid md:grid-cols-4 gap-4">
+      
+      <div className="flex-1 overflow-y-auto divide-y divide-black">
         {recentItems.map((item) => (
           <a
             key={item.id}
             href="/archive"
-            className="group block border border-[var(--border)] bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all"
+            className="flex items-center group bg-white hover:bg-black hover:text-white transition-colors overflow-hidden"
           >
-            {item.imageUrl && (
-              <div className="aspect-square bg-gray-100 overflow-hidden">
+            <div className="w-24 h-24 shrink-0 border-r border-black overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+              {item.imageUrl ? (
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-              </div>
-            )}
-            {!item.imageUrl && item.videoUrl && (
-              <div className="aspect-square bg-black flex items-center justify-center">
-                <span className="text-4xl">🎬</span>
-              </div>
-            )}
-            {!item.imageUrl && !item.videoUrl && item.note && (
-              <div className="aspect-square bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 flex items-center justify-center">
-                <p className="text-sm text-gray-700 line-clamp-4 text-center">
-                  {item.note}
-                </p>
-              </div>
-            )}
-            <div className="p-3 bg-gray-50">
-              <p className="font-medium text-sm truncate">{item.title}</p>
-              <p className="text-xs text-gray-400 mt-1">
-                {new Date(item.createdAt).toLocaleDateString('ko-KR')}
-              </p>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-2xl bg-gray-50 group-hover:bg-gray-900">
+                  {item.videoUrl ? "🎬" : "📝"}
+                </div>
+              )}
+            </div>
+            <div className="px-6 py-4 flex-1">
+              <p className="text-xs mono mb-1 opacity-40 group-hover:opacity-100">{new Date(item.createdAt).toLocaleDateString()}</p>
+              <p className="font-bold uppercase tracking-tight truncate">{item.title}</p>
             </div>
           </a>
         ))}
+        {recentItems.length === 0 && (
+          <div className="p-12 text-center">
+            <p className="mono font-bold opacity-30">Archive is empty.</p>
+          </div>
+        )}
       </div>
     </div>
   );

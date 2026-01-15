@@ -30,23 +30,23 @@ export default function StreakTracker() {
   }, [history]);
 
   return (
-    <div className="bg-gradient-to-br from-[#8A9A8A]/5 to-transparent border border-[var(--border)] p-8 rounded-lg">
-      <p className="mono mb-6 text-gray-500">Continuity</p>
-      <div className="flex items-baseline gap-8">
-        <span className="text-[10rem] font-bold leading-none text-[#8A9A8A]">
+    <div className="flex flex-col h-full justify-between">
+      <p className="mono mb-4 font-bold">Continuity Tracker</p>
+      <div className="flex items-baseline gap-4">
+        <span className="text-8xl md:text-[10rem] font-black leading-none tracking-tighter">
           {streak}
         </span>
-        <div className="space-y-2">
-          <p className="text-3xl font-bold">Days</p>
-          <p className="text-sm text-gray-500">연속 실천 중</p>
+        <div className="space-y-0">
+          <p className="text-3xl font-black uppercase italic">Days.</p>
+          <p className="mono font-bold text-[#8A9A8A]">In Practice</p>
         </div>
       </div>
       
-      <div className="mt-8 pt-6 border-t border-[var(--border)]">
-        <p className="max-w-md text-sm leading-relaxed text-gray-600">
+      <div className="mt-8">
+        <p className="text-sm font-medium leading-relaxed text-gray-500 italic max-w-[200px]">
           {streak > 0 
-            ? "당신의 꾸준함은 조용한 파동이 되어 멀리 퍼져나갑니다. 계속해서 작은 실천을 이어가세요." 
-            : "새로운 시작은 언제나 가장 아름다운 법입니다. 첫 발을 내디뎌 보세요."}
+            ? "당신의 꾸준함은 조용한 파동이 되어 멀리 퍼져나갑니다." 
+            : "새로운 시작은 항상 가장 아름다운 법입니다."}
         </p>
       </div>
     </div>

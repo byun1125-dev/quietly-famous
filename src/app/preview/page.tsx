@@ -51,128 +51,163 @@ export default function PreviewPage() {
   };
 
   return (
-    <div className="max-w-[400px] mx-auto bg-white min-h-screen shadow-lg font-sans text-black">
-      {/* Header */}
-      <header className="px-4 py-3 flex items-center justify-between sticky top-0 bg-white z-10 border-b border-gray-100">
-        <input 
-          value={profile.username}
-          onChange={(e) => setProfile(prev => ({ ...prev, username: e.target.value }))}
-          className="font-semibold text-base bg-transparent outline-none w-2/3"
-        />
-        <div className="flex gap-5 text-2xl">
-          <span>+</span>
-          <span>☰</span>
-        </div>
-      </header>
-
-      {/* Profile Info */}
-      <section className="p-4 flex gap-5 items-center">
-        <label className="relative cursor-pointer group shrink-0">
-          <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'profile')} />
-          <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
-             <div className="w-full h-full rounded-full bg-white p-[2px]">
-                <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-                  {profile.profilePic ? (
-                    <img src={profile.profilePic} className="w-full h-full object-cover" alt="profile" />
-                  ) : (
-                    <span className="text-2xl">👤</span>
-                  )}
-                </div>
-             </div>
-          </div>
-          <div className="absolute bottom-0 right-0 bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white text-sm font-bold">+</div>
-        </label>
-        
-        <div className="flex-1 flex justify-around text-center">
-          <div><div className="font-semibold text-base">{posts.length}</div><div className="text-xs text-gray-500">게시물</div></div>
-          <div><div className="font-semibold text-base">12.5K</div><div className="text-xs text-gray-500">팔로워</div></div>
-          <div><div className="font-semibold text-base">850</div><div className="text-xs text-gray-500">팔로잉</div></div>
-        </div>
+    <div className="flex flex-col h-full divide-y divide-black bg-white">
+      {/* Header Info Section */}
+      <section className="p-8 md:p-12 border-b border-black">
+        <p className="mono font-bold text-[#8A9A8A] mb-4">Visual Simulation</p>
+        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+          Feed<br/>Preview.
+        </h2>
       </section>
 
-      {/* Bio */}
-      <section className="px-4 pb-4">
-        <input 
-          value={profile.name}
-          onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
-          className="block font-semibold text-sm bg-transparent outline-none w-full mb-1"
-          placeholder="Display Name"
-        />
-        <textarea 
-          value={profile.bio}
-          onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
-          className="block text-sm text-gray-700 bg-transparent outline-none w-full resize-none leading-relaxed"
-          rows={2}
-          placeholder="Bio..."
-        />
-      </section>
-
-      {/* Action Buttons */}
-      <section className="px-4 flex gap-2 mb-6">
-        <button className="flex-1 bg-gray-100 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors">프로필 편집</button>
-        <button className="flex-1 bg-gray-100 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-200 transition-colors">프로필 공유</button>
-      </section>
-
-      {/* Highlights */}
-      <section className="px-4 pb-6 flex gap-4 overflow-x-auto no-scrollbar border-b border-gray-100">
-        {highlights.map((h) => (
-          <div key={h.id} className="flex flex-col items-center gap-1 shrink-0">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
-              <div className="w-full h-full rounded-full bg-white p-[2px]">
-                <img src={h.image} className="w-full h-full rounded-full object-cover" />
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_450px] divide-x divide-black bg-white flex-1 min-h-[800px]">
+        {/* Left: Controls & Info */}
+        <div className="p-8 md:p-12 space-y-12">
+          <div className="space-y-8">
+            <h3 className="font-black uppercase text-2xl tracking-tight">Profile Settings</h3>
+            <div className="grid gap-8">
+              <div className="space-y-3">
+                <p className="mono font-black">Username</p>
+                <input 
+                  value={profile.username}
+                  onChange={(e) => setProfile(prev => ({ ...prev, username: e.target.value }))}
+                  className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white text-xl focus:bg-[#F5F5F2]"
+                />
+              </div>
+              <div className="space-y-3">
+                <p className="mono font-black">Display Name</p>
+                <input 
+                  value={profile.name}
+                  onChange={(e) => setProfile(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full p-4 border-2 border-black font-black uppercase outline-none bg-white focus:bg-[#F5F5F2]"
+                />
+              </div>
+              <div className="space-y-3">
+                <p className="mono font-black">Biography</p>
+                <textarea 
+                  value={profile.bio}
+                  onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
+                  className="w-full h-32 p-4 border-2 border-black font-bold uppercase text-sm outline-none bg-white resize-none focus:bg-[#F5F5F2]"
+                />
               </div>
             </div>
-            <input 
-              value={h.title}
-              onChange={(e) => {
-                const newH = highlights.map(item => item.id === h.id ? { ...item, title: e.target.value } : item);
-                setHighlights(newH);
-              }}
-              className="text-xs text-center w-16 bg-transparent outline-none truncate"
-            />
           </div>
-        ))}
-        <label className="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
-          <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'highlight')} />
-          <div className="w-16 h-16 rounded-full border border-gray-300 flex items-center justify-center text-3xl text-gray-400 hover:bg-gray-50">+</div>
-          <span className="text-xs text-gray-500">새로 만들기</span>
-        </label>
-      </section>
 
-      {/* Tab Navigation */}
-      <div className="flex">
-        <div className="flex-1 py-3 flex justify-center border-b border-black">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <div className="p-8 border-2 border-black bg-[#F5F5F2] space-y-4">
+            <p className="mono font-black">Usage Tip</p>
+            <p className="text-sm font-bold leading-relaxed uppercase">
+              실제 게시 전에 피드의 색감과 조화를 확인하세요. 4:5 비율의 최신 인스타그램 레이아웃이 적용되어 있습니다. 우측 시뮬레이션 화면에서 직접 요소를 클릭하여 이미지를 업로드할 수 있습니다.
+            </p>
+          </div>
         </div>
-        <div className="flex-1 py-3 flex justify-center text-gray-300">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-        </div>
-        <div className="flex-1 py-3 flex justify-center text-gray-300">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        </div>
-      </div>
 
-      {/* Posts Grid (4:5 Ratio) */}
-      <div className="grid grid-cols-3 gap-[1px] bg-gray-100">
-        {/* Upload Post Button */}
-        <label className="aspect-[4/5] bg-gray-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
-          <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'post')} />
-          <span className="text-4xl text-gray-300">+</span>
-        </label>
-        
-        {posts.map((post) => (
-          <div key={post.id} className="aspect-[4/5] relative group overflow-hidden bg-white">
-            <img src={post.image} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-               <button 
-                onClick={() => setPosts(prev => prev.filter(p => p.id !== post.id))}
-                className="bg-white text-black text-xs font-semibold px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
-               >
-                 삭제
-               </button>
+        {/* Right: Phone Simulation Area */}
+        <div className="bg-[#EBEBE6] p-8 flex justify-center items-start overflow-y-auto no-scrollbar">
+          <div className="w-full max-w-[380px] bg-white border-[6px] border-black rounded-[48px] shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] overflow-hidden sticky top-8">
+            <div className="w-full min-h-[700px] font-sans text-black pb-20">
+              {/* Header */}
+              <header className="px-4 py-4 flex items-center justify-between sticky top-0 bg-white z-10 border-b border-gray-100">
+                <span className="font-bold text-sm tracking-tight">{profile.username}</span>
+                <div className="flex gap-5 text-xl">
+                  <span>⊕</span>
+                  <span>☰</span>
+                </div>
+              </header>
+
+              {/* Profile Info */}
+              <section className="p-4 flex gap-6 items-center">
+                <label className="relative cursor-pointer group shrink-0">
+                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'profile')} />
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
+                    <div className="w-full h-full rounded-full bg-white p-[2px]">
+                        <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                          {profile.profilePic ? (
+                            <img src={profile.profilePic} className="w-full h-full object-cover" alt="profile" />
+                          ) : (
+                            <span className="text-2xl">👤</span>
+                          )}
+                        </div>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-0 right-0 bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white text-xs font-bold">+</div>
+                </label>
+                
+                <div className="flex-1 flex justify-around text-center">
+                  <div><div className="font-bold text-sm">{posts.length}</div><div className="text-[10px] text-gray-500">Posts</div></div>
+                  <div><div className="font-bold text-sm">12.5K</div><div className="text-[10px] text-gray-500">Followers</div></div>
+                  <div><div className="font-bold text-sm">850</div><div className="text-[10px] text-gray-500">Following</div></div>
+                </div>
+              </section>
+
+              {/* Bio */}
+              <section className="px-4 pb-4">
+                <p className="font-bold text-xs mb-0.5">{profile.name}</p>
+                <p className="text-xs text-gray-800 whitespace-pre-wrap leading-tight">{profile.bio}</p>
+              </section>
+
+              {/* Action Buttons */}
+              <section className="px-4 flex gap-2 mb-6">
+                <button className="flex-1 bg-gray-100 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-200 transition-colors uppercase">Edit</button>
+                <button className="flex-1 bg-gray-100 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-200 transition-colors uppercase">Share</button>
+              </section>
+
+              {/* Highlights */}
+              <section className="px-4 pb-6 flex gap-4 overflow-x-auto no-scrollbar border-b border-gray-100">
+                {highlights.map((h) => (
+                  <div key={h.id} className="flex flex-col items-center gap-1 shrink-0">
+                    <div className="w-14 h-14 rounded-full bg-gray-100 p-[1px] border border-gray-200">
+                      <div className="w-full h-full rounded-full bg-white p-[2px]">
+                        <img src={h.image} className="w-full h-full rounded-full object-cover" />
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-medium text-center w-14 truncate">{h.title}</span>
+                  </div>
+                ))}
+                <label className="flex flex-col items-center gap-1 shrink-0 cursor-pointer">
+                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'highlight')} />
+                  <div className="w-14 h-14 rounded-full border border-gray-300 flex items-center justify-center text-2xl text-gray-300 hover:bg-gray-50">+</div>
+                  <span className="text-[10px] text-gray-400">NEW</span>
+                </label>
+              </section>
+
+              {/* Tab Navigation */}
+              <div className="flex">
+                <div className="flex-1 py-3 flex justify-center border-b border-black">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </div>
+                <div className="flex-1 py-3 flex justify-center text-gray-300">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </div>
+                <div className="flex-1 py-3 flex justify-center text-gray-300">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+              </div>
+
+              {/* Posts Grid (4:5 Ratio) */}
+              <div className="grid grid-cols-3 gap-[1px] bg-gray-100">
+                {/* Upload Post Button */}
+                <label className="aspect-[4/5] bg-gray-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
+                  <input type="file" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], 'post')} />
+                  <span className="text-4xl text-gray-300 font-light">+</span>
+                </label>
+                
+                {posts.map((post) => (
+                  <div key={post.id} className="aspect-[4/5] relative group overflow-hidden bg-white">
+                    <img src={post.image} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                      <button 
+                        onClick={() => setPosts(prev => prev.filter(p => p.id !== post.id))}
+                        className="bg-white text-black text-[10px] font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition-colors"
+                      >
+                        DELETE
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

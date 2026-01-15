@@ -178,59 +178,59 @@ export default function BenchmarkingPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20">
-      <header className="border-b border-[var(--border)] pt-8 pb-12">
-        <p className="mono mb-3 text-gray-500">Research</p>
-        <h2 className="text-5xl font-bold mb-6">Content Deconstructor.</h2>
-        <p className="mt-4 text-gray-600 max-w-lg text-base leading-relaxed">
-          성공한 콘텐츠를 분석하고 구조를 학습하세요. 여러 모델을 저장하고 비교할 수 있습니다.
-        </p>
-      </header>
+    <div className="flex flex-col h-full divide-y divide-black bg-white">
+      {/* Header Info Section */}
+      <section className="p-8 md:p-12 border-b border-black bg-white">
+        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Research</p>
+        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+          Content<br/>Deconstructor.
+        </h2>
+      </section>
 
-      <div className="grid md:grid-cols-[300px_1fr] gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] divide-x divide-black">
         {/* Sidebar - Analysis List */}
-        <aside className="space-y-4">
-          <button
-            onClick={startNew}
-            className="w-full p-4 bg-[#8A9A8A] text-white rounded-lg font-semibold hover:bg-[#7a8a7a] transition-colors"
-          >
-            + 새 분석 시작
-          </button>
+        <aside className="divide-y divide-black flex flex-col bg-[#F5F5F2]">
+          <div className="p-8">
+            <button
+              onClick={startNew}
+              className="w-full p-6 bg-black text-white rounded-none font-black uppercase text-lg hover:bg-[#8A9A8A] transition-colors shadow-[4px_4px_0px_0px_rgba(138,154,138,1)]"
+            >
+              + NEW ANALYSIS
+            </button>
+          </div>
 
-          <div className="space-y-2">
+          <div className="flex-1 overflow-y-auto divide-y divide-black/10">
             {analyses.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-8">
-                저장된 분석이 없습니다
-              </p>
+              <p className="text-sm font-bold uppercase opacity-20 text-center py-20">No Analysis Found.</p>
             ) : (
               analyses.map(analysis => (
                 <div
                   key={analysis.id}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedId === analysis.id
-                      ? 'border-[#8A9A8A] bg-[#8A9A8A]/5'
-                      : 'border-gray-200 hover:border-gray-300'
+                  className={`p-6 cursor-pointer transition-all ${
+                    selectedId === analysis.id ? 'bg-black text-white' : 'bg-white hover:bg-black/5'
                   }`}
                   onClick={() => loadAnalysis(analysis)}
                 >
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-semibold text-sm">{analysis.title}</h4>
+                  <div className="flex justify-between items-start mb-4">
+                    <h4 className="font-black uppercase text-sm leading-tight tracking-tight">{analysis.title}</h4>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAnalysis(analysis.id);
                       }}
-                      className="text-red-400 hover:text-red-600 text-xs"
+                      className={`text-[10px] font-black uppercase ${selectedId === analysis.id ? 'text-[#8A9A8A]' : 'text-red-500'}`}
                     >
                       ✕
                     </button>
                   </div>
-                  <span className="text-xs px-2 py-1 bg-gray-100 rounded text-gray-600">
-                    {analysis.category === 'reels' ? '릴스' : analysis.category === 'feed' ? '피드' : '스토리'}
-                  </span>
-                  <p className="text-xs text-gray-400 mt-2">
-                    {new Date(analysis.createdAt).toLocaleDateString('ko-KR')}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[9px] px-2 py-1 font-black uppercase ${selectedId === analysis.id ? 'bg-[#8A9A8A] text-black' : 'bg-black text-white'}`}>
+                      {analysis.category}
+                    </span>
+                    <p className={`text-[9px] mono font-bold ${selectedId === analysis.id ? 'opacity-50' : 'opacity-20'}`}>
+                      {new Date(analysis.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
               ))
             )}
@@ -238,152 +238,118 @@ export default function BenchmarkingPage() {
         </aside>
 
         {/* Main - Analysis Form */}
-        <main className="space-y-6">
+        <main className="divide-y divide-black">
           {!isCreating && !selectedId ? (
-            <div className="text-center py-20 border border-dashed border-[var(--border)] rounded-lg bg-gray-50">
-              <p className="text-gray-400 mb-4">새 분석을 시작하거나 기존 분석을 선택하세요</p>
+            <div className="py-40 text-center">
+              <p className="mono font-black text-4xl opacity-10 uppercase tracking-tighter">Selection Required.</p>
             </div>
           ) : (
             <>
-              <div className="bg-white border border-[var(--border)] p-6 rounded-lg shadow-sm space-y-6">
-                {/* Basic Info */}
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold mb-2 text-gray-700">분석 제목</label>
+              {/* Target Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black bg-white">
+                <div className="p-8 md:p-12 space-y-8">
+                  <div className="space-y-4">
+                    <p className="mono font-black">Title & Category</p>
+                    <div className="flex border-2 border-black">
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="ENTER TITLE..."
+                        className="flex-1 p-4 font-black uppercase outline-none bg-white text-xl placeholder:opacity-20"
+                      />
+                      <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value as any)}
+                        className="p-4 border-l-2 border-black font-black uppercase outline-none bg-[#F5F5F2] cursor-pointer"
+                      >
+                        <option value="reels">REELS</option>
+                        <option value="feed">FEED</option>
+                        <option value="story">STORY</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <p className="mono font-black">Target Reference Link</p>
                     <input
-                      type="text"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      placeholder="예: 여름 릴스 분석 #1"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+                      type="url"
+                      value={targetLink}
+                      onChange={(e) => setTargetLink(e.target.value)}
+                      placeholder="HTTPS://INSTAGRAM.COM/..."
+                      className="w-full p-4 border-2 border-black font-bold uppercase outline-none bg-white placeholder:opacity-20"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2 text-gray-700">카테고리</label>
-                    <select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value as any)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
-                    >
-                      <option value="reels">릴스</option>
-                      <option value="feed">피드</option>
-                      <option value="story">스토리</option>
-                    </select>
-                  </div>
                 </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">타겟 링크</label>
-                  <input
-                    type="url"
-                    value={targetLink}
-                    onChange={(e) => setTargetLink(e.target.value)}
-                    placeholder="벤치마킹할 계정이나 영상 링크를 입력하세요..."
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">
-                    스크린샷 URL <span className="text-xs text-gray-400">(선택)</span>
-                  </label>
+                <div className="p-8 md:p-12 bg-[#F5F5F2] flex flex-col justify-center items-center relative overflow-hidden group">
+                  <p className="mono font-black mb-4">Screenshot Reference</p>
                   <input
                     type="url"
                     value={screenshot}
                     onChange={(e) => setScreenshot(e.target.value)}
-                    placeholder="스크린샷 이미지 URL"
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+                    placeholder="IMAGE URL..."
+                    className="w-full p-4 border-2 border-black font-bold uppercase outline-none bg-white mb-4 z-10"
                   />
-                  {screenshot && (
-                    <img
-                      src={screenshot}
-                      alt="Screenshot"
-                      className="mt-3 max-h-60 rounded border border-gray-200"
-                      onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                    />
+                  {screenshot ? (
+                    <img src={screenshot} alt="Ref" className="max-h-[200px] border-2 border-black grayscale group-hover:grayscale-0 transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" />
+                  ) : (
+                    <div className="w-full h-40 border-2 border-black border-dashed flex items-center justify-center mono opacity-20">No Image</div>
                   )}
                 </div>
               </div>
 
-              {/* Framework Analysis */}
-              <div className="bg-white border border-[var(--border)] p-8 rounded-lg shadow-sm space-y-8">
+              {/* Framework Analysis Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 bg-black gap-[1px]">
                 {FRAMEWORK.map((item, index) => {
                   const value = item.key === 'hook' ? hook : item.key === 'body' ? body : item.key === 'cta' ? cta : apply;
                   const setValue = item.key === 'hook' ? setHook : item.key === 'body' ? setBody : item.key === 'cta' ? setCta : setApply;
                   
                   return (
-                    <div key={item.key} className="space-y-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#8A9A8A] text-white flex items-center justify-center font-semibold text-sm">
-                          {index + 1}
+                    <div key={item.key} className="bg-white p-8 md:p-12 space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <span className="w-10 h-10 bg-black text-white flex items-center justify-center font-black text-lg">{index + 1}</span>
+                          <h4 className="font-black uppercase text-xl tracking-tight">{item.label}</h4>
                         </div>
-                        <h4 className="font-semibold text-gray-800">{item.label}</h4>
+                        <details className="group">
+                          <summary className="list-none cursor-pointer mono font-black hover:underline group-open:text-[#8A9A8A]">Examples &gt;</summary>
+                          <ul className="mt-4 p-4 bg-[#F5F5F2] border-2 border-black space-y-2">
+                            {item.examples.map((example, i) => (
+                              <li key={i} className="text-[10px] font-bold uppercase text-gray-600 border-b border-black/5 pb-1">- {example}</li>
+                            ))}
+                          </ul>
+                        </details>
                       </div>
                       
-                      {/* Examples */}
-                      <details className="text-sm text-gray-600">
-                        <summary className="cursor-pointer hover:text-[#8A9A8A] font-medium">예시 보기</summary>
-                        <ul className="mt-2 ml-4 space-y-1 list-disc">
-                          {item.examples.map((example, i) => (
-                            <li key={i} className="text-gray-500">{example}</li>
-                          ))}
-                        </ul>
-                      </details>
-
                       <textarea
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        placeholder={item.placeholder}
-                        className="w-full h-32 px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg leading-relaxed outline-none focus:border-[#8A9A8A] transition-colors resize-none"
+                        placeholder={item.placeholder.toUpperCase()}
+                        className="w-full h-40 p-0 border-none font-bold text-lg leading-tight outline-none bg-transparent resize-none placeholder:opacity-10"
                       />
                     </div>
                   );
                 })}
               </div>
 
-              {/* Keywords & Actions */}
-              {selectedAnalysis && (
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 p-6 rounded-lg">
-                  <h4 className="font-semibold mb-3">추출된 키워드</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedAnalysis.keywords.map(keyword => (
-                      <span key={keyword} className="px-3 py-1 bg-white rounded-full text-sm font-medium">
-                        {keyword}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex gap-3">
+              {/* Action Bar */}
+              <div className="grid grid-cols-1 md:grid-cols-2 divide-x divide-black border-t border-black bg-white">
                 <button
                   onClick={saveAnalysis}
-                  className="flex-1 bg-[#8A9A8A] text-white py-3 rounded-lg font-semibold hover:bg-[#7a8a7a] transition-colors"
+                  className="p-8 bg-[#8A9A8A] text-black font-black uppercase text-2xl hover:bg-black hover:text-white transition-all"
                 >
-                  저장
+                  Save Analysis.
                 </button>
-                {apply.trim() && (
-                  <button
-                    onClick={exportToTemplate}
-                    className="flex-1 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors"
-                  >
-                    Cheat Key로 내보내기
-                  </button>
-                )}
+                <button
+                  onClick={exportToTemplate}
+                  className="p-8 bg-white text-black font-black uppercase text-2xl hover:bg-black hover:text-white transition-all disabled:opacity-10"
+                  disabled={!apply.trim()}
+                >
+                  Export to Cheat Key.
+                </button>
               </div>
             </>
           )}
         </main>
-      </div>
-
-      <div className="p-8 bg-gradient-to-br from-[#8A9A8A]/10 to-transparent border border-[var(--border)] rounded-lg">
-        <div className="flex gap-4">
-          <div className="text-3xl">💡</div>
-          <p className="text-sm leading-relaxed text-gray-700">
-            <strong>Tip:</strong> 구조를 따라 하는 것은 카피가 아니라 학습입니다. 뼈대를 가져오고 살(내용)은 내 것으로 채우세요.
-          </p>
-        </div>
       </div>
     </div>
   );

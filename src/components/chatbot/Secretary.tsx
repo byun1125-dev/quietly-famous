@@ -42,38 +42,38 @@ export default function Secretary() {
   }, [todayCompleted]);
 
   return (
-    <div className="fixed bottom-24 right-6 z-[100] md:bottom-10">
+    <div className="fixed bottom-24 right-6 z-[100] md:bottom-10 md:right-10">
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-80 bg-white rounded-lg shadow-2xl border border-[var(--border)] p-6 animate-in slide-in-from-bottom-4 duration-300">
-          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-[var(--border)]">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8A9A8A] to-[#7a8a7a] flex items-center justify-center text-xl">
+        <div className="absolute bottom-24 right-0 w-80 bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6 animate-in slide-in-from-bottom-4 duration-300">
+          <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-black">
+            <div className="w-12 h-12 bg-black text-white flex items-center justify-center text-2xl shadow-[4px_4px_0px_0px_rgba(138,154,138,1)]">
               👩‍💼
             </div>
             <div>
-              <h4 className="font-semibold text-sm">The Alarm</h4>
-              <p className="text-xs text-gray-500">Live Secretary</p>
+              <h4 className="font-black uppercase text-xs tracking-widest">Live Secretary</h4>
+              <p className="text-[10px] mono font-bold text-[#8A9A8A]">System Active</p>
             </div>
           </div>
-          <div className="mb-5">
-            <p className="text-sm leading-relaxed text-gray-700">
-              {message}
+          <div className="mb-8">
+            <p className="text-sm font-bold leading-relaxed text-black uppercase italic">
+              "{message}"
             </p>
           </div>
           <button 
             onClick={() => setIsOpen(false)}
-            className="w-full py-3 bg-[#8A9A8A] text-white text-sm font-semibold rounded-lg hover:bg-[#7a8a7a] transition-colors"
+            className="w-full py-4 bg-black text-white text-xs font-black uppercase tracking-widest hover:bg-[#8A9A8A] transition-colors"
           >
-            확인했습니다
+            Confirmed.
           </button>
         </div>
       )}
       
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-all shadow-lg hover:shadow-xl ${
+        className={`w-16 h-16 flex items-center justify-center text-3xl transition-all border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] ${
           isOpen 
-            ? "bg-[#8A9A8A] text-white scale-95" 
-            : "bg-white text-gray-700 hover:scale-105"
+            ? "bg-[#8A9A8A] text-white" 
+            : "bg-white text-black"
         }`}
       >
         {isOpen ? "✕" : "💬"}

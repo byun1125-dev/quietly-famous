@@ -66,21 +66,15 @@ export default function DailyTip() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-[#8A9A8A]/10 via-[#8A9A8A]/5 to-transparent border-2 border-[#8A9A8A]/20 rounded-lg p-8">
-      <div className="flex items-start gap-4">
-        <div className="text-5xl flex-shrink-0">{currentTip.icon}</div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="mono text-[#8A9A8A]">Today's Tip</span>
-            <span className="text-xs px-2 py-1 bg-[#8A9A8A]/10 text-[#8A9A8A] rounded-full font-medium">
-              {currentTip.category}
-            </span>
-          </div>
-          <p className="text-base leading-relaxed text-gray-700">
-            {currentTip.text}
-          </p>
-        </div>
+    <div className="flex flex-col h-full justify-center">
+      <div className="flex items-center gap-3 mb-6">
+        <span className="mono font-bold px-2 py-1 bg-black text-white">Daily Tip</span>
+        <span className="text-[10px] mono font-bold text-[#8A9A8A]">[{currentTip.category}]</span>
       </div>
+      <p className="text-2xl md:text-3xl font-black leading-tight tracking-tighter italic">
+        "{currentTip.text}"
+      </p>
+      <div className="mt-8 text-5xl opacity-20">{currentTip.icon}</div>
     </div>
   );
 }

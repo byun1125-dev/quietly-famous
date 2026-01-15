@@ -120,111 +120,95 @@ export default function ArchivePage() {
   };
 
   return (
-    <>
-      <div className="space-y-8 pb-20">
-        <header className="border-b border-[var(--border)] pt-8 pb-12">
-          <p className="mono mb-3 text-gray-500">Collection</p>
-          <h2 className="text-5xl font-bold mb-6">The Archive.</h2>
-          <p className="mt-4 text-gray-600 max-w-lg text-base leading-relaxed">
-            영감, 아이디어, 그리고 소중한 순간들을 한 곳에 보관하세요.
-          </p>
-        </header>
+    <div className="flex flex-col h-full divide-y divide-black bg-white">
+      {/* Header Info Section */}
+      <section className="p-8 md:p-12 border-b border-black">
+        <p className="mono font-bold text-[#8A9A8A] mb-4">Content Storage</p>
+        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase text-black">
+          The<br/>Archive.
+        </h2>
+      </section>
 
-        {/* Add Button */}
+      {/* Control Bar */}
+      <section className="grid grid-cols-1 md:grid-cols-[1fr_300px] divide-x divide-black border-b border-black">
+        <div className="p-6 bg-white flex flex-col md:flex-row gap-4 items-center">
+          <input
+            type="text"
+            placeholder="SEARCH ARCHIVE..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 px-6 py-4 border-2 border-black font-bold uppercase outline-none focus:bg-black focus:text-white transition-all placeholder:opacity-20"
+          />
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value as any)}
+            className="w-full md:w-48 px-6 py-4 border-2 border-black font-black uppercase outline-none bg-white cursor-pointer"
+          >
+            <option value="all">ALL TYPES</option>
+            <option value="note">NOTES ONLY</option>
+            <option value="image">IMAGES ONLY</option>
+            <option value="video">VIDEOS ONLY</option>
+          </select>
+        </div>
         <button
           onClick={openModal}
-          className="w-full p-8 bg-gradient-to-br from-[#8A9A8A]/10 to-[#8A9A8A]/5 border-2 border-[#8A9A8A]/30 border-dashed rounded-lg hover:shadow-lg transition-all group"
+          className="p-6 bg-black text-white font-black uppercase text-xl hover:bg-[#8A9A8A] transition-colors"
         >
-          <div className="flex items-center justify-center gap-4">
-            <div className="text-5xl">+</div>
-            <div className="text-left">
-              <h3 className="font-semibold text-xl mb-1">새 아이템 추가</h3>
-              <p className="text-sm text-gray-600">메모, 이미지, 영상을 함께 저장할 수 있습니다</p>
-            </div>
-          </div>
+          + ADD NEW ITEM
         </button>
+      </section>
 
-        {/* Search & Filter */}
-        <div className="bg-white border border-[var(--border)] rounded-lg p-6 space-y-4">
-          <div className="flex gap-4">
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
-            />
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value as any)}
-              className="px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+      {/* Tags Bar */}
+      {allTags.length > 0 && (
+        <section className="p-6 bg-[#F5F5F2] border-b border-black overflow-x-auto no-scrollbar">
+          <div className="flex gap-2">
+            <button
+              onClick={() => setSelectedTag(null)}
+              className={`px-6 py-2 border-2 border-black font-black uppercase text-[10px] transition-all ${
+                !selectedTag ? 'bg-black text-white' : 'bg-white text-black hover:bg-black/5'
+              }`}
             >
-              <option value="all">전체</option>
-              <option value="note">메모만</option>
-              <option value="image">이미지만</option>
-              <option value="video">영상만</option>
-            </select>
-          </div>
-
-          {/* Tags */}
-          {allTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+              ALL TAGS
+            </button>
+            {allTags.map(tag => (
               <button
-                onClick={() => setSelectedTag(null)}
-                className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                  !selectedTag
-                    ? 'bg-[#8A9A8A] text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                key={tag}
+                onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
+                className={`px-6 py-2 border-2 border-black font-black uppercase text-[10px] transition-all ${
+                  selectedTag === tag ? 'bg-black text-white' : 'bg-white text-black hover:bg-black/5'
                 }`}
               >
-                전체
+                #{tag}
               </button>
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setSelectedTag(tag === selectedTag ? null : tag)}
-                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                    selectedTag === tag
-                      ? 'bg-[#8A9A8A] text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  #{tag}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-        {/* Archive Grid */}
+      {/* Grid Content */}
+      <section className="p-8 md:p-12 bg-white">
         {filteredItems.length === 0 ? (
-          <div className="text-center py-20 border border-dashed border-[var(--border)] rounded-lg bg-gray-50">
-            <p className="text-gray-400 text-lg mb-2">
-              {items.length === 0 ? '아카이브가 비어있습니다' : '검색 결과가 없습니다'}
-            </p>
-            <p className="text-gray-400 text-sm">
-              {items.length === 0 ? '위 버튼을 눌러 첫 아이템을 추가해보세요' : '다른 검색어나 필터를 시도해보세요'}
-            </p>
+          <div className="py-40 text-center border-4 border-dashed border-black/5">
+            <p className="mono font-black text-4xl opacity-10 uppercase tracking-tighter">Empty Space.</p>
           </div>
         ) : (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {filteredItems.map((item) => (
-              <div key={item.id} className="break-inside-avoid border border-[var(--border)] bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div key={item.id} className="break-inside-avoid border-2 border-black bg-white overflow-hidden group hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all">
                 {/* Image */}
                 {item.imageUrl && (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    className="w-full h-auto"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
+                  <div className="border-b-2 border-black overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
                 )}
 
                 {/* Video */}
                 {item.videoUrl && (
-                  <div className="aspect-video bg-black">
+                  <div className="aspect-video bg-black border-b-2 border-black">
                     {item.videoUrl.includes('youtube.com') || item.videoUrl.includes('youtu.be') ? (
                       <iframe
                         src={item.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
@@ -232,54 +216,43 @@ export default function ArchivePage() {
                         allowFullScreen
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white text-sm">
-                        <a href={item.videoUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-300">
-                          영상 링크 열기 →
-                        </a>
+                      <div className="w-full h-full flex items-center justify-center text-white text-xs font-black uppercase">
+                        <a href={item.videoUrl} target="_blank" rel="noopener noreferrer" className="underline">View Source &gt;</a>
                       </div>
                     )}
                   </div>
                 )}
 
-                {/* Note (Polaroid style) */}
+                {/* Note */}
                 {item.note && (
-                  <div className="p-6 bg-gradient-to-br from-yellow-50 to-yellow-100/50">
-                    <p className="text-base leading-relaxed text-gray-700 whitespace-pre-wrap">{item.note}</p>
+                  <div className="p-8 bg-[#FFFFE0] border-b-2 border-black">
+                    <p className="text-xl font-bold leading-tight tracking-tight text-black">{item.note}</p>
                   </div>
                 )}
 
                 {/* Footer */}
-                <div className="p-4 bg-gray-50">
-                  <div className="flex justify-between items-start mb-2">
-                    <p className="font-semibold text-sm flex-1">{item.title}</p>
+                <div className="p-6 space-y-4">
+                  <div className="flex justify-between items-start gap-4">
+                    <h4 className="font-black uppercase text-lg leading-none tracking-tighter">{item.title}</h4>
                     <button
                       onClick={() => deleteItem(item.id)}
-                      className="text-xs text-red-400 hover:text-red-600 font-medium transition-colors ml-2"
+                      className="text-[10px] font-black uppercase text-red-500 hover:underline"
                     >
-                      삭제
+                      Delete
                     </button>
                   </div>
-                  <p className="mono text-xs text-gray-400 mb-2">
-                    {new Date(item.createdAt).toLocaleDateString('ko-KR')}
-                  </p>
-                  {item.tags && item.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1">
-                      {item.tags.map(tag => (
-                        <span
-                          key={tag}
-                          className="text-xs px-2 py-0.5 bg-[#8A9A8A]/10 text-[#8A9A8A] rounded-full"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags?.map(tag => (
+                      <span key={tag} className="px-3 py-1 bg-black text-white text-[9px] font-black uppercase">#{tag}</span>
+                    ))}
+                  </div>
+                  <p className="mono font-bold opacity-30 text-[9px]">{new Date(item.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
       {/* Unified Modal */}
       {isModalOpen && (

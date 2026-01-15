@@ -67,28 +67,25 @@ export default function QuickStats() {
   ];
 
   return (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-lg text-gray-800">이번 주 요약</h3>
-      <div className="grid md:grid-cols-3 gap-4">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className={`p-6 bg-gradient-to-br ${stat.color} border-2 rounded-lg`}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <span className="text-3xl">{stat.icon}</span>
-              {stat.total !== undefined && (
-                <span className="text-xs text-gray-500 font-medium">/ {stat.total}</span>
-              )}
-            </div>
-            <div className="text-3xl font-bold mb-1">{stat.value}</div>
-            <div className="text-sm text-gray-600">
-              {stat.label}
-              {stat.subtitle && <span className="ml-1 text-xs">{stat.subtitle}</span>}
-            </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 divide-x divide-black border-b border-black">
+      {stats.map((stat, index) => (
+        <div
+          key={index}
+          className={`p-8 flex flex-col justify-between group hover:bg-black hover:text-white transition-colors`}
+        >
+          <div className="flex items-start justify-between mb-8">
+            <span className="text-sm font-bold mono">{stat.label}</span>
+            <span className="text-2xl group-hover:invert transition-all">{stat.icon}</span>
           </div>
-        ))}
-      </div>
+          <div className="flex items-baseline gap-2">
+            <div className="text-5xl font-black">{stat.value}</div>
+            {stat.total !== undefined && (
+              <span className="text-sm font-bold opacity-40">/ {stat.total}</span>
+            )}
+            {stat.subtitle && <span className="text-sm font-bold opacity-40 uppercase">{stat.subtitle}</span>}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

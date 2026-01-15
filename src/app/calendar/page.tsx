@@ -125,189 +125,166 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20">
-      <header className="border-b border-[var(--border)] pt-8 pb-12">
-        <p className="mono mb-3 text-gray-500">Scheduling</p>
-        <h2 className="text-5xl font-bold mb-6">Mission Calendar.</h2>
-        <p className="mt-4 text-gray-600 max-w-lg text-base leading-relaxed">
-          요일별 콘텐츠 주제를 설정하고, 매일의 미션을 관리하세요.
-        </p>
-      </header>
-
-      {/* Weekly Themes */}
-      <section className="bg-white border border-[var(--border)] rounded-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-semibold text-lg">요일별 콘텐츠 주제</h3>
-          <button
-            onClick={() => setShowThemeModal(true)}
-            className="text-sm text-[#8A9A8A] hover:underline font-medium"
-          >
-            설정하기
-          </button>
-        </div>
-        <div className="grid grid-cols-7 gap-2">
-          {['일', '월', '화', '수', '목', '금', '토'].map((dayName, dayIndex) => {
-            const theme = weeklyThemes.find(t => t.day === dayIndex);
-            return (
-              <div
-                key={dayIndex}
-                className={`p-3 rounded-lg text-center ${
-                  theme
-                    ? 'bg-gradient-to-br from-[#8A9A8A]/10 to-[#8A9A8A]/5 border-2 border-[#8A9A8A]/20'
-                    : 'bg-gray-50 border border-gray-200'
-                }`}
-              >
-                <div className="text-xs text-gray-500 mb-1">{dayName}</div>
-                {theme ? (
-                  <>
-                    <div className="text-2xl mb-1">{theme.icon}</div>
-                    <div className="text-xs font-medium text-gray-700 line-clamp-2">
-                      {theme.theme}
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-xs text-gray-400 py-3">-</div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+    <div className="flex flex-col h-full divide-y divide-black bg-white">
+      {/* Header Info Section */}
+      <section className="p-8 md:p-12 border-b border-black">
+        <p className="mono font-bold text-[#8A9A8A] mb-4">Mission Tracking</p>
+        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] uppercase">
+          Mission<br/>Calendar.
+        </h2>
       </section>
 
-      <div className="grid md:grid-cols-[2fr_3fr] gap-8">
-        {/* Calendar View */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={goToPrevMonth} className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-            </button>
-            <h3 className="text-lg font-semibold">
-              {currentMonth.getFullYear()}년 {currentMonth.getMonth() + 1}월
-            </h3>
-            <button onClick={goToNextMonth} className="p-2 hover:bg-gray-100 rounded transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </button>
-          </div>
-
-          <div className="bg-white border border-[var(--border)] p-4">
-            <div className="grid grid-cols-7 gap-2 mb-2">
-              {['일', '월', '화', '수', '목', '금', '토'].map((day, i) => (
-                <div key={day} className={`text-center text-xs font-medium ${i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-500'}`}>
-                  {day}
-                </div>
-              ))}
+      <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] divide-x divide-black">
+        {/* Left: Weekly Themes & Date Info */}
+        <aside className="divide-y divide-black flex flex-col bg-[#F5F5F2]">
+          <div className="p-8 space-y-6">
+            <div className="flex justify-between items-center">
+              <h3 className="font-black uppercase text-xl">Weekly Themes</h3>
+              <button onClick={() => setShowThemeModal(true)} className="mono font-bold hover:underline">Edit &gt;</button>
             </div>
-            <div className="grid grid-cols-7 gap-2">
-              {calendarDays.map((day, index) => {
-                const theme = getThemeForDay(day);
+            <div className="grid grid-cols-1 gap-2">
+              {['일', '월', '화', '수', '목', '금', '토'].map((dayName, dayIndex) => {
+                const theme = weeklyThemes.find(t => t.day === dayIndex);
                 return (
-                  <button
-                    key={index}
-                    onClick={() => selectDay(day)}
-                    disabled={!day}
-                    className={`aspect-square flex flex-col items-center justify-center text-sm rounded transition-all relative ${
-                      !day ? 'invisible' : 
-                      isSelectedDay(day) ? 'bg-[#8A9A8A] text-white font-semibold' :
-                      isToday(day) ? 'border-2 border-[#8A9A8A] font-semibold' :
-                      'hover:bg-gray-100'
-                    }`}
-                  >
-                    {day}
-                    {theme && (
-                      <div className="absolute top-0.5 right-0.5 text-[10px]">
-                        {theme.icon}
+                  <div key={dayIndex} className="flex items-center gap-4 p-3 border border-black/10 bg-white">
+                    <span className="mono font-bold w-6 opacity-30">{dayName}</span>
+                    {theme ? (
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="text-xl">{theme.icon}</span>
+                        <span className="text-xs font-bold truncate uppercase">{theme.theme}</span>
                       </div>
-                    )}
-                    {hasTasksOnDate(day) && (
-                      <div className={`absolute bottom-1 w-1 h-1 rounded-full ${isSelectedDay(day) ? 'bg-white' : 'bg-[#8A9A8A]'}`}></div>
-                    )}
-                  </button>
+                    ) : <span className="text-xs mono opacity-20">-</span>}
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="p-4 bg-[#EBEBE6] border border-[var(--border)]">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Quick Tip</p>
-            <p className="text-xs leading-relaxed text-gray-700">
-              "하루에 너무 많은 미션은 독이 돼. 3가지만 제대로 해도 인플루언서가 될 수 있어."
-            </p>
-          </div>
-        </section>
-
-        {/* Task Manager */}
-        <section className="space-y-6">
-          <div className="bg-white border border-[var(--border)] p-6">
-            <h3 className="text-sm font-semibold mb-4 text-gray-700">
-              {new Date(selectedDate).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' })}
+          <div className="p-8 bg-black text-white">
+            <p className="mono mb-2 opacity-50">Selected Date</p>
+            <h3 className="text-3xl font-black tracking-tighter">
+              {new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', weekday: 'short' }).toUpperCase()}
             </h3>
-            <div className="flex gap-3">
-              <input 
-                type="time" 
-                value={newTime}
-                onChange={(e) => setNewTime(e.target.value)}
-                className="bg-gray-50 border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#8A9A8A] transition-colors rounded"
-              />
-              <input 
-                placeholder="새 미션 추가..."
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && addTask()}
-                className="flex-1 bg-gray-50 border border-gray-200 px-4 py-2 text-sm outline-none focus:border-[#8A9A8A] transition-colors rounded"
-              />
-              <button 
-                onClick={addTask} 
-                className="px-5 py-2 bg-[#8A9A8A] text-white text-sm font-medium rounded hover:bg-[#7a8a7a] transition-colors"
-              >
-                추가
-              </button>
+          </div>
+
+          <div className="flex-1 p-8">
+            <div className="p-6 border border-black bg-white">
+              <p className="mono font-bold mb-4">Quick Tip</p>
+              <p className="text-sm font-medium leading-relaxed italic">
+                "하루에 너무 많은 미션은 독이 돼. 3가지만 제대로 해도 인플루언서가 될 수 있어."
+              </p>
+            </div>
+          </div>
+        </aside>
+
+        {/* Right: Calendar Grid & Task Manager */}
+        <div className="divide-y divide-black">
+          {/* Month Navigation */}
+          <div className="p-8 flex items-center justify-between">
+            <h3 className="text-4xl font-black uppercase tracking-tighter">
+              {currentMonth.getFullYear()} / {String(currentMonth.getMonth() + 1).padStart(2, '0')}
+            </h3>
+            <div className="flex border border-black">
+              <button onClick={goToPrevMonth} className="p-4 hover:bg-black hover:text-white transition-colors border-r border-black font-bold mono">&lt; Prev</button>
+              <button onClick={goToNextMonth} className="p-4 hover:bg-black hover:text-white transition-colors font-bold mono">Next &gt;</button>
             </div>
           </div>
 
-          <div className="space-y-3">
-            {(tasks[selectedDate] || []).length === 0 ? (
-              <div className="text-center py-12 border border-dashed border-[var(--border)] bg-gray-50">
-                <p className="text-gray-400 text-sm">이날은 아직 계획이 없습니다.</p>
+          {/* Main Calendar Grid */}
+          <div className="grid grid-cols-7 border-t border-black bg-black gap-[1px]">
+            {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day, i) => (
+              <div key={day} className={`bg-[#F5F5F2] p-4 text-center text-[10px] font-black tracking-widest ${i === 0 ? 'text-red-500' : i === 6 ? 'text-blue-500' : ''}`}>
+                {day}
               </div>
-            ) : (
-              tasks[selectedDate]
-                .sort((a, b) => a.time.localeCompare(b.time))
-                .map((task) => (
-                  <div 
-                    key={task.id} 
-                    className="bg-white border border-[var(--border)] p-4 flex items-center justify-between group hover:shadow-sm transition-shadow"
-                  >
-                    <div className="flex items-center gap-4 flex-1">
-                      <button 
-                        onClick={() => toggleTask(task.id)}
-                        className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-                          task.isCompleted 
-                            ? 'bg-[#8A9A8A] border-[#8A9A8A]' 
-                            : 'border-gray-300 hover:border-[#8A9A8A]'
-                        }`}
-                      >
-                        {task.isCompleted && (
-                          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </button>
-                      <span className="mono text-xs text-gray-400 w-12">{task.time}</span>
-                      <span className={`text-base ${task.isCompleted ? 'line-through text-gray-400' : ''}`}>
-                        {task.title}
-                      </span>
-                    </div>
-                    <button 
-                      onClick={() => deleteTask(task.id)} 
-                      className="opacity-0 group-hover:opacity-100 text-xs text-red-400 hover:text-red-600 transition-all"
-                    >
-                      삭제
-                    </button>
+            ))}
+            {calendarDays.map((day, index) => {
+              const theme = getThemeForDay(day);
+              const dateStr = day ? new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day).toLocaleDateString('en-CA') : '';
+              const isSelected = dateStr === selectedDate;
+              const isTodayDate = dateStr === new Date().toLocaleDateString('en-CA');
+              
+              return (
+                <div 
+                  key={index}
+                  onClick={() => selectDay(day)}
+                  className={`bg-white aspect-square p-2 md:p-4 border-black group cursor-pointer transition-all hover:bg-black hover:text-white flex flex-col justify-between ${!day ? 'bg-[#EBEBE6] pointer-events-none' : ''} ${isSelected ? 'bg-[#8A9A8A] text-white ring-2 ring-inset ring-black' : ''}`}
+                >
+                  <div className="flex justify-between items-start">
+                    <span className={`text-lg font-black tracking-tighter ${isTodayDate && !isSelected ? 'text-[#8A9A8A]' : ''}`}>{day}</span>
+                    {theme && <span className="text-lg">{theme.icon}</span>}
                   </div>
-                ))
-            )}
+                  {day && hasTasksOnDate(day) && (
+                    <div className="flex flex-wrap gap-1">
+                      {tasks[dateStr].slice(0, 3).map(t => (
+                        <div key={t.id} className={`w-full h-1 bg-black/10 group-hover:bg-white/20 ${isSelected ? 'bg-white/30' : ''}`}>
+                          <div className={`h-full bg-black group-hover:bg-[#8A9A8A] ${isSelected ? 'bg-white' : ''} ${t.isCompleted ? 'opacity-100' : 'opacity-0'}`}></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
-        </section>
+
+          {/* Task Manager Section */}
+          <div className="p-8 md:p-12 space-y-12">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex-1 space-y-2">
+                <p className="mono font-bold">New Mission</p>
+                <div className="flex border-2 border-black">
+                  <input 
+                    type="time" 
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                    className="p-4 border-r-2 border-black font-black uppercase text-sm outline-none bg-white"
+                  />
+                  <input 
+                    placeholder="ENTER NEW MISSION..."
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && addTask()}
+                    className="flex-1 p-4 font-bold uppercase text-lg outline-none bg-white placeholder:opacity-20"
+                  />
+                  <button onClick={addTask} className="px-8 py-4 bg-black text-white font-black uppercase hover:bg-[#8A9A8A] transition-colors">Add</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="divide-y-2 divide-black border-y-2 border-black">
+              {(tasks[selectedDate] || []).length === 0 ? (
+                <div className="py-20 text-center">
+                  <p className="mono font-bold opacity-20 text-2xl">No Missions Planned.</p>
+                </div>
+              ) : (
+                tasks[selectedDate]
+                  .sort((a, b) => a.time.localeCompare(b.time))
+                  .map((task) => (
+                    <div 
+                      key={task.id} 
+                      className="group py-8 flex items-center justify-between hover:bg-black/5 transition-all"
+                    >
+                      <div className="flex items-center gap-8 flex-1">
+                        <button 
+                          onClick={() => toggleTask(task.id)}
+                          className={`w-10 h-10 border-2 border-black flex items-center justify-center transition-all ${
+                            task.isCompleted ? 'bg-black text-white' : 'bg-white hover:bg-[#8A9A8A]/20'
+                          }`}
+                        >
+                          {task.isCompleted && <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
+                        </button>
+                        <span className="mono font-black text-xl opacity-20">{task.time}</span>
+                        <span className={`text-3xl font-black tracking-tighter uppercase ${task.isCompleted ? 'line-through opacity-30' : ''}`}>
+                          {task.title}
+                        </span>
+                      </div>
+                      <button onClick={() => deleteTask(task.id)} className="opacity-0 group-hover:opacity-100 px-6 py-2 border border-red-500 text-red-500 font-black uppercase text-xs hover:bg-red-500 hover:text-white transition-all">Delete</button>
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Theme Setting Modal */}

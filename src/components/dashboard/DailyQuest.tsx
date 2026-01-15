@@ -26,24 +26,24 @@ export default function DailyQuest() {
   const doneCount = todayTasks.filter(t => t.isCompleted).length;
 
   return (
-    <div className="border-b border-[var(--border)] pb-12">
-      <div className="flex justify-between items-center mb-8">
+    <div className="space-y-12">
+      <div className="flex justify-between items-end">
         <div>
-          <p className="mono mb-2 text-gray-500">Today's Practice</p>
-          <h2 className="text-3xl font-bold">오늘의 미션</h2>
+          <p className="mono mb-2 font-bold uppercase text-[#8A9A8A]">Active Tasks</p>
+          <h2 className="text-4xl font-black uppercase tracking-tighter">Practice List.</h2>
         </div>
-        <div className="text-right bg-[#8A9A8A] text-white px-6 py-3 rounded-lg">
-          <p className="text-xs mb-1 opacity-80">완료</p>
-          <p className="text-2xl font-bold">{doneCount} / {todayTasks.length}</p>
+        <div className="text-right">
+          <p className="mono font-bold uppercase">Status</p>
+          <p className="font-black text-3xl italic">{doneCount} / {todayTasks.length}</p>
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-black border-y border-black">
         {todayTasks.length === 0 ? (
-          <div className="p-12 border border-dashed border-[var(--border)] rounded-lg text-center bg-gray-50">
-            <p className="text-gray-400 mb-4 text-sm">오늘 설정된 미션이 없습니다.</p>
-            <a href="/calendar" className="inline-block px-6 py-2 bg-[#8A9A8A] text-white text-sm font-medium rounded-lg hover:bg-[#7a8a7a] transition-colors">
-              캘린더에서 할 일 추가하기
+          <div className="py-20 text-center">
+            <p className="text-gray-400 font-medium mb-6 uppercase tracking-widest text-sm">No tasks assigned for today.</p>
+            <a href="/calendar" className="inline-block px-8 py-4 border border-black font-bold uppercase text-xs hover:bg-black hover:text-white transition-all">
+              Go to Calendar
             </a>
           </div>
         ) : (
@@ -51,24 +51,20 @@ export default function DailyQuest() {
             <div 
               key={task.id}
               onClick={() => toggleTask(task.id)}
-              className="group cursor-pointer bg-white border border-[var(--border)] p-5 rounded-lg hover:shadow-md transition-all flex items-center justify-between"
+              className="group cursor-pointer py-8 flex items-center justify-between hover:px-4 transition-all"
             >
-              <div className="flex items-center gap-5 flex-1">
-                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                  task.isCompleted 
-                    ? 'bg-[#8A9A8A] border-[#8A9A8A]' 
-                    : 'border-gray-300 group-hover:border-[#8A9A8A]'
-                }`}>
-                  {task.isCompleted && (
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-                <span className="mono text-xs text-gray-400 w-12">{task.time}</span>
-                <span className={`text-base font-medium ${task.isCompleted ? "line-through text-gray-400" : "text-gray-800"}`}>
+              <div className="flex items-center gap-8">
+                <span className="mono font-bold text-lg opacity-20 group-hover:opacity-100 transition-opacity">{task.time}</span>
+                <span className={`text-2xl font-bold tracking-tight ${task.isCompleted ? "line-through opacity-30" : ""}`}>
                   {task.title}
                 </span>
+              </div>
+              <div className={`w-8 h-8 border-2 border-black flex items-center justify-center transition-all ${task.isCompleted ? "bg-black" : "group-hover:bg-[#8A9A8A]/20"}`}>
+                {task.isCompleted && (
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
               </div>
             </div>
           ))

@@ -18,30 +18,39 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" as="style" crossOrigin="" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
       </head>
-      <body className="antialiased selection:bg-[#8A9A8A] selection:text-white">
-        <div className="flex flex-col md:flex-row min-h-screen">
-          {/* Side Navigation */}
-          <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#F5F5F2]/80 backdrop-blur-md border-t border-[var(--border)] md:relative md:w-48 md:h-screen md:border-t-0 md:border-r flex md:flex-col justify-around md:justify-start gap-8 p-6">
-            <div className="hidden md:block mb-12">
-              <h1 className="text-xl font-bold tracking-tight">Quietly Famous.</h1>
-              <p className="mono mt-2">v. 2025</p>
+      <body className="antialiased selection:bg-black selection:text-white min-h-screen p-4 md:p-10 bg-[#EBEBE6]">
+        {/* Main Grid Frame */}
+        <div className="grid-container bg-[#F5F5F2] max-w-[1400px] mx-auto overflow-hidden">
+          {/* Top Bar */}
+          <header className="grid grid-cols-1 md:grid-cols-[1fr_200px_80px] border-b border-black">
+            <div className="p-4 md:px-8 md:py-6 flex items-center justify-between border-r border-black">
+              <h1 className="text-xl font-bold tracking-tighter uppercase">Quietly Famous.</h1>
+              <p className="mono hidden md:block text-[#8A9A8A]">Influencer Management Tool</p>
             </div>
-            
-            <NavLink href="/" label="The Desk" />
-            <NavLink href="/calendar" label="Calendar" />
-            <NavLink href="/archive" label="Archive" />
-            <NavLink href="/benchmarking" label="Model" />
-            <NavLink href="/templates" label="Cheat Key" />
-            <NavLink href="/preview" label="Preview" />
-
-            <div className="hidden md:block mt-auto">
+            <div className="p-4 flex items-center justify-center border-r border-black">
               <AuthButton />
             </div>
-          </nav>
+            <div className="p-4 flex items-center justify-center mono font-bold">
+              v.25
+            </div>
+          </header>
 
-          <main className="flex-1 p-6 md:p-16 max-w-4xl mx-auto w-full">
-            {children}
-          </main>
+          <div className="flex flex-col md:flex-row">
+            {/* Side Navigation */}
+            <nav className="w-full md:w-48 border-r border-black flex md:flex-col shrink-0 overflow-x-auto md:overflow-x-visible no-scrollbar">
+              <NavLink href="/" label="The Desk" />
+              <NavLink href="/calendar" label="Calendar" />
+              <NavLink href="/archive" label="Archive" />
+              <NavLink href="/benchmarking" label="Model" />
+              <NavLink href="/templates" label="Cheat Key" />
+              <NavLink href="/preview" label="Preview" />
+            </nav>
+
+            {/* Main Content Area */}
+            <main className="flex-1 min-h-[80vh] bg-white">
+              {children}
+            </main>
+          </div>
         </div>
         <Secretary />
       </body>
@@ -51,9 +60,14 @@ export default function RootLayout({
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className="group flex flex-col items-start gap-1">
-      <span className="text-sm font-medium transition-colors group-hover:text-[#8A9A8A]">{label}</span>
-      <div className="h-[1px] w-0 group-hover:w-full bg-[#8A9A8A] transition-all duration-300"></div>
+    <a 
+      href={href} 
+      className="flex-1 md:flex-none p-4 md:px-8 md:py-6 border-b border-black text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors flex items-center justify-center md:justify-start group"
+    >
+      <span className="relative">
+        {label}
+        <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8A9A8A] transition-all duration-300 group-hover:w-full"></div>
+      </span>
     </a>
   );
 }
