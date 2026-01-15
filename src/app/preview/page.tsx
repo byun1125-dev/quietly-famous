@@ -28,6 +28,7 @@ export default function PreviewPage() {
   const [editingProfile, setEditingProfile] = useState(false);
   const [editingHighlight, setEditingHighlight] = useState<string | null>(null);
   const [highlightTitle, setHighlightTitle] = useState("");
+  const [highlightImage, setHighlightImage] = useState("");
 
   const handleUpload = async (file: File, type: 'profile' | 'post' | 'highlight') => {
     setUploading(type);
@@ -64,12 +65,36 @@ export default function PreviewPage() {
   const openHighlightEdit = (h: Highlight) => {
     setEditingHighlight(h.id);
     setHighlightTitle(h.title);
+    setHighlightImage(h.image);
   };
 
   const saveHighlight = () => {
     if (editingHighlight) {
-      setHighlights(prev => prev.map(h => h.id === editingHighlight ? { ...h, title: highlightTitle } : h));
+      setHighlights(prev => prev.map(h => h.id === editingHighlight ? { ...h, title: highlightTitle, image: highlightImage } : h));
       setEditingHighlight(null);
+    }
+  };
+
+  const handleHighlightImageUpload = async (file: File) => {
+    setUploading('highlight_edit');
+    
+    try {
+      let url: string;
+      
+      if (auth.currentUser) {
+        const storageRef = ref(storage, `users/${auth.currentUser.uid}/preview/highlight/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        url = await getDownloadURL(snapshot.ref);
+      } else {
+        url = URL.createObjectURL(file);
+      }
+
+      setHighlightImage(url);
+    } catch (e) {
+      console.error("업로드 에러:", e);
+      alert(`업로드 실패: ${e instanceof Error ? e.message : '알 수 없는 오류'}`);
+    } finally {
+      setUploading(null);
     }
   };
 
@@ -302,6 +327,25 @@ export default function PreviewPage() {
             </div>
             
             <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs opacity-40">Image</p>
+                <div className="flex items-center gap-3">
+                  {highlightImage && (
+                    <img src={highlightImage} className="w-16 h-16 rounded-full object-cover border border-black" />
+                  )}
+                  <label className="flex-1">
+                    <input 
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => e.target.files?.[0] && handleHighlightImageUpload(e.target.files[0])}
+                    />
+                    <div className="px-4 py-2 border border-black text-xs hover:bg-black hover:text-white transition-colors text-center cursor-pointer">
+                      {uploading === 'highlight_edit' ? '업로드 중...' : '이미지 변경'}
+                    </div>
+                  </label>
+                </div>
+              </div>
               <div className="space-y-2">
                 <p className="text-xs opacity-40">Title</p>
                 <input 
