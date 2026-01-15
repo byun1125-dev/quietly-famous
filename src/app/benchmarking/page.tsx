@@ -275,7 +275,7 @@ export default function BenchmarkingPage() {
                   <div className="space-y-2">
                     <p className="text-xs opacity-40">Reference Link</p>
                     <input
-                      type="url"
+                      type="text"
                       value={targetLink}
                       onChange={(e) => setTargetLink(e.target.value)}
                       placeholder="https://instagram.com/..."
@@ -286,11 +286,11 @@ export default function BenchmarkingPage() {
                 <div className="px-6 py-4 bg-[#F5F5F2] flex flex-col justify-center items-center">
                   <p className="text-xs opacity-40 mb-3">Screenshot</p>
                   <input
-                    type="url"
+                    type="text"
                     value={screenshot}
                     onChange={(e) => setScreenshot(e.target.value)}
                     placeholder="Image URL..."
-                    className="w-full px-3 py-2 border border-black text-xs outline-none bg-white mb-3"
+                    className="w-full px-3 py-2 border border-black text-xs outline-none bg-white mb-3 placeholder:opacity-20"
                   />
                   {screenshot ? (
                     <img src={screenshot} alt="Ref" className="max-h-40 border border-black" />

@@ -262,56 +262,60 @@ export default function ArchivePage() {
     {/* Unified Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={closeModal}>
-          <div className="bg-white rounded-lg max-w-3xl w-full p-8 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold">새 아이템 추가</h3>
-              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 text-3xl leading-none">&times;</button>
+          <div className="bg-white border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="px-6 py-4 border-b border-black flex items-center justify-between">
+              <div>
+                <p className="text-xs opacity-40">New Item</p>
+                <h3 className="text-lg font-normal mt-1">아이템 추가</h3>
+              </div>
+              <button 
+                onClick={closeModal} 
+                className="w-8 h-8 flex items-center justify-center border border-black text-xs hover:bg-black hover:text-white transition-colors"
+              >
+                ✕
+              </button>
             </div>
 
-            <div className="space-y-6">
+            <div className="divide-y divide-black">
               {/* Title */}
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">제목</label>
+              <div className="px-6 py-4">
+                <p className="text-xs opacity-40 mb-2">제목</p>
                 <input
                   type="text"
                   value={modalTitle}
                   onChange={(e) => setModalTitle(e.target.value)}
                   placeholder="예: 여름 콘텐츠 아이디어"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
                 />
               </div>
 
               {/* Note */}
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">
-                  메모 <span className="text-xs text-gray-400">(선택)</span>
-                </label>
+              <div className="px-6 py-4">
+                <p className="text-xs opacity-40 mb-2">메모 (선택)</p>
                 <textarea
                   value={modalNote}
                   onChange={(e) => setModalNote(e.target.value)}
                   placeholder="떠오르는 아이디어나 생각을 자유롭게 적어보세요..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors resize-none h-32"
+                  className="w-full h-32 px-3 py-2 border border-black text-sm outline-none bg-white resize-none placeholder:opacity-20"
                 />
               </div>
 
               {/* Image URL */}
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">
-                  이미지 URL <span className="text-xs text-gray-400">(선택)</span>
-                </label>
+              <div className="px-6 py-4">
+                <p className="text-xs opacity-40 mb-2">이미지 URL (선택)</p>
                 <input
-                  type="url"
+                  type="text"
                   value={modalImageUrl}
                   onChange={(e) => setModalImageUrl(e.target.value)}
                   placeholder="https://example.com/image.jpg"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
                 />
                 {modalImageUrl && (
-                  <div className="mt-2">
+                  <div className="mt-3">
                     <img
                       src={modalImageUrl}
                       alt="Preview"
-                      className="max-h-40 rounded border border-gray-200"
+                      className="max-h-40 border border-black"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = 'none';
                       }}
@@ -321,25 +325,21 @@ export default function ArchivePage() {
               </div>
 
               {/* Video URL */}
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">
-                  영상 URL <span className="text-xs text-gray-400">(선택, YouTube 등)</span>
-                </label>
+              <div className="px-6 py-4">
+                <p className="text-xs opacity-40 mb-2">영상 URL (선택)</p>
                 <input
-                  type="url"
+                  type="text"
                   value={modalVideoUrl}
                   onChange={(e) => setModalVideoUrl(e.target.value)}
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
+                  className="w-full px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
                 />
               </div>
 
               {/* Tags */}
-              <div>
-                <label className="block text-sm font-semibold mb-2 text-gray-700">
-                  태그 <span className="text-xs text-gray-400">(선택)</span>
-                </label>
-                <div className="flex gap-2 mb-2">
+              <div className="px-6 py-4">
+                <p className="text-xs opacity-40 mb-2">태그 (선택)</p>
+                <div className="flex gap-2 mb-3">
                   <input
                     type="text"
                     value={tagInput}
@@ -350,12 +350,12 @@ export default function ArchivePage() {
                         addTag(tagInput);
                       }
                     }}
-                    placeholder="태그 입력 후 Enter (예: 패션, 무드보드)"
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors text-sm"
+                    placeholder="태그 입력 후 Enter"
+                    className="flex-1 px-3 py-2 border border-black text-xs outline-none bg-white placeholder:opacity-20"
                   />
                   <button
                     onClick={() => addTag(tagInput)}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                    className="px-4 py-2 border border-black text-xs hover:bg-black hover:text-white transition-colors"
                   >
                     추가
                   </button>
@@ -365,15 +365,10 @@ export default function ArchivePage() {
                     {modalTags.map(tag => (
                       <span
                         key={tag}
-                        className="px-3 py-1 bg-[#8A9A8A] text-white rounded-full text-sm flex items-center gap-2"
+                        className="inline-flex items-center gap-2 px-3 py-1 bg-black text-white text-xs"
                       >
                         #{tag}
-                        <button
-                          onClick={() => removeTag(tag)}
-                          className="hover:text-red-200"
-                        >
-                          ×
-                        </button>
+                        <button onClick={() => removeTag(tag)} className="hover:opacity-60">✕</button>
                       </span>
                     ))}
                   </div>
@@ -381,16 +376,16 @@ export default function ArchivePage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-4">
+              <div className="p-6 flex gap-2">
                 <button
                   onClick={handleSave}
-                  className="flex-1 bg-[#8A9A8A] text-white py-3 rounded-lg font-semibold hover:bg-[#7a8a7a] transition-colors"
+                  className="flex-1 px-6 py-3 bg-black text-white text-sm hover:bg-opacity-80 transition-colors"
                 >
                   저장
                 </button>
                 <button
                   onClick={closeModal}
-                  className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  className="px-6 py-3 border border-black text-sm hover:bg-black hover:text-white transition-colors"
                 >
                   취소
                 </button>
