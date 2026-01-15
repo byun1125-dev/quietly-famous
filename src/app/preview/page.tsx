@@ -215,23 +215,34 @@ export default function PreviewPage() {
                 <span className="text-[10px] text-gray-400">Add Post</span>
               </label>
               
-              {posts.map((post) => (
-                <div key={post.id} className="aspect-[4/5] relative group overflow-hidden bg-white">
-                  <img src={post.image} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                    <button 
-                      onClick={() => {
-                        if (confirm("이 게시물을 삭제하시겠습니까?")) {
-                          setPosts(prev => prev.filter(p => p.id !== post.id));
-                        }
-                      }}
-                      className="bg-white text-black text-[10px] font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition-colors"
-                    >
-                      DELETE
-                    </button>
+              {/* Render posts - repeat if less than 50 to fill feed */}
+              {posts.length > 0 && Array.from({ length: Math.max(50, posts.length) }).map((_, index) => {
+                const post = posts[index % posts.length];
+                return (
+                  <div key={`${post.id}-${index}`} className="aspect-[4/5] relative group overflow-hidden bg-white">
+                    <img src={post.image} className="w-full h-full object-cover" />
+                    {index < posts.length && (
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                        <button 
+                          onClick={() => {
+                            if (confirm("이 게시물을 삭제하시겠습니까?")) {
+                              setPosts(prev => prev.filter(p => p.id !== post.id));
+                            }
+                          }}
+                          className="bg-white text-black text-[10px] font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition-colors"
+                        >
+                          DELETE
+                        </button>
+                      </div>
+                    )}
+                    {index >= posts.length && (
+                      <div className="absolute top-1 right-1 bg-black/50 text-white text-[8px] px-1.5 py-0.5 rounded">
+                        Preview
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
