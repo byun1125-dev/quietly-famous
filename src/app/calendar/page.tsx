@@ -539,86 +539,55 @@ export default function CalendarPage() {
       {/* Theme Setting Modal */}
       {showThemeModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowThemeModal(false)}>
-          <div className="bg-white rounded-lg max-w-2xl w-full p-8 shadow-2xl max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold">요일별 콘텐츠 주제 설정</h3>
-              <button onClick={() => setShowThemeModal(false)} className="text-gray-400 hover:text-gray-600 text-3xl leading-none">&times;</button>
+          <div className="bg-white border-2 border-black max-w-lg w-full shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]" onClick={(e) => e.stopPropagation()}>
+            <div className="px-6 py-4 border-b border-black flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-medium">요일별 주제 설정</h3>
+                <p className="text-xs opacity-40 mt-1">매주 올릴 콘텐츠 주제를 설정하세요</p>
+              </div>
+              <button onClick={() => setShowThemeModal(false)} className="text-2xl hover:opacity-60">&times;</button>
             </div>
-            
-            <p className="text-sm text-gray-600 mb-6">
-              매주 정기적으로 올릴 콘텐츠 주제를 요일별로 설정하세요. 캘린더에 아이콘이 표시됩니다.
-            </p>
 
-            <div className="space-y-4">
+            <div className="p-6 space-y-3 max-h-[60vh] overflow-y-auto">
               {['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'].map((dayName, dayIndex) => {
                 const existingTheme = weeklyThemes.find(t => t.day === dayIndex);
                 return (
-                  <div key={dayIndex} className="border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-20 font-semibold text-gray-700">{dayName}</div>
-                      <input
-                        type="text"
-                        placeholder="예: 월요일 OOTD"
-                        value={existingTheme?.theme || ''}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          if (value) {
-                            setWeeklyThemes(prev => {
-                              const filtered = prev.filter(t => t.day !== dayIndex);
-                              return [...filtered, { day: dayIndex, theme: value, icon: existingTheme?.icon || '📝' }];
-                            });
-                          } else {
-                            setWeeklyThemes(prev => prev.filter(t => t.day !== dayIndex));
-                          }
-                        }}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] transition-colors"
-                      />
-                      <select
-                        value={existingTheme?.icon || '📝'}
-                        onChange={(e) => {
-                          const icon = e.target.value;
+                  <div key={dayIndex} className="flex items-center gap-3 pb-3 border-b border-black/10 last:border-0">
+                    <div className="w-12 text-xs opacity-40">{dayName}</div>
+                    <input
+                      type="text"
+                      placeholder="예: OOTD"
+                      value={existingTheme?.theme || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (value) {
                           setWeeklyThemes(prev => {
                             const filtered = prev.filter(t => t.day !== dayIndex);
-                            const theme = existingTheme?.theme || '';
-                            if (theme) {
-                              return [...filtered, { day: dayIndex, theme, icon }];
-                            }
-                            return prev;
+                            return [...filtered, { day: dayIndex, theme: value, icon: '📝' }];
                           });
-                        }}
-                        className="px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-[#8A9A8A] text-2xl"
+                        } else {
+                          setWeeklyThemes(prev => prev.filter(t => t.day !== dayIndex));
+                        }
+                      }}
+                      className="flex-1 px-3 py-2 border border-black text-sm outline-none bg-white placeholder:opacity-20"
+                    />
+                    {existingTheme && (
+                      <button
+                        onClick={() => setWeeklyThemes(prev => prev.filter(t => t.day !== dayIndex))}
+                        className="text-xs opacity-40 hover:opacity-100"
                       >
-                        <option value="📝">📝</option>
-                        <option value="👔">👔</option>
-                        <option value="📸">📸</option>
-                        <option value="🎬">🎬</option>
-                        <option value="✨">✨</option>
-                        <option value="💄">💄</option>
-                        <option value="🍽️">🍽️</option>
-                        <option value="☕">☕</option>
-                        <option value="🏃">🏃</option>
-                        <option value="📚">📚</option>
-                        <option value="🎨">🎨</option>
-                        <option value="🎵">🎵</option>
-                      </select>
-                      {existingTheme && (
-                        <button
-                          onClick={() => setWeeklyThemes(prev => prev.filter(t => t.day !== dayIndex))}
-                          className="text-red-400 hover:text-red-600 px-2"
-                        >
-                          ✕
-                        </button>
-                      )}
-                    </div>
+                        ✕
+                      </button>
+                    )}
                   </div>
                 );
               })}
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="px-6 py-4 border-t border-black">
               <button
                 onClick={() => setShowThemeModal(false)}
-                className="flex-1 bg-[#8A9A8A] text-white py-3 rounded-lg font-semibold hover:bg-[#7a8a7a] transition-colors"
+                className="w-full bg-black text-white py-3 text-sm hover:bg-opacity-80 transition-colors"
               >
                 완료
               </button>
