@@ -15,7 +15,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
           <div className="flex items-center justify-between w-full lg:hidden px-4 py-3">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 hover:bg-black hover:text-white transition-colors border border-black"
+              className="p-2 hover:bg-black hover:text-white transition-colors"
               aria-label="Menu"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
             fixed lg:static top-[57px] left-0 bottom-0 z-40
             w-64 lg:w-48 border-r border-black bg-white
             transform transition-transform duration-300 ease-in-out
-            ${menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            ${menuOpen ? 'translate-x-0 shadow-[2px_0_8px_rgba(0,0,0,0.1)]' : '-translate-x-full lg:translate-x-0'}
             flex flex-col
           `}
         >
