@@ -53,19 +53,16 @@ export default function QuickStats() {
     {
       label: "이번 주 콘텐츠",
       value: weekStats.completedContent,
-      total: weekStats.totalContent,
-      icon: "✓"
+      total: weekStats.totalContent
     },
     {
       label: "완료율",
-      value: `${weekStats.completionRate}%`,
-      icon: "📊"
+      value: `${weekStats.completionRate}%`
     },
     {
       label: "계획 대비",
       value: weekStats.completedContent,
-      subtitle: `/ ${weekStats.totalContent}`,
-      icon: "📸"
+      subtitle: `/ ${weekStats.totalContent}`
     }
   ];
 
@@ -76,9 +73,8 @@ export default function QuickStats() {
           key={index}
           className="px-6 py-4 flex flex-col justify-between group hover:bg-black hover:text-white transition-colors"
         >
-          <div className="flex items-start justify-between mb-4">
+          <div className="mb-4">
             <span className="text-xs opacity-40">{stat.label}</span>
-            <span className="text-sm">{stat.icon}</span>
           </div>
           <div className="flex items-baseline gap-2">
             <div className="text-2xl font-medium">{stat.value}</div>
