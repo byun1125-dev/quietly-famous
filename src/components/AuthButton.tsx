@@ -22,23 +22,23 @@ export default function AuthButton() {
 
   if (user) {
     return (
-      <div className="flex flex-col gap-2 p-3 bg-white border border-[var(--border)] rounded-lg shadow-sm">
-        <div className="flex items-center gap-2">
-          {user.photoURL ? (
-            <img src={user.photoURL} alt="profile" className="w-8 h-8 rounded-full" />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-              <span>👤</span>
-            </div>
-          )}
-          <span className="text-xs font-medium truncate max-w-[100px]">{user.displayName}</span>
+      <div className="flex items-center gap-3 px-3 py-2 border border-black bg-white">
+        {user.photoURL ? (
+          <img src={user.photoURL} alt="profile" className="w-6 h-6" />
+        ) : (
+          <div className="w-6 h-6 border border-black bg-[#F5F5F2] flex items-center justify-center">
+            <span className="text-xs">👤</span>
+          </div>
+        )}
+        <div className="flex flex-col">
+          <span className="text-xs font-medium leading-tight">{user.displayName}</span>
+          <button 
+            onClick={() => signOut(auth)}
+            className="text-[10px] opacity-40 hover:opacity-100 text-left transition-opacity"
+          >
+            로그아웃
+          </button>
         </div>
-        <button 
-          onClick={() => signOut(auth)}
-          className="text-xs text-gray-500 hover:text-gray-700 font-medium text-left transition-colors"
-        >
-          로그아웃
-        </button>
       </div>
     );
   }
@@ -46,9 +46,9 @@ export default function AuthButton() {
   return (
     <button 
       onClick={handleLogin}
-      className="flex items-center gap-2 px-4 py-2.5 bg-[#8A9A8A] text-white rounded-lg text-xs font-semibold hover:bg-[#7a8a7a] transition-colors"
+      className="px-4 py-2 border border-black bg-white text-xs hover:bg-black hover:text-white transition-colors"
     >
-      <span>☁️</span> 클라우드 로그인
+      클라우드 로그인
     </button>
   );
 }
