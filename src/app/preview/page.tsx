@@ -59,7 +59,7 @@ export default function PreviewPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="px-6 py-4 border-b border-black">
+      <section className="px-6 py-4">
         <p className="text-xs opacity-40">Preview</p>
         <h2 className="text-xl font-normal mt-2">
           Instagram Feed Preview

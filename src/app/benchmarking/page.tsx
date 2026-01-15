@@ -180,7 +180,7 @@ export default function BenchmarkingPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="px-6 py-4 border-b border-black bg-white">
+      <section className="px-6 py-4 bg-white">
         <p className="text-xs opacity-40">Model</p>
         <h2 className="text-xl font-normal mt-2">
           Content Deconstructor

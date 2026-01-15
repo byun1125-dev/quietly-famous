@@ -199,7 +199,7 @@ export default function CalendarPage() {
   return (
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
-      <section className="p-6 border-b border-black">
+      <section className="p-6">
         <p className="text-xs opacity-40">Calendar</p>
         <h2 className="text-xl font-normal mt-2">
           Mission Tracker
