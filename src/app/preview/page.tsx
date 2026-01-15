@@ -30,17 +30,21 @@ export default function PreviewPage() {
   const [highlightTitle, setHighlightTitle] = useState("");
 
   const handleUpload = async (file: File, type: 'profile' | 'post' | 'highlight') => {
-    if (!auth.currentUser) {
-      alert("이미지를 업로드하려면 로그인이 필요합니다.");
-      return;
-    }
-    
     setUploading(type);
     
     try {
-      const storageRef = ref(storage, `users/${auth.currentUser.uid}/preview/${type}/${Date.now()}_${file.name}`);
-      const snapshot = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
+      // 로그인 여부에 따라 Firebase Storage 또는 로컬 Blob URL 사용
+      let url: string;
+      
+      if (auth.currentUser) {
+        // Firebase Storage에 업로드
+        const storageRef = ref(storage, `users/${auth.currentUser.uid}/preview/${type}/${Date.now()}_${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        url = await getDownloadURL(snapshot.ref);
+      } else {
+        // 로컬 Blob URL 사용 (임시)
+        url = URL.createObjectURL(file);
+      }
 
       if (type === 'profile') {
         setProfile(prev => ({ ...prev, profilePic: url }));
