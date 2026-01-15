@@ -280,10 +280,10 @@ export default function BenchmarkingPage() {
               analyses.map(analysis => (
                 <div
                   key={analysis.id}
-                  className={`p-4 cursor-pointer transition-all ${
+                  className={`p-4 cursor-pointer transition-all border-b border-black/10 last:border-b-0 ${
                     selectedId === analysis.id 
-                      ? 'bg-white shadow-[inset_0_0_0_2px_rgba(0,0,0,1)]' 
-                      : 'bg-white hover:bg-black/5 border-b border-black/10 last:border-b-0'
+                      ? 'bg-[#F5F5F2] border-l-2 border-l-black' 
+                      : 'bg-white hover:bg-black/5'
                   }`}
                   onClick={() => loadAnalysis(analysis)}
                 >
