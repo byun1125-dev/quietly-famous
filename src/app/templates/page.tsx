@@ -67,7 +67,7 @@ export default function TemplatesPage() {
     return variations;
   };
 
-  const showAIVariations = (template: Template) => {
+  const showTemplateVariations = (template: Template) => {
     const newVariations = generateVariations(template.body);
     setVariations(newVariations);
     setShowVariations(template.id);
@@ -147,10 +147,10 @@ export default function TemplatesPage() {
                       복사
                     </button>
                     <button 
-                      onClick={() => showAIVariations(t)} 
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded hover:from-purple-600 hover:to-pink-600 transition-colors"
+                      onClick={() => showTemplateVariations(t)} 
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-[#8A9A8A] to-[#7a8a7a] text-white text-xs font-semibold rounded hover:shadow-md transition-colors"
                     >
-                      ✨ 템플릿 변형
+                      ✨ 자동 변형
                     </button>
                     <button 
                       onClick={() => deleteTemplate(t.id)} 
@@ -163,27 +163,27 @@ export default function TemplatesPage() {
 
                 {/* Template Variations */}
                 {showVariations === t.id && (
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 border-t border-purple-100 p-6">
+                  <div className="bg-gradient-to-br from-[#8A9A8A]/5 to-transparent border-t border-[var(--border)] p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <h5 className="font-semibold text-sm text-purple-800">✨ 템플릿 변형</h5>
+                      <h5 className="font-semibold text-sm text-[#8A9A8A]">✨ 추천 변형 문구</h5>
                       <button
                         onClick={() => setShowVariations(null)}
-                        className="text-purple-400 hover:text-purple-600"
+                        className="text-gray-400 hover:text-gray-600"
                       >
                         ✕
                       </button>
                     </div>
                     <div className="space-y-3">
                       {variations.map((variation, index) => (
-                        <div key={index} className="bg-white p-4 rounded-lg border border-purple-200">
+                        <div key={index} className="bg-white p-4 rounded-lg border border-[var(--border)]">
                           <div className="flex justify-between items-start gap-3">
                             <div className="flex-1">
-                              <span className="text-xs font-semibold text-purple-600 mb-2 block">변형 {index + 1}</span>
+                              <span className="text-xs font-semibold text-[#8A9A8A] mb-2 block">옵션 {index + 1}</span>
                               <p className="text-sm text-gray-700">{variation}</p>
                             </div>
                             <button
                               onClick={() => copy(variation)}
-                              className="px-3 py-1 bg-purple-500 text-white text-xs font-semibold rounded hover:bg-purple-600 transition-colors shrink-0"
+                              className="px-3 py-1 bg-[#8A9A8A] text-white text-xs font-semibold rounded hover:bg-[#7a8a7a] transition-colors shrink-0"
                             >
                               복사
                             </button>
