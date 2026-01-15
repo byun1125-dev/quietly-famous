@@ -42,50 +42,52 @@ export default function DailyQuest() {
   const totalCount = todayPlan?.checklist.length || 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex justify-between items-end">
         <div>
           <p className="text-xs opacity-40 mb-1">Today's Content</p>
           <h2 className="text-lg font-medium">오늘의 계획</h2>
         </div>
-        <div className="text-right">
-          <p className="text-xs opacity-40">Progress</p>
-          <p className="text-xl">{doneCount} / {totalCount}</p>
-        </div>
+        {todayPlan && (
+          <div className="text-right">
+            <p className="text-xs opacity-40">Progress</p>
+            <p className="text-xl">{doneCount} / {totalCount}</p>
+          </div>
+        )}
       </div>
 
-      <div className="divide-y divide-black border-y border-black">
+      <div className="divide-y divide-black border border-black">
         {!todayPlan ? (
-          <div className="py-12 text-center">
-            <p className="text-xs opacity-20 mb-4">오늘의 콘텐츠가 없습니다</p>
-            <a href="/calendar" className="inline-block px-4 py-2 border border-black text-xs hover:bg-black hover:text-white transition-all">
+          <div className="py-8 text-center">
+            <p className="text-xs opacity-20 mb-3">오늘의 콘텐츠가 없습니다</p>
+            <a href="/calendar" className="inline-block px-3 py-2 border border-black text-xs hover:bg-black hover:text-white transition-all">
               캘린더에서 계획하기
             </a>
           </div>
         ) : (
           <>
-            <div className="py-4 space-y-3">
+            <div className="p-3 space-y-2 bg-white">
               <div className="flex items-center gap-2">
-                <span className={`px-2 py-1 text-xs ${
-                  todayPlan.type === 'reels' ? 'bg-purple-100' :
-                  todayPlan.type === 'feed' ? 'bg-blue-100' :
-                  'bg-pink-100'
+                <span className={`px-2 py-1 text-xs border border-black ${
+                  todayPlan.type === 'reels' ? 'bg-white' :
+                  todayPlan.type === 'feed' ? 'bg-white' :
+                  'bg-white'
                 }`}>
-                  {todayPlan.type === 'reels' ? '릴스' :
-                   todayPlan.type === 'feed' ? '피드' : '스토리'}
+                  {todayPlan.type === 'reels' ? 'R' :
+                   todayPlan.type === 'feed' ? 'F' : 'S'}
                 </span>
-                <span className={`px-2 py-1 text-xs ${
-                  todayPlan.status === 'completed' ? 'bg-green-100' :
-                  todayPlan.status === 'creating' ? 'bg-yellow-100' :
-                  'bg-gray-100'
+                <span className={`px-2 py-1 text-xs border border-black ${
+                  todayPlan.status === 'completed' ? 'bg-black text-white' :
+                  todayPlan.status === 'creating' ? 'bg-white' :
+                  'bg-white'
                 }`}>
                   {todayPlan.status === 'completed' ? '완료' :
                    todayPlan.status === 'creating' ? '제작중' : '계획중'}
                 </span>
               </div>
-              <h3 className="text-base font-medium">{todayPlan.topic}</h3>
+              <h3 className="text-sm font-medium">{todayPlan.topic}</h3>
               {todayPlan.details && (
-                <p className="text-sm opacity-60 line-clamp-2">{todayPlan.details}</p>
+                <p className="text-xs opacity-60 line-clamp-2">{todayPlan.details}</p>
               )}
             </div>
 
@@ -93,14 +95,14 @@ export default function DailyQuest() {
               <div 
                 key={item.id}
                 onClick={() => toggleChecklistItem(item.id)}
-                className="group cursor-pointer py-4 flex items-center justify-between transition-all"
+                className="group cursor-pointer px-3 py-3 flex items-center justify-between transition-all hover:bg-black hover:text-white"
               >
-                <span className={`text-sm ${item.isCompleted ? "line-through opacity-30" : ""}`}>
+                <span className={`text-xs ${item.isCompleted ? "line-through opacity-30" : ""}`}>
                   {item.text}
                 </span>
-                <div className={`w-5 h-5 border border-black flex items-center justify-center transition-all ${item.isCompleted ? "bg-black" : ""}`}>
+                <div className={`w-4 h-4 border border-current flex items-center justify-center transition-all ${item.isCompleted ? "bg-current" : ""}`}>
                   {item.isCompleted && (
-                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
