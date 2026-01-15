@@ -17,7 +17,7 @@ type Profile = {
 export default function PreviewPage() {
   const [profile, setProfile] = useSyncData<Profile>("ig_profile", {
     name: "Quietly Famous",
-    username: "quietly_famous_official",
+    username: "gen.gentle",
     bio: "조용하지만 확실한 존재감 🌑",
     profilePic: ""
   });
