@@ -278,6 +278,11 @@ export default function BenchmarkingPage() {
                       type="text"
                       value={targetLink}
                       onChange={(e) => setTargetLink(e.target.value)}
+                      onPaste={(e) => {
+                        e.stopPropagation();
+                        const pastedText = e.clipboardData.getData('text');
+                        setTargetLink(pastedText);
+                      }}
                       placeholder="https://instagram.com/..."
                       className="w-full px-3 py-2 border border-black text-xs outline-none bg-white placeholder:opacity-20"
                     />
@@ -289,6 +294,11 @@ export default function BenchmarkingPage() {
                     type="text"
                     value={screenshot}
                     onChange={(e) => setScreenshot(e.target.value)}
+                    onPaste={(e) => {
+                      e.stopPropagation();
+                      const pastedText = e.clipboardData.getData('text');
+                      setScreenshot(pastedText);
+                    }}
                     placeholder="Image URL..."
                     className="w-full px-3 py-2 border border-black text-xs outline-none bg-white mb-3 placeholder:opacity-20"
                   />
