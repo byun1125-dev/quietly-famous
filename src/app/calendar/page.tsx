@@ -224,10 +224,7 @@ export default function CalendarPage() {
                   <div key={dayIndex} className="flex items-center gap-3 p-2 border border-black/5 bg-white">
                     <span className="text-xs w-4 opacity-30">{dayName}</span>
                     {theme ? (
-                      <div className="flex items-center gap-2 flex-1">
-                        <span className="text-sm">{theme.icon}</span>
-                        <span className="text-xs truncate">{theme.theme}</span>
-                      </div>
+                      <span className="text-xs truncate flex-1">{theme.theme}</span>
                     ) : <span className="text-xs opacity-20">-</span>}
                   </div>
                 );
@@ -287,7 +284,7 @@ export default function CalendarPage() {
                 >
                   <div className="flex justify-between items-start">
                     <span className={`text-sm ${isTodayDate && !isSelected ? 'font-bold' : ''}`}>{day}</span>
-                    {theme && <span className="text-xs">{theme.icon}</span>}
+                    {theme && <span className={`text-[9px] opacity-40 ${isSelected ? 'opacity-60' : ''}`}>{theme.theme.substring(0, 3)}</span>}
                   </div>
                   {content && (
                     <div className="flex items-center gap-1">
