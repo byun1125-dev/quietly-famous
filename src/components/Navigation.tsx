@@ -45,11 +45,11 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
         </div>
       </header>
 
-      <div className="flex">
+      <div className="flex relative">
         {/* Mobile Menu Overlay */}
         {menuOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            className="fixed top-[57px] left-0 right-0 bottom-0 bg-black bg-opacity-50 z-30 lg:hidden"
             onClick={() => setMenuOpen(false)}
           />
         )}
@@ -57,7 +57,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
         {/* Sidebar Navigation */}
         <nav
           className={`
-            fixed lg:static top-[50px] left-0 bottom-0 z-40
+            fixed lg:static top-[57px] left-0 bottom-0 z-40
             w-64 lg:w-48 border-r border-black bg-white
             transform transition-transform duration-300 ease-in-out
             ${menuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
