@@ -17,7 +17,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="p-0 border-t border-black bg-white">
+      <section className="p-0 bg-white">
         <QuickStats />
       </section>
 
