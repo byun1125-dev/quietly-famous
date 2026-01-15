@@ -209,28 +209,34 @@ export default function BenchmarkingPage() {
               analyses.map(analysis => (
                 <div
                   key={analysis.id}
-                  className={`p-4 cursor-pointer transition-all ${
-                    selectedId === analysis.id ? 'bg-black text-white' : 'bg-white hover:bg-black/5'
+                  className={`p-4 cursor-pointer transition-all relative ${
+                    selectedId === analysis.id 
+                      ? 'bg-white border-2 border-black -m-[1px] z-10' 
+                      : 'bg-white hover:bg-black/5 border-b border-black/10 last:border-b-0'
                   }`}
                   onClick={() => loadAnalysis(analysis)}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="text-sm font-medium leading-tight">{analysis.title}</h4>
+                    <h4 className={`text-sm font-medium leading-tight ${selectedId === analysis.id ? 'opacity-100' : 'opacity-80'}`}>
+                      {analysis.title}
+                    </h4>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         deleteAnalysis(analysis.id);
                       }}
-                      className="text-xs opacity-40 hover:opacity-100"
+                      className="text-xs opacity-20 hover:opacity-100 hover:text-red-500 transition-all"
                     >
                       ✕
                     </button>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs px-2 py-0.5 ${selectedId === analysis.id ? 'bg-white text-black' : 'bg-black text-white'}`}>
-                      {analysis.category}
+                    <span className={`text-[10px] px-2 py-0.5 border border-black ${
+                      selectedId === analysis.id ? 'bg-black text-white' : 'bg-white text-black'
+                    }`}>
+                      {analysis.category.toUpperCase()}
                     </span>
-                    <p className="text-xs opacity-30">
+                    <p className="text-[10px] opacity-30 mono">
                       {new Date(analysis.createdAt).toLocaleDateString()}
                     </p>
                   </div>
