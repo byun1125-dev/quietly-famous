@@ -14,12 +14,33 @@ type ContentPlan = {
   createdAt: number;
 };
 
+// 오전 6시 기준으로 날짜 계산
+const getDisplayDate = () => {
+  const now = new Date();
+  const hour = now.getHours();
+  
+  // 오전 6시 이전이면 전날로 간주
+  if (hour < 6) {
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday.toLocaleDateString('en-CA');
+  }
+  
+  return now.toLocaleDateString('en-CA');
+};
+
 export default function Secretary() {
   const [isOpen, setIsOpen] = useState(false);
+  const [hiddenUntil, setHiddenUntil] = useSyncData<string>("secretary_hidden_until", "");
   const [contentPlans] = useSyncData<Record<string, ContentPlan>>("content_plans_v2", {});
+  
+  const displayDate = getDisplayDate();
   
   const todayStr = new Date().toLocaleDateString('en-CA');
   const todayPlan = contentPlans[todayStr];
+  
+  // 숨김 상태 확인
+  const isHidden = hiddenUntil === displayDate;
 
   // 이번 주 통계
   const weekStats = useMemo(() => {
@@ -132,6 +153,16 @@ export default function Secretary() {
 
     return { greeting, situation, advice, weeklyInsight, actions };
   }, [todayPlan, tomorrowPlan, weekStats]);
+  
+  const hideToday = () => {
+    setHiddenUntil(displayDate);
+    setIsOpen(false);
+  };
+  
+  // 숨김 상태면 렌더링 안함
+  if (isHidden) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
@@ -198,6 +229,16 @@ export default function Secretary() {
                 </div>
               </div>
             )}
+            
+            {/* Hide Today */}
+            <div className="p-6 pt-0 bg-white">
+              <button
+                onClick={hideToday}
+                className="w-full py-2 px-4 text-xs opacity-40 hover:opacity-100 transition-opacity"
+              >
+                오늘은 더 이상 보지 않기
+              </button>
+            </div>
           </div>
         </div>
       )}
