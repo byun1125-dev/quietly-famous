@@ -120,7 +120,8 @@ export default function ArchivePage() {
   };
 
   return (
-    <div className="flex flex-col h-full divide-y divide-black bg-white">
+    <>
+      <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
       <section className="p-8 md:p-12 border-b border-black">
         <p className="mono font-bold text-[#8A9A8A] mb-4">Content Storage</p>
