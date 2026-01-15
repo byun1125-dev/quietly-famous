@@ -501,6 +501,7 @@ export default function CalendarPage() {
                     onChange={(e) => setNewChecklistItem(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
+                        e.preventDefault();
                         addChecklistItem();
                       }
                     }}
