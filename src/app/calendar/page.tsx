@@ -200,11 +200,11 @@ export default function CalendarPage() {
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
       <section className="p-6 border-b border-black">
-        <p className="text-xs mb-2 opacity-40">Calendar</p>
-        <h2 className="text-xl font-normal mb-2">
+        <p className="text-xs opacity-40">Calendar</p>
+        <h2 className="text-xl font-normal mt-2">
           Mission Tracker
         </h2>
-        <p className="text-xs leading-relaxed opacity-60">
+        <p className="text-sm leading-relaxed opacity-60 mt-3">
           날짜를 클릭해서 콘텐츠를 계획하고, 요일별 주제를 관리하세요.
         </p>
       </section>

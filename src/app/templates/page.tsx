@@ -99,11 +99,11 @@ export default function TemplatesPage() {
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
-        <p className="text-xs opacity-40 mb-2">Cheat Key</p>
-        <h2 className="text-xl font-normal mb-2">
+        <p className="text-xs opacity-40">Cheat Key</p>
+        <h2 className="text-xl font-normal mt-2">
           Content Templates
         </h2>
-        <p className="text-xs leading-relaxed opacity-60">
+        <p className="text-sm leading-relaxed opacity-60 mt-3">
           예시 템플릿을 불러와 수정하거나, 직접 작성해서 나만의 캡션 템플릿을 만드세요.
         </p>
       </section>

@@ -124,11 +124,11 @@ export default function ArchivePage() {
       <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
-        <p className="text-xs opacity-40 mb-2">Archive</p>
-        <h2 className="text-xl font-normal mb-2">
+        <p className="text-xs opacity-40">Archive</p>
+        <h2 className="text-xl font-normal mt-2">
           Content Archive
         </h2>
-        <p className="text-xs leading-relaxed opacity-60">
+        <p className="text-sm leading-relaxed opacity-60 mt-3">
           영감, 아이디어, 참고 자료를 태그와 함께 저장하고 검색하세요.
         </p>
       </section>

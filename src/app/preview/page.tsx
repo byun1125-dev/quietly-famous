@@ -60,11 +60,11 @@ export default function PreviewPage() {
     <div className="flex flex-col h-full divide-y divide-black bg-white">
       {/* Header Info Section */}
       <section className="px-6 py-4 border-b border-black">
-        <p className="text-xs opacity-40 mb-2">Preview</p>
-        <h2 className="text-xl font-normal mb-2">
+        <p className="text-xs opacity-40">Preview</p>
+        <h2 className="text-xl font-normal mt-2">
           Instagram Feed Preview
         </h2>
-        <p className="text-xs leading-relaxed opacity-60">
+        <p className="text-sm leading-relaxed opacity-60 mt-3">
           실제 게시 전에 피드의 색감과 조화를 시뮬레이션하고 확인하세요.
         </p>
       </section>
