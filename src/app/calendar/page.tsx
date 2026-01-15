@@ -210,42 +210,36 @@ export default function CalendarPage() {
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] divide-x divide-black">
-        {/* Left: Weekly Themes & Date Info */}
-        <aside className="divide-y divide-black flex flex-col bg-[#F5F5F2]">
-          <div className="p-6 space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-normal">Weekly Themes</h3>
-              <button onClick={() => setShowThemeModal(true)} className="text-xs hover:underline">Edit</button>
+        {/* Left: Weekly Themes */}
+        <aside className="p-6 space-y-4 bg-white">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-xs opacity-40">Weekly Themes</p>
+              <h3 className="text-sm font-medium mt-1">요일별 주제</h3>
             </div>
-            <div className="grid grid-cols-1 gap-1">
-              {['일', '월', '화', '수', '목', '금', '토'].map((dayName, dayIndex) => {
-                const theme = weeklyThemes.find(t => t.day === dayIndex);
-                return (
-                  <div key={dayIndex} className="flex items-center gap-3 p-2 border border-black/5 bg-white">
-                    <span className="text-xs w-4 opacity-30">{dayName}</span>
-                    {theme ? (
-                      <span className="text-xs truncate flex-1">{theme.theme}</span>
-                    ) : <span className="text-xs opacity-20">-</span>}
-                  </div>
-                );
-              })}
-            </div>
+            <button 
+              onClick={() => setShowThemeModal(true)} 
+              className="px-3 py-1 border border-black text-xs hover:bg-black hover:text-white transition-colors"
+            >
+              Edit
+            </button>
           </div>
-
-          <div className="p-6 bg-black text-white">
-            <p className="text-xs mb-1 opacity-50">Selected</p>
-            <h3 className="text-sm">
-              {new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </h3>
-          </div>
-
-          <div className="flex-1 p-6">
-            <div className="p-4 border border-black bg-white">
-              <p className="text-xs mb-2 opacity-40">Tip</p>
-              <p className="text-xs leading-relaxed">
-                하루 3가지만 집중하세요.
-              </p>
-            </div>
+          
+          <div className="divide-y divide-black border border-black">
+            {['일', '월', '화', '수', '목', '금', '토'].map((dayName, dayIndex) => {
+              const theme = weeklyThemes.find(t => t.day === dayIndex);
+              const isWeekend = dayIndex === 0 || dayIndex === 6;
+              return (
+                <div key={dayIndex} className="flex items-center gap-3 px-3 py-2 bg-white hover:bg-black hover:text-white transition-colors group">
+                  <span className={`text-xs w-6 ${isWeekend ? 'opacity-30' : ''}`}>{dayName}</span>
+                  {theme ? (
+                    <span className="text-xs truncate flex-1">{theme.theme}</span>
+                  ) : (
+                    <span className="text-xs opacity-20 flex-1">설정 안됨</span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </aside>
 
@@ -280,10 +274,10 @@ export default function CalendarPage() {
                 <div 
                   key={index}
                   onClick={() => selectDay(day)}
-                  className={`bg-white aspect-square p-2 border-black group cursor-pointer transition-all hover:bg-black hover:text-white flex flex-col justify-between ${!day ? 'bg-[#EBEBE6] pointer-events-none' : ''} ${isSelected ? 'bg-black text-white' : ''}`}
+                  className={`bg-white aspect-square p-2 group cursor-pointer transition-all hover:bg-black hover:text-white flex flex-col justify-between ${!day ? 'bg-[#EBEBE6] pointer-events-none' : ''} ${isSelected ? 'bg-black text-white' : ''} ${isTodayDate && !isSelected ? 'border-2 border-black' : ''}`}
                 >
                   <div className="flex justify-between items-start">
-                    <span className={`text-sm ${isTodayDate && !isSelected ? 'font-bold' : ''}`}>{day}</span>
+                    <span className="text-sm">{day}</span>
                     {theme && <span className={`text-[9px] opacity-40 ${isSelected ? 'opacity-60' : ''}`}>{theme.theme.substring(0, 3)}</span>}
                   </div>
                   {content && (
@@ -291,10 +285,10 @@ export default function CalendarPage() {
                       <div className={`text-[10px] px-1 ${isSelected ? 'bg-white text-black' : 'bg-black text-white group-hover:bg-white group-hover:text-black'}`}>
                         {content.type === 'reels' ? 'R' : content.type === 'feed' ? 'F' : 'S'}
                       </div>
-                      <div className={`w-2 h-2 rounded-full ${
-                        content.status === 'completed' ? 'bg-green-500' : 
-                        content.status === 'creating' ? 'bg-yellow-500' : 
-                        'bg-gray-300'
+                      <div className={`w-2 h-2 ${
+                        content.status === 'completed' ? 'bg-black' : 
+                        content.status === 'creating' ? 'bg-black opacity-50' : 
+                        'bg-black opacity-20'
                       }`}></div>
                     </div>
                   )}
