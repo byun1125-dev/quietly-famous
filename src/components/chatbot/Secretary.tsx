@@ -136,17 +136,17 @@ export default function Secretary() {
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-96 bg-white border border-black shadow-lg animate-in slide-in-from-bottom-4 duration-200">
+        <div className="absolute bottom-20 right-0 w-80 md:w-96 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] animate-in slide-in-from-bottom-4 duration-200">
           {/* Header */}
-          <div className="px-4 py-3 border-b border-black bg-white">
+          <div className="px-6 py-4 border-b border-black bg-white">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-sm font-medium">AI Secretary</h4>
-                <p className="text-xs opacity-40">실시간 어시스턴트</p>
+                <p className="text-xs opacity-40">AI Secretary</p>
+                <h4 className="text-lg font-normal mt-1">Live Assistant</h4>
               </div>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="text-sm opacity-40 hover:opacity-100"
+                className="w-8 h-8 flex items-center justify-center border border-black text-xs hover:bg-black hover:text-white transition-colors"
               >
                 ✕
               </button>
@@ -154,45 +154,48 @@ export default function Secretary() {
           </div>
 
           {/* Content */}
-          <div className="px-4 py-4 space-y-4 max-h-[500px] overflow-y-auto">
+          <div className="divide-y divide-black max-h-[70vh] overflow-y-auto">
             {/* Greeting */}
-            <div className="pb-3 border-b border-black">
-              <p className="text-xs opacity-60">{intelligence.greeting}</p>
+            <div className="px-6 py-4 bg-white">
+              <p className="text-sm opacity-60">{intelligence.greeting}</p>
             </div>
 
             {/* Situation */}
-            <div>
-              <p className="text-xs opacity-40 mb-1">현재 상황</p>
-              <p className="text-sm font-medium">{intelligence.situation}</p>
+            <div className="px-6 py-4">
+              <p className="text-xs opacity-40 mb-2">현재 상황</p>
+              <p className="text-sm font-medium leading-relaxed">{intelligence.situation}</p>
             </div>
 
             {/* Weekly Stats */}
             {intelligence.weeklyInsight && (
-              <div className="p-3 bg-[#F5F5F2] border border-black">
-                <p className="text-xs">{intelligence.weeklyInsight}</p>
+              <div className="px-6 py-4 bg-[#F5F5F2]">
+                <p className="text-xs opacity-40 mb-2">이번 주</p>
+                <p className="text-sm">{intelligence.weeklyInsight}</p>
               </div>
             )}
 
             {/* Advice */}
-            <div>
-              <p className="text-xs opacity-40 mb-1">제안</p>
+            <div className="px-6 py-4">
+              <p className="text-xs opacity-40 mb-2">제안</p>
               <p className="text-sm leading-relaxed">{intelligence.advice}</p>
             </div>
 
             {/* Quick Actions */}
             {intelligence.actions.length > 0 && (
-              <div className="space-y-2 pt-2">
-                <p className="text-xs opacity-40">빠른 액션</p>
-                {intelligence.actions.map((action, idx) => (
-                  <a
-                    key={idx}
-                    href={action.link}
-                    onClick={() => setIsOpen(false)}
-                    className="block w-full py-2 px-3 border border-black text-xs text-center hover:bg-black hover:text-white transition-colors"
-                  >
-                    {action.label}
-                  </a>
-                ))}
+              <div className="p-6 bg-white">
+                <p className="text-xs opacity-40 mb-3">빠른 액션</p>
+                <div className="space-y-2">
+                  {intelligence.actions.map((action, idx) => (
+                    <a
+                      key={idx}
+                      href={action.link}
+                      onClick={() => setIsOpen(false)}
+                      className="block w-full py-3 px-4 border border-black text-xs text-center hover:bg-black hover:text-white transition-colors"
+                    >
+                      {action.label}
+                    </a>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -201,10 +204,10 @@ export default function Secretary() {
       
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-14 h-14 flex items-center justify-center text-xl transition-all border border-black ${
+        className={`w-16 h-16 flex items-center justify-center text-2xl transition-all border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] ${
           isOpen 
             ? "bg-black text-white" 
-            : "bg-white text-black hover:bg-black hover:text-white"
+            : "bg-white text-black"
         }`}
         title="AI 비서"
       >
