@@ -7,7 +7,7 @@ export default function Navigation({ children }: { children: React.ReactNode }) 
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen border-l border-t border-black">
+    <div className="min-h-screen">
       {/* Top Bar */}
       <header className="border-b border-black bg-white sticky top-0 z-50">
         <div className="flex items-center">
